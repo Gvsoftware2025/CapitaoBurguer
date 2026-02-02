@@ -9,7 +9,7 @@ interface MenuScreenProps {
   onBack: () => void
 }
 
-type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha"
+type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros"
 
 interface AddOn {
   id: string
@@ -179,8 +179,11 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "e6", name: "Espeto Queijinho", description: "Espeto de queijo coalho", price: 10, image: "/images/porcao-coxinha.jpg", ingredients: ["Queijo Coalho"], addOns: [] },
     { id: "e7", name: "Pao de Alho", description: "Pao de alho na brasa", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Pao de Alho"], addOns: [] },
   ],
-  jantinha: [
-    { id: "j1", name: "Jantinha Completa", description: "Acompanha arroz, vinagrete, mandioca e farofa", price: 15, image: "/images/porcao-picanha.jpg", ingredients: ["Arroz", "Vinagrete", "Mandioca", "Farofa"], addOns: [] },
+jantinha: [
+  { id: "j1", name: "Jantinha Completa", description: "Acompanha arroz, vinagrete, mandioca e farofa", price: 15, image: "/images/porcao-picanha.jpg", ingredients: ["Arroz", "Vinagrete", "Mandioca", "Farofa"], addOns: [] },
+  ],
+  churros: [
+  { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/porcao-coxinha.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
   }
   
@@ -192,6 +195,7 @@ const menuData: Record<Category, MenuItem[]> = {
   { key: "combos", label: "COMBOS E BARCAS" },
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
+  { key: "churros", label: "CHURROS" },
 ]
 
 export function MenuScreen({ onBack }: MenuScreenProps) {
