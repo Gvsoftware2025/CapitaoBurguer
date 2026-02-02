@@ -1,12 +1,36 @@
 "use client"
 
 import Image from "next/image"
+import { useState, useEffect } from "react"
 
 interface WelcomeScreenProps {
   onViewMenu: () => void
 }
 
+function useIsOpen() {
+  const [isOpen, setIsOpen] = useState(false)
+  
+  useEffect(() => {
+    const checkIfOpen = () => {
+      const now = new Date()
+      const hours = now.getHours()
+      // Aberto das 18h ate 1h da manha (18-23 ou 0-1)
+      const open = hours >= 18 || hours < 1
+      setIsOpen(open)
+    }
+    
+    checkIfOpen()
+    // Verifica a cada minuto
+    const interval = setInterval(checkIfOpen, 60000)
+    return () => clearInterval(interval)
+  }, [])
+  
+  return isOpen
+}
+
 export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
+  const isOpen = useIsOpen()
+  
   return (
     <div className="relative min-h-screen min-h-[100dvh] w-full overflow-hidden">
       {/* Background wood texture image */}
@@ -112,7 +136,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
 
 {/* Tagline - bigger and brighter */}
         <p 
-          className="text-base sm:text-lg md:text-xl text-center mb-4 sm:mb-6 italic px-4"
+          className="text-base sm:text-lg md:text-xl text-center mb-3 sm:mb-4 italic px-4"
           style={{ 
             color: '#F5E6C8',
             textShadow: '0 0 20px rgba(245,230,200,0.5), 0 2px 10px rgba(0,0,0,0.9)'
@@ -120,6 +144,42 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         >
           O hamburguer que domina os sete mares
         </p>
+
+        {/* Status Card - Atendimento */}
+        <div 
+          className="relative rounded-xl px-5 py-3 mb-4 sm:mb-6"
+          style={{
+            background: 'linear-gradient(145deg, rgba(30,30,30,0.9) 0%, rgba(20,20,20,0.95) 100%)',
+            border: `3px solid ${isOpen ? '#22C55E' : '#EF4444'}`,
+            boxShadow: isOpen 
+              ? '0 0 20px rgba(34,197,94,0.4), 0 0 40px rgba(34,197,94,0.2)' 
+              : '0 0 20px rgba(239,68,68,0.4), 0 0 40px rgba(239,68,68,0.2)',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            {/* Icone pulsante */}
+            <div 
+              className={`w-3 h-3 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}`}
+              style={{
+                boxShadow: isOpen 
+                  ? '0 0 10px rgba(34,197,94,0.8), 0 0 20px rgba(34,197,94,0.5)' 
+                  : '0 0 10px rgba(239,68,68,0.8), 0 0 20px rgba(239,68,68,0.5)',
+                animation: 'pulse-dot 2s ease-in-out infinite'
+              }}
+            />
+            <div className="flex flex-col">
+              <span 
+                className={`text-sm sm:text-base font-bold ${isOpen ? 'text-green-400' : 'text-red-400'}`}
+                style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
+              >
+                {isOpen ? 'ABERTO' : 'FECHADO'}
+              </span>
+              <span className="text-xs sm:text-sm text-amber-200/80">
+                Seg a Seg - A partir das 18h
+              </span>
+            </div>
+          </div>
+        </div>
 
 {/* CTA Button */}
         <button
@@ -244,6 +304,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         @keyframes glow-red {
           0%, 100% { box-shadow: 0 0 15px rgba(234,67,53,0.5), 0 0 30px rgba(234,67,53,0.3), inset 0 3px 8px rgba(255,255,255,0.2), inset 0 -3px 8px rgba(0,0,0,0.5); }
           50% { box-shadow: 0 0 25px rgba(234,67,53,0.8), 0 0 50px rgba(234,67,53,0.5), inset 0 3px 8px rgba(255,255,255,0.2), inset 0 -3px 8px rgba(0,0,0,0.5); }
+        }
+        @keyframes pulse-dot {
+          0%, 100% { transform: scale(1); opacity: 1; }
+          50% { transform: scale(1.3); opacity: 0.7; }
         }
         .icon-glow-green { animation: glow-green 2s ease-in-out infinite; }
         .icon-glow-pink { animation: glow-pink 2s ease-in-out infinite 0.3s; }
