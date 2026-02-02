@@ -80,7 +80,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 30, image: "/images/burger-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: addOnsOptions },
     { id: "9", name: "Capitao Pig", description: "Suino especial", price: 30, image: "/images/burger-bacon.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: addOnsOptions },
     { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 30, image: "/images/burger-gourmet.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 28, image: "/images/burger-classico.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: addOnsOptions },
+    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas - Acompanha Batata Frita", price: 28, image: "/images/burger-classico.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante"], addOns: addOnsOptions },
     { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/burger-gourmet.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: addOnsOptions },
     { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/burger-cheddar.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: addOnsOptions },
   ],
