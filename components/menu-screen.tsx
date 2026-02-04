@@ -504,6 +504,9 @@ const handleAddToCart = () => {
                           style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                           R$ {item.price.toFixed(2)}
                         </div>
+                        <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
+                          Img. ilustrativa
+                        </div>
                       </div>
                       <div className="p-3 border-t border-amber-800/30">
                         <h3 className="text-amber-100 font-bold text-sm mb-1 group-hover:text-amber-300 transition-colors" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
@@ -540,6 +543,9 @@ const handleAddToCart = () => {
                     style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                     R$ {item.price.toFixed(2)}
                   </div>
+                  <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
+                    Img. ilustrativa
+                  </div>
                 </div>
                 <div className="p-3 border-t border-amber-800/30">
                   <h3 className="text-amber-100 font-bold text-sm mb-1 group-hover:text-amber-300 transition-colors" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
@@ -566,6 +572,10 @@ const handleAddToCart = () => {
               >
                 <X className="w-6 h-6" />
               </button>
+              {/* Aviso imagem ilustrativa */}
+              <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 rounded text-[10px] text-amber-200/80">
+                Imagem ilustrativa
+              </div>
             </div>
 
             <div className="p-5">
