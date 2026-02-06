@@ -32,7 +32,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
   const isOpen = useIsOpen()
   
   return (
-    <div className="relative min-h-screen min-h-[100dvh] w-full overflow-hidden">
+    <div className="relative h-screen h-[100dvh] w-full overflow-hidden">
       {/* Background wood texture image */}
       <Image
         src="/images/pirate-wood-bg.jpg"
@@ -51,9 +51,9 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_center,_rgba(255,180,80,0.35)_0%,_transparent_45%)]" />
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_rgba(255,100,0,0.2)_0%,_transparent_50%)]" />
 
-      {/* Floating ember particles - more visible */}
+      {/* Floating ember particles */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(30)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <div
             key={i}
             className="absolute rounded-full"
@@ -61,30 +61,27 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               width: `${3 + (i % 4)}px`,
               height: `${3 + (i % 4)}px`,
               background: `radial-gradient(circle, rgba(255,${180 + (i * 3)},80,1) 0%, rgba(255,120,0,0.8) 50%, transparent 70%)`,
-              left: `${3 + (i * 3.2)}%`,
-              top: `${8 + (i * 2.8)}%`,
+              left: `${3 + (i * 4.5)}%`,
+              top: `${8 + (i * 4)}%`,
               boxShadow: `0 0 ${8 + (i % 5)}px rgba(255,150,50,0.9), 0 0 ${15 + (i % 5)}px rgba(255,100,0,0.5)`,
               animation: `float ${3 + (i % 4)}s ease-in-out infinite`,
-              animationDelay: `${i * 0.2}s`,
+              animationDelay: `${i * 0.3}s`,
             }}
           />
         ))}
       </div>
 
       {/* Smoke effect at bottom */}
-      <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black/50 via-amber-900/10 to-transparent pointer-events-none" />
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black/50 via-amber-900/10 to-transparent pointer-events-none" />
 
-{/* Main content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen min-h-[100dvh] px-4 sm:px-6 py-6 sm:py-8">
+{/* Main content - fixed height, no scroll */}
+      <div className="relative z-10 flex flex-col items-center justify-center h-full px-4 sm:px-6">
         
-{/* Logo with enhanced glow and spotlight */}
-        <div className="relative mb-1">
-          {/* Multiple glow layers for spotlight effect */}
+{/* Logo */}
+        <div className="relative mb-2 sm:mb-3">
           <div className="absolute inset-0 bg-amber-400/30 blur-[60px] rounded-full scale-[1.8]" />
           <div className="absolute inset-0 bg-yellow-500/20 blur-[40px] rounded-full scale-150" />
-          
-          {/* Logo image */}
-          <div className="relative w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52">
+          <div className="relative w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48">
             <Image
               src="/images/logo.png"
               alt="Capitao Burguer Logo"
@@ -100,7 +97,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
 
 {/* Welcome text */}
         <p 
-          className="text-base sm:text-xl md:text-2xl tracking-[0.2em] font-bold mb-1 text-center"
+          className="text-sm sm:text-xl md:text-2xl tracking-[0.2em] font-bold mb-0.5 text-center"
           style={{ 
             color: '#D4AF37',
             textShadow: '0 0 30px rgba(212,175,55,0.8), 0 0 60px rgba(212,175,55,0.4), 0 3px 6px rgba(0,0,0,0.9)'
@@ -111,7 +108,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
 
 {/* Main title */}
         <h1 
-          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-1 sm:mb-2 tracking-wide"
+          className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-center mb-0.5 sm:mb-1 tracking-wide"
           style={{ 
             background: 'linear-gradient(180deg, #DC2626 0%, #B91C1C 40%, #991B1B 100%)',
             WebkitBackgroundClip: 'text',
@@ -136,7 +133,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
 
 {/* Tagline */}
         <p 
-          className="text-sm sm:text-lg md:text-xl text-center mb-4 sm:mb-5 italic px-4"
+          className="text-xs sm:text-lg md:text-xl text-center mb-3 sm:mb-4 italic px-4"
           style={{ 
             color: '#F5E6C8',
             textShadow: '0 0 20px rgba(245,230,200,0.5), 0 2px 10px rgba(0,0,0,0.9)'
@@ -145,20 +142,20 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
           O hamburguer que domina os sete mares
         </p>
 
-        {/* Status Card - Atendimento */}
+        {/* Status Card */}
         <div 
-          className="relative rounded-xl px-5 py-2.5 mb-4 sm:mb-5"
+          className="relative rounded-xl px-4 py-2 mb-3 sm:mb-4"
           style={{
             background: 'linear-gradient(145deg, rgba(30,30,30,0.9) 0%, rgba(20,20,20,0.95) 100%)',
-            border: `3px solid ${isOpen ? '#22C55E' : '#EF4444'}`,
+            border: `2px solid ${isOpen ? '#22C55E' : '#EF4444'}`,
             boxShadow: isOpen 
               ? '0 0 20px rgba(34,197,94,0.4), 0 0 40px rgba(34,197,94,0.2)' 
               : '0 0 20px rgba(239,68,68,0.4), 0 0 40px rgba(239,68,68,0.2)',
           }}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             <div 
-              className={`w-3 h-3 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}`}
+              className={`w-2.5 h-2.5 rounded-full ${isOpen ? 'bg-green-500' : 'bg-red-500'}`}
               style={{
                 boxShadow: isOpen 
                   ? '0 0 10px rgba(34,197,94,0.8), 0 0 20px rgba(34,197,94,0.5)' 
@@ -168,12 +165,12 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
             />
             <div className="flex flex-col">
               <span 
-                className={`text-sm sm:text-base font-bold ${isOpen ? 'text-green-400' : 'text-red-400'}`}
+                className={`text-xs sm:text-base font-bold ${isOpen ? 'text-green-400' : 'text-red-400'}`}
                 style={{ textShadow: '0 2px 4px rgba(0,0,0,0.8)' }}
               >
                 {isOpen ? 'ABERTO' : 'FECHADO'}
               </span>
-              <span className="text-xs sm:text-sm text-amber-200/80">
+              <span className="text-[10px] sm:text-sm text-amber-200/80">
                 Seg a Seg - A partir das 18h
               </span>
             </div>
@@ -183,22 +180,21 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
 {/* CTA Button */}
         <button
           onClick={onViewMenu}
-          className="relative rounded-xl font-bold text-base sm:text-lg transition-all duration-300 hover:scale-105 active:scale-95 animate-pulse mb-8 sm:mb-10"
+          className="relative rounded-xl font-bold text-sm sm:text-lg transition-all duration-300 hover:scale-105 active:scale-95 animate-pulse mb-5 sm:mb-8"
           style={{
-            padding: '14px 40px',
+            padding: '12px 36px',
             background: 'linear-gradient(180deg, #A63A00 0%, #8B2500 30%, #6B1A00 70%, #4A1200 100%)',
-            border: '4px solid #D4AF37',
+            border: '3px solid #D4AF37',
             boxShadow: '0 0 20px rgba(212,175,55,0.6), 0 8px 25px rgba(0,0,0,0.7)',
             color: '#FFE4B5',
             textShadow: '0 3px 6px rgba(0,0,0,0.7)',
             animationDuration: '2s'
           }}
         >
-          {/* Corner decorations */}
-          <div className="absolute top-2 left-2 w-3 h-3 border-l-2 border-t-2 border-amber-400" />
-          <div className="absolute top-2 right-2 w-3 h-3 border-r-2 border-t-2 border-amber-400" />
-          <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2 border-amber-400" />
-          <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-amber-400" />
+          <div className="absolute top-1.5 left-1.5 w-2.5 h-2.5 border-l-2 border-t-2 border-amber-400" />
+          <div className="absolute top-1.5 right-1.5 w-2.5 h-2.5 border-r-2 border-t-2 border-amber-400" />
+          <div className="absolute bottom-1.5 left-1.5 w-2.5 h-2.5 border-l-2 border-b-2 border-amber-400" />
+          <div className="absolute bottom-1.5 right-1.5 w-2.5 h-2.5 border-r-2 border-b-2 border-amber-400" />
           
           <span className="relative z-10 flex items-center justify-center gap-2">
             <span>Ver Cardapio</span>
