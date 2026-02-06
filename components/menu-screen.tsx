@@ -80,7 +80,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 30, image: "/images/burger-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: addOnsOptions },
     { id: "9", name: "Capitao Pig", description: "Suino especial", price: 30, image: "/images/burger-bacon.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: addOnsOptions },
     { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 30, image: "/images/burger-gourmet.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 28, image: "/images/burger-classico.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: addOnsOptions },
+    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas - Acompanha Batata Frita", price: 28, image: "/images/burger-classico.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante"], addOns: addOnsOptions },
     { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/burger-gourmet.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: addOnsOptions },
     { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/burger-cheddar.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: addOnsOptions },
   ],
@@ -117,73 +117,73 @@ const menuData: Record<Category, MenuItem[]> = {
   ],
   bebidas: [
     // Cervejas
-    { id: "b1", name: "Antarctica 600ml", description: "Cerveja Garrafa", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
-    { id: "b2", name: "Skol 600ml", description: "Cerveja Garrafa", price: 12, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
-    { id: "b3", name: "Original 600ml", description: "Cerveja Garrafa", price: 13, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
-    { id: "b4", name: "Heineken 600ml", description: "Cerveja Garrafa", price: 15, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
-    { id: "b5", name: "Brahma Lata", description: "Cerveja Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
-    { id: "b6", name: "Antarctica Lata", description: "Cerveja Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
-    { id: "b7", name: "Skol Lata", description: "Cerveja Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
-    { id: "b8", name: "Original Lata", description: "Cerveja Lata", price: 8, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
-    { id: "b9", name: "Brahma Zero", description: "Cerveja Sem Alcool", price: 7, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
+    { id: "b1", name: "Antarctica 600ml", description: "Cerveja Garrafa", price: 10, image: "/images/bebida-antarctica-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b2", name: "Skol 600ml", description: "Cerveja Garrafa", price: 12, image: "/images/bebida-skol-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b3", name: "Original 600ml", description: "Cerveja Garrafa", price: 13, image: "/images/bebida-original-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b4", name: "Heineken 600ml", description: "Cerveja Garrafa", price: 15, image: "/images/bebida-heineken-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b5", name: "Brahma Lata", description: "Cerveja Lata", price: 6, image: "/images/bebida-brahma-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
+    { id: "b6", name: "Antarctica Lata", description: "Cerveja Lata", price: 6, image: "/images/bebida-antarctica-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
+    { id: "b7", name: "Skol Lata", description: "Cerveja Lata", price: 6, image: "/images/bebida-skol-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
+    { id: "b8", name: "Original Lata", description: "Cerveja Lata", price: 8, image: "/images/bebida-original-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
+    { id: "b9", name: "Brahma Zero", description: "Cerveja Sem Alcool", price: 7, image: "/images/bebida-brahma-zero.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Cervejas" },
     // Long Necks
-    { id: "b10", name: "Heineken", description: "Long Neck", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b11", name: "Spaten", description: "Long Neck", price: 9, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b12", name: "Corona", description: "Long Neck", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b13", name: "Budweiser", description: "Long Neck", price: 9, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b14", name: "Imperio", description: "Long Neck", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b15", name: "Smirnoff Ice", description: "Long Neck", price: 9, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b16", name: "Ice Cabare", description: "Long Neck", price: 9, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
-    { id: "b17", name: "Ice 51", description: "Long Neck", price: 9, image: "/images/porcao-batata.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b10", name: "Heineken", description: "Long Neck", price: 10, image: "/images/bebida-heineken-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b11", name: "Spaten", description: "Long Neck", price: 9, image: "/images/bebida-spaten-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b12", name: "Corona", description: "Long Neck", price: 10, image: "/images/bebida-corona-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b13", name: "Budweiser", description: "Long Neck", price: 9, image: "/images/bebida-budweiser-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b14", name: "Imperio", description: "Long Neck", price: 6, image: "/images/bebida-imperio-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b15", name: "Smirnoff Ice", description: "Long Neck", price: 9, image: "/images/bebida-smirnoff-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b16", name: "Ice Cabare", description: "Long Neck", price: 9, image: "/images/bebida-cabare-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
+    { id: "b17", name: "Ice 51", description: "Long Neck", price: 9, image: "/images/bebida-ice51-ln.jpg", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
     // Aguas
-    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3, image: "/images/porcao-batata.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4, image: "/images/porcao-batata.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b24", name: "H2O", description: "Agua Saborizada", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3, image: "/images/bebida-agua.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4, image: "/images/bebida-agua-gas.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 6, image: "/images/bebida-tonica.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b24", name: "H2O", description: "Agua Saborizada", price: 6, image: "/images/bebida-h2o.jpg", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     // Sucos
-    { id: "b21", name: "Suco Del Valle", description: "Caixa", price: 7, image: "/images/porcao-batata.jpg", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
+    { id: "b21", name: "Suco Del Valle", description: "Caixa", price: 7, image: "/images/bebida-delvalle.jpg", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
     // Energeticos
-    { id: "b22", name: "Red Bull", description: "Lata", price: 15, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
-    { id: "b23", name: "Monster", description: "Lata", price: 12, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
+    { id: "b22", name: "Red Bull", description: "Lata", price: 15, image: "/images/bebida-redbull.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
+    { id: "b23", name: "Monster", description: "Lata", price: 12, image: "/images/bebida-monster.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
     // Refrigerantes
-    { id: "b25", name: "Coca-Cola Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b26", name: "Coca-Cola Zero Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b27", name: "Guarana Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b28", name: "Sprite Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b29", name: "Schweppes Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b30", name: "Fanta Laranja Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b31", name: "Fanta Uva Lata", description: "Lata", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b32", name: "Coca-Cola 290ml", description: "Garrafa", price: 5, image: "/images/porcao-batata.jpg", ingredients: ["290ml"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b33", name: "Coca-Cola 600ml", description: "Garrafa", price: 8, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b34", name: "Guarana 600ml", description: "Garrafa", price: 8, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b35", name: "Sprite 600ml", description: "Garrafa", price: 8, image: "/images/porcao-batata.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b36", name: "Coca-Cola 1L", description: "Garrafa", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b37", name: "Guarana 1L", description: "Garrafa", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 15, image: "/images/porcao-batata.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b39", name: "Sprite 2L", description: "Garrafa", price: 12, image: "/images/porcao-batata.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b40", name: "Fanta Laranja 2L", description: "Garrafa", price: 12, image: "/images/porcao-batata.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b41", name: "Guarana 2L", description: "Garrafa", price: 12, image: "/images/porcao-batata.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b25", name: "Coca-Cola Lata", description: "Lata", price: 6, image: "/images/bebida-coca-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b26", name: "Coca-Cola Zero Lata", description: "Lata", price: 6, image: "/images/bebida-coca-zero-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b27", name: "Guarana Lata", description: "Lata", price: 6, image: "/images/bebida-guarana-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b28", name: "Sprite Lata", description: "Lata", price: 6, image: "/images/bebida-sprite-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b29", name: "Schweppes Lata", description: "Lata", price: 6, image: "/images/bebida-schweppes-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b30", name: "Fanta Laranja Lata", description: "Lata", price: 6, image: "/images/bebida-fanta-laranja-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b31", name: "Fanta Uva Lata", description: "Lata", price: 6, image: "/images/bebida-fanta-uva-lata.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b32", name: "Coca-Cola 290ml", description: "Garrafa", price: 5, image: "/images/bebida-coca-290.jpg", ingredients: ["290ml"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b33", name: "Coca-Cola 600ml", description: "Garrafa", price: 8, image: "/images/bebida-coca-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b34", name: "Guarana 600ml", description: "Garrafa", price: 8, image: "/images/bebida-guarana-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b35", name: "Sprite 600ml", description: "Garrafa", price: 8, image: "/images/bebida-sprite-600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b36", name: "Coca-Cola 1L", description: "Garrafa", price: 10, image: "/images/bebida-coca-1l.jpg", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b37", name: "Guarana 1L", description: "Garrafa", price: 10, image: "/images/bebida-guarana-1l.jpg", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 15, image: "/images/bebida-coca-2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b39", name: "Sprite 2L", description: "Garrafa", price: 12, image: "/images/bebida-sprite-2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b40", name: "Fanta Laranja 2L", description: "Garrafa", price: 12, image: "/images/bebida-fanta-laranja-2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b41", name: "Guarana 2L", description: "Garrafa", price: 12, image: "/images/bebida-guarana-2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
   ],
   combos: [
-    { id: "c1", name: "Barca do Capitao", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Batata c/ Catupiry e Bacon, 8 Aneis de Cebola", price: 84.90, image: "/images/burger-duplo.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Batata c/ Catupiry e Bacon", "8 Aneis de Cebola"], addOns: [] },
-    { id: "c2", name: "Barca de Porcoes", description: "7 Pasteizinhos, 1/2 Kibe, 1/2 Batata c/ Catupiry e Bacon, 5 Coxinhas", price: 84.90, image: "/images/porcao-coxinha.jpg", ingredients: ["7 Pasteizinhos Mistos", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
-    { id: "c3", name: "Barca Mista", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Kibe, 1/2 Batata, 5 Coxinhas", price: 109.90, image: "/images/burger-duplo.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
-    { id: "c4", name: "Mini Rodizio", description: "5 sabores variados de hamburgueres + Batata Frita", price: 84.90, image: "/images/burger-bacon.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "Capitao Classico", "Capitao Harry", "Capitao Empoderado", "Batata Frita"], addOns: [] },
+    { id: "c1", name: "Barca do Capitao", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Batata c/ Catupiry e Bacon, 8 Aneis de Cebola", price: 84.90, image: "/images/combo-barca.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Batata c/ Catupiry e Bacon", "8 Aneis de Cebola"], addOns: [] },
+    { id: "c2", name: "Barca de Porcoes", description: "7 Pasteizinhos, 1/2 Kibe, 1/2 Batata c/ Catupiry e Bacon, 5 Coxinhas", price: 84.90, image: "/images/combo-barca.jpg", ingredients: ["7 Pasteizinhos Mistos", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
+    { id: "c3", name: "Barca Mista", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Kibe, 1/2 Batata, 5 Coxinhas", price: 109.90, image: "/images/combo-barca.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
+    { id: "c4", name: "Mini Rodizio", description: "5 sabores variados de hamburgueres + Batata Frita", price: 84.90, image: "/images/combo-barca.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "Capitao Classico", "Capitao Harry", "Capitao Empoderado", "Batata Frita"], addOns: [] },
   ],
   espetos: [
-    { id: "e1", name: "Espeto Pedaco", description: "Espeto de carne em pedacos", price: 8, image: "/images/porcao-picanha.jpg", ingredients: ["Carne em Pedacos"], addOns: [] },
-    { id: "e2", name: "Espeto Kafta", description: "Espeto de kafta temperada", price: 8, image: "/images/porcao-picanha.jpg", ingredients: ["Kafta Temperada"], addOns: [] },
-    { id: "e3", name: "Espeto Linguica", description: "Espeto de linguica", price: 8, image: "/images/porcao-picanha.jpg", ingredients: ["Linguica"], addOns: [] },
-    { id: "e4", name: "Espeto Medalhao", description: "Espeto de medalhao de carne", price: 12, image: "/images/porcao-picanha.jpg", ingredients: ["Medalhao de Carne"], addOns: [] },
-    { id: "e5", name: "Espeto Coracao", description: "Espeto de coracao de frango", price: 12, image: "/images/porcao-picanha.jpg", ingredients: ["Coracao de Frango"], addOns: [] },
-    { id: "e6", name: "Espeto Queijinho", description: "Espeto de queijo coalho", price: 10, image: "/images/porcao-coxinha.jpg", ingredients: ["Queijo Coalho"], addOns: [] },
-    { id: "e7", name: "Pao de Alho", description: "Pao de alho na brasa", price: 6, image: "/images/porcao-batata.jpg", ingredients: ["Pao de Alho"], addOns: [] },
+    { id: "e1", name: "Espeto Pedaco", description: "Espeto de carne em pedacos", price: 8, image: "/images/espeto-carne.jpg", ingredients: ["Carne em Pedacos"], addOns: [] },
+    { id: "e2", name: "Espeto Kafta", description: "Espeto de kafta temperada", price: 8, image: "/images/espeto-carne.jpg", ingredients: ["Kafta Temperada"], addOns: [] },
+    { id: "e3", name: "Espeto Linguica", description: "Espeto de linguica", price: 8, image: "/images/espeto-carne.jpg", ingredients: ["Linguica"], addOns: [] },
+    { id: "e4", name: "Espeto Medalhao", description: "Espeto de medalhao de carne", price: 12, image: "/images/espeto-carne.jpg", ingredients: ["Medalhao de Carne"], addOns: [] },
+    { id: "e5", name: "Espeto Coracao", description: "Espeto de coracao de frango", price: 12, image: "/images/espeto-carne.jpg", ingredients: ["Coracao de Frango"], addOns: [] },
+    { id: "e6", name: "Espeto Queijinho", description: "Espeto de queijo coalho", price: 10, image: "/images/espeto-carne.jpg", ingredients: ["Queijo Coalho"], addOns: [] },
+    { id: "e7", name: "Pao de Alho", description: "Pao de alho na brasa", price: 6, image: "/images/espeto-carne.jpg", ingredients: ["Pao de Alho"], addOns: [] },
   ],
 jantinha: [
-  { id: "j1", name: "Jantinha Completa", description: "Acompanha arroz, vinagrete, mandioca e farofa", price: 15, image: "/images/porcao-picanha.jpg", ingredients: ["Arroz", "Vinagrete", "Mandioca", "Farofa"], addOns: [] },
+  { id: "j1", name: "Jantinha Completa", description: "Acompanha arroz, vinagrete, mandioca e farofa", price: 15, image: "/images/jantinha.jpg", ingredients: ["Arroz", "Vinagrete", "Mandioca", "Farofa"], addOns: [] },
   ],
   churros: [
-  { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/porcao-coxinha.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
+  { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
   }
   
@@ -504,6 +504,9 @@ const handleAddToCart = () => {
                           style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                           R$ {item.price.toFixed(2)}
                         </div>
+                        <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
+                          Img. ilustrativa
+                        </div>
                       </div>
                       <div className="p-3 border-t border-amber-800/30">
                         <h3 className="text-amber-100 font-bold text-sm mb-1 group-hover:text-amber-300 transition-colors" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
@@ -540,6 +543,9 @@ const handleAddToCart = () => {
                     style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
                     R$ {item.price.toFixed(2)}
                   </div>
+                  <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
+                    Img. ilustrativa
+                  </div>
                 </div>
                 <div className="p-3 border-t border-amber-800/30">
                   <h3 className="text-amber-100 font-bold text-sm mb-1 group-hover:text-amber-300 transition-colors" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
@@ -566,6 +572,10 @@ const handleAddToCart = () => {
               >
                 <X className="w-6 h-6" />
               </button>
+              {/* Aviso imagem ilustrativa */}
+              <div className="absolute bottom-2 left-2 bg-black/70 px-2 py-1 rounded text-[10px] text-amber-200/80">
+                Imagem ilustrativa
+              </div>
             </div>
 
             <div className="p-5">
