@@ -19,6 +19,10 @@ export const metadata: Metadata = {
   title: "Capitão Burguer - Cardápio Digital",
   description: "O melhor hambúrguer na brasa!",
   generator: "v0.app",
+  icons: {
+    icon: "/images/logo.png",
+    apple: "/images/logo.png",
+  },
 }
 
 export default function RootLayout({
