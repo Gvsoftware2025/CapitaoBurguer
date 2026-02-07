@@ -189,7 +189,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
             <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2 border-amber-400" />
             <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-amber-400" />
             
-            <span className="relative z-10">Ver Cardapio</span>
+            <span className="relative z-10 flex items-center gap-2">
+              <span role="img" aria-label="hamburguer">🍔</span>
+              <span>Ver Cardapio</span>
+            </span>
           </button>
         </div>
 
