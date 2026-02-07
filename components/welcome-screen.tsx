@@ -14,8 +14,10 @@ function useIsOpen() {
     const checkIfOpen = () => {
       const now = new Date()
       const hours = now.getHours()
-      // Aberto das 18h ate 00:00 (meia-noite)
-      const open = hours >= 18
+      const dayOfWeek = now.getDay() // 0 = Domingo, 1 = Segunda
+      // Fechado na segunda-feira (dia 1). Aberto de terca a domingo das 18h ate 00:00
+      const isMonday = dayOfWeek === 1
+      const open = !isMonday && hours >= 18
       setIsOpen(open)
     }
     
@@ -164,7 +166,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
                   {isOpen ? 'ABERTO' : 'FECHADO'}
                 </span>
                 <span className="text-xs sm:text-sm text-amber-200/80">
-                  Seg a Seg - A partir das 18h
+                  Ter a Dom - A partir das 18h
                 </span>
               </div>
             </div>
