@@ -14,7 +14,7 @@ function useIsOpen() {
     const checkIfOpen = () => {
       const now = new Date()
       const hours = now.getHours()
-      // Aberto das 18h ate 00:00 (meia noite)
+      // Aberto das 18h ate 00:00 (meia-noite)
       const open = hours >= 18
       setIsOpen(open)
     }
