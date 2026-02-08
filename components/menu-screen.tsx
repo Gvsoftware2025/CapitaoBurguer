@@ -102,17 +102,17 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 40, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 40 }, { id: "kib-cat", name: "Catupiry", price: 40 }, { id: "kib-queij", name: "Queijada", price: 40 }] },
     { id: "p3", name: "Anel de Cebola", description: "Aneis de cebola empanados e crocantes", price: 30, image: "/images/porcao-onion.jpg", ingredients: ["Cebola Empanada"], addOns: [] },
     { id: "p4", name: "Tilapia", description: "Porcao de tilapia empanada", price: 50, image: "/images/porcao-tilapia.jpg", ingredients: ["Tilapia Empanada"], addOns: [] },
-    { id: "p5", name: "Pastelzinho", description: "Pastelzinhos fritos variados", price: 40, image: "/images/porcao-pastelzinho.jpg", ingredients: ["Pastelzinho Frito"], addOns: [] },
+    { id: "p5", name: "Pastelzinho", description: "Pastelzinhos fritos variados", price: 42, image: "/images/porcao-pastelzinho.jpg", ingredients: ["Pastelzinho Frito"], addOns: [] },
     { id: "p6", name: "Dadinho de Tapioca", description: "Dadinhos de tapioca com queijo coalho", price: 45, image: "/images/porcao-dadinho.jpg", ingredients: ["Tapioca", "Queijo Coalho"], addOns: [] },
     { id: "p7", name: "Coxinha Cremosa", description: "Coxinhas cremosas de frango", price: 45, image: "/images/porcao-coxinha.jpg", ingredients: ["Coxinha de Frango"], addOns: [] },
     { id: "p8", name: "Calabresa Acebolada", description: "Calabresa fatiada com cebola", price: 40, image: "/images/porcao-calabresa.jpg", ingredients: ["Calabresa", "Cebola"], addOns: [] },
     { id: "p9", name: "Contra File", description: "Porcao de contra file grelhado", price: 70, image: "/images/porcao-contra.jpg", ingredients: ["Contra File Grelhado"], addOns: [] },
     { id: "p10", name: "Fraldinha na Mostarda", description: "Fraldinha ao molho de mostarda", price: 60, image: "/images/porcao-fraldinha.jpg", ingredients: ["Fraldinha", "Molho Mostarda"], addOns: [] },
-    { id: "p11", name: "Picanha", description: "Porcao de picanha grelhada", price: 80, image: "/images/porcao-picanha.jpg", ingredients: ["Picanha Grelhada"], addOns: [] },
     { id: "p12", name: "Salame", description: "Porcao de salame fatiado", price: 28, image: "/images/porcao-salame.jpg", ingredients: ["Salame Fatiado"], addOns: [] },
     { id: "p13", name: "Palmito", description: "Porcao de palmito", price: 32, image: "/images/porcao-palmito.jpg", ingredients: ["Palmito"], addOns: [] },
     { id: "p14", name: "Azeitona", description: "Porcao de azeitonas", price: 10, image: "/images/porcao-azeitona.jpg", ingredients: ["Azeitonas"], addOns: [] },
     { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.5, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
+    { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 50, image: "/images/porcao-bolinho-costela.jpg", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
   ],
   bebidas: [
@@ -366,7 +366,7 @@ const handleAddToCart = () => {
       }
     }
     
-    window.open(`https://wa.me/5517997853416?text=${encodeURIComponent(message)}`, "_blank")
+    window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
     
     // Limpar carrinho apos finalizar
     setCart([])

@@ -1,5 +1,6 @@
 "use client"
 
+// Capitao Burguer - Tela de Boas Vindas
 import Image from "next/image"
 import { useState, useEffect } from "react"
 
@@ -14,8 +15,10 @@ function useIsOpen() {
     const checkIfOpen = () => {
       const now = new Date()
       const hours = now.getHours()
-      // Aberto das 18h ate 00:00 (meia-noite)
-      const open = hours >= 18
+      const dayOfWeek = now.getDay() // 0 = Domingo, 1 = Segunda
+      // Fechado na segunda-feira (dia 1). Aberto de terca a domingo das 18h ate 00:00
+      const isMonday = dayOfWeek === 1
+      const open = !isMonday && hours >= 18
       setIsOpen(open)
     }
     
@@ -164,7 +167,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
                   {isOpen ? 'ABERTO' : 'FECHADO'}
                 </span>
                 <span className="text-xs sm:text-sm text-amber-200/80">
-                  Seg a Seg - A partir das 18h
+                  Ter a Dom - A partir das 18h
                 </span>
               </div>
             </div>
@@ -189,7 +192,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
             <div className="absolute bottom-2 left-2 w-3 h-3 border-l-2 border-b-2 border-amber-400" />
             <div className="absolute bottom-2 right-2 w-3 h-3 border-r-2 border-b-2 border-amber-400" />
             
-            <span className="relative z-10">Ver Cardapio</span>
+            <span className="relative z-10 flex items-center gap-2">
+              <span role="img" aria-label="hamburguer">🍔</span>
+              <span>Ver Cardapio</span>
+            </span>
           </button>
         </div>
 
@@ -197,7 +203,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         <div className="flex flex-row items-center justify-center gap-6 sm:gap-8 mb-2">
           {/* WhatsApp */}
           <button
-            onClick={() => window.open("https://wa.me/5517997853416", "_blank")}
+            onClick={() => window.open("https://wa.me/5517997173099", "_blank")}
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="WhatsApp"
           >
