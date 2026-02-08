@@ -377,7 +377,7 @@ const handleAddToCart = () => {
     <div 
       className="min-h-screen relative"
       style={{
-        backgroundImage: `url('/images/pirate-wood-bg.jpg')`,
+        backgroundImage: `url('/images/bg-pirate-deck.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',

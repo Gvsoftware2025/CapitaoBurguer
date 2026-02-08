@@ -39,7 +39,7 @@ export function LoadingScreen() {
     <div 
       className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: `url('/images/loading-bg.jpg')`,
+        backgroundImage: `url('/images/bg-loading.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}

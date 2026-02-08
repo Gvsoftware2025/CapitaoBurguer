@@ -112,7 +112,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
     <div 
       className="min-h-screen h-full overflow-y-auto relative"
       style={{
-        backgroundImage: `url('/images/pirate-wood-bg.jpg')`,
+        backgroundImage: `url('/images/bg-pirate-deck.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundColor: '#1a0f08'

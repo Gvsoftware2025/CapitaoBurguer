@@ -37,7 +37,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
     <div className="relative h-[100dvh] w-full overflow-hidden">
       {/* Background */}
       <Image
-        src="/images/pirate-wood-bg.jpg"
+        src="/images/bg-pirate-deck.jpg"
         alt="Background"
         fill
         className="object-cover"
