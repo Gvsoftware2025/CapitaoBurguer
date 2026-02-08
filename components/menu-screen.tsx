@@ -366,7 +366,7 @@ const handleAddToCart = () => {
       }
     }
     
-    window.open(`https://wa.me/5517997853416?text=${encodeURIComponent(message)}`, "_blank")
+    window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
     
     // Limpar carrinho apos finalizar
     setCart([])

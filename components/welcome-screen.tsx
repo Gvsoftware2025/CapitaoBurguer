@@ -202,7 +202,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         <div className="flex flex-row items-center justify-center gap-6 sm:gap-8 mb-2">
           {/* WhatsApp */}
           <button
-            onClick={() => window.open("https://wa.me/5517997853416", "_blank")}
+            onClick={() => window.open("https://wa.me/5517997173099", "_blank")}
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="WhatsApp"
           >
