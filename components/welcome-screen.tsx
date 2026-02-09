@@ -42,7 +42,6 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         fill
         className="object-cover"
         priority
-        quality={100}
       />
       
       {/* Overlays */}
