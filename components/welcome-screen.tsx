@@ -221,8 +221,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
           </button>
 
           {/* Instagram */}
-          <button
-            onClick={() => window.open("https://www.instagram.com/_capitaoburguer/", "_blank")}
+          <a
+            href="https://www.instagram.com/_capitaoburguer/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="Instagram"
           >
@@ -247,7 +249,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>Instagram</span>
-          </button>
+          </a>
 
           {/* Localizacao */}
           <button
