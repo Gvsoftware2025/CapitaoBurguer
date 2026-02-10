@@ -201,8 +201,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         {/* Bottom section: Social icons */}
         <div className="flex flex-row items-center justify-center gap-6 sm:gap-8 mb-2">
           {/* WhatsApp */}
-          <button
-            onClick={() => window.open("https://wa.me/5517997173099", "_blank")}
+          <a
+            href="https://wa.me/5517997173099"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="WhatsApp"
           >
@@ -218,11 +220,13 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>WhatsApp</span>
-          </button>
+          </a>
 
           {/* Instagram */}
-          <button
-            onClick={() => window.open("https://www.instagram.com/_capitaoburguer/", "_blank")}
+          <a
+            href="https://www.instagram.com/_capitaoburguer/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="Instagram"
           >
@@ -247,11 +251,13 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>Instagram</span>
-          </button>
+          </a>
 
           {/* Localizacao */}
-          <button
-            onClick={() => window.open("https://www.google.com/maps/search/R.+Antenor+Brand%C3%A3o+365+para%C3%ADso+sp", "_blank")}
+          <a
+            href="https://www.google.com/maps/search/R.+Antenor+Brand%C3%A3o+365+para%C3%ADso+sp"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="Localizacao"
           >
@@ -267,7 +273,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>Localizacao</span>
-          </button>
+          </a>
         </div>
       </div>
 
