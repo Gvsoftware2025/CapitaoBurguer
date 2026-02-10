@@ -112,7 +112,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p13", name: "Palmito", description: "Porcao de palmito", price: 32, image: "/images/porcao-palmito.jpg", ingredients: ["Palmito"], addOns: [] },
     { id: "p14", name: "Azeitona", description: "Porcao de azeitonas", price: 10, image: "/images/porcao-azeitona.jpg", ingredients: ["Azeitonas"], addOns: [] },
     { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.5, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
-    { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 50, image: "/images/porcao-bolinho-costela.jpg", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
+    { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 50, image: "/images/porcao-bolinho-costela.png", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
   ],
   bebidas: [
