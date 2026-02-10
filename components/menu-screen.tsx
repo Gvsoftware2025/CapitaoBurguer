@@ -98,7 +98,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "24", name: "Capitao Supremo", description: "O premium de fraldinha", price: 40, image: "/images/capitao-supremo.jpg", ingredients: ["Hamburguer 180g de Fraldinha", "Queijo Mussarela", "Catupiry", "Mostarda", "Tomate", "Alface"], addOns: addOnsOptions },
   ],
   porcoes: [
-    { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 8, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: [], variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
+    { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: [], variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
     { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 40, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 40 }, { id: "kib-cat", name: "Catupiry", price: 40 }, { id: "kib-queij", name: "Coalhada", price: 40 }] },
     { id: "p3", name: "Anel de Cebola", description: "Aneis de cebola empanados e crocantes", price: 30, image: "/images/porcao-onion.jpg", ingredients: ["Cebola Empanada"], addOns: [] },
     { id: "p4", name: "Tilapia", description: "Porcao de tilapia empanada", price: 50, image: "/images/porcao-tilapia.jpg", ingredients: ["Tilapia Empanada"], addOns: [] },
@@ -108,7 +108,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p8", name: "Calabresa Acebolada", description: "Calabresa fatiada com cebola", price: 40, image: "/images/porcao-calabresa.jpg", ingredients: ["Calabresa", "Cebola"], addOns: [] },
     { id: "p9", name: "Contra File", description: "Porcao de contra file grelhado", price: 70, image: "/images/porcao-contra.jpg", ingredients: ["Contra File Grelhado"], addOns: [] },
     { id: "p10", name: "Fraldinha na Mostarda", description: "Fraldinha ao molho de mostarda", price: 60, image: "/images/porcao-fraldinha.jpg", ingredients: ["Fraldinha", "Molho Mostarda"], addOns: [] },
-    { id: "p12", name: "Salame", description: "Porcao de salame fatiado", price: 28, image: "/images/porcao-salame.jpg", ingredients: ["Salame Fatiado"], addOns: [] },
+    { id: "p12", name: "Salame", description: "Porcao de salame fatiado", price: 30, image: "/images/porcao-salame.jpg", ingredients: ["Salame Fatiado"], addOns: [] },
     { id: "p13", name: "Palmito", description: "Porcao de palmito", price: 32, image: "/images/porcao-palmito.jpg", ingredients: ["Palmito"], addOns: [] },
     { id: "p14", name: "Azeitona", description: "Porcao de azeitonas", price: 10, image: "/images/porcao-azeitona.jpg", ingredients: ["Azeitonas"], addOns: [] },
     { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.5, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
@@ -144,7 +144,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 6, image: "/images/agua-tonica.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b24", name: "H2O", description: "Agua Saborizada", price: 6, image: "/images/h2o.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     // Sucos
-    { id: "b21", name: "Suco Del Valle", description: "Caixa", price: 7, image: "/images/suco-delvalle.png", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
+    { id: "b21", name: "Suco Del Valle", description: "Lata", price: 7, image: "/images/suco-delvalle-lata.png", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
     // Energeticos
     { id: "b22", name: "Red Bull", description: "Lata", price: 15, image: "/images/redbull.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
     { id: "b23", name: "Monster", description: "Lata", price: 12, image: "/images/monster.jpg", ingredients: ["Lata"], addOns: [], subcategory: "Energeticos" },
