@@ -23,6 +23,17 @@ interface Variation {
   price: number
 }
 
+interface ComboChoiceOption {
+  id: string
+  name: string
+}
+
+interface ComboChoice {
+  id: string
+  label: string
+  options: ComboChoiceOption[]
+}
+
 interface MenuItem {
   id: string
   name: string
@@ -33,6 +44,7 @@ interface MenuItem {
   addOns: AddOn[]
   variations?: Variation[]
   subcategory?: string
+  comboChoices?: ComboChoice[]
 }
 
 interface Maionese {
@@ -47,6 +59,7 @@ interface CartItem {
   selectedVariation?: Variation
   selectedMaionese?: Maionese
   extraMaioneses?: Maionese[]
+  selectedComboChoices?: Record<string, ComboChoiceOption>
   totalPrice: number
 }
 
@@ -168,9 +181,9 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b41", name: "Guarana 2L", description: "Garrafa", price: 12, image: "/images/guarana2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
   ],
   combos: [
-    { id: "c1", name: "Barca do Capitao", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Batata c/ Catupiry e Bacon, 8 Aneis de Cebola", price: 84.90, image: "/images/barca-capitao.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Batata c/ Catupiry e Bacon", "8 Aneis de Cebola"], addOns: [] },
-    { id: "c2", name: "Barca de Porcoes", description: "7 Pasteizinhos, 1/2 Kibe, 1/2 Batata c/ Catupiry e Bacon, 5 Coxinhas", price: 84.90, image: "/images/barca-porcoes.jpg", ingredients: ["7 Pasteizinhos Mistos", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
-    { id: "c3", name: "Barca Mista", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Kibe, 1/2 Batata, 5 Coxinhas", price: 109.90, image: "/images/barca-mista.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Porcao de Kibe", "1/2 Batata c/ Catupiry e Bacon", "5 Coxinhas Cremosas"], addOns: [] },
+    { id: "c1", name: "Barca do Capitao", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Batata, 8 Aneis de Cebola", price: 84.90, image: "/images/barca-capitao.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Batata", "8 Aneis de Cebola"], addOns: [], comboChoices: [{ id: "cc-bat-c1", label: "Batata com:", options: [{ id: "cat", name: "Catupiry" }, { id: "ched", name: "Cheddar" }] }] },
+    { id: "c2", name: "Barca de Porcoes", description: "7 Pasteizinhos, 1/2 Kibe, 1/2 Batata, 5 Coxinhas", price: 84.90, image: "/images/barca-porcoes.jpg", ingredients: ["7 Pasteizinhos Mistos", "1/2 Kibe", "1/2 Batata", "5 Coxinhas Cremosas"], addOns: [], comboChoices: [{ id: "cc-bat-c2", label: "Batata com:", options: [{ id: "cat", name: "Catupiry" }, { id: "ched", name: "Cheddar" }] }, { id: "cc-kib-c2", label: "Kibe:", options: [{ id: "trad", name: "Tradicional" }, { id: "cat", name: "Catupiry" }, { id: "coal", name: "Coalhada" }] }] },
+    { id: "c3", name: "Barca Mista", description: "1 Capitao Salada, 1 Capitao Bacon, 1/2 Kibe, 1/2 Batata, 5 Coxinhas", price: 109.90, image: "/images/barca-mista.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "1/2 Kibe", "1/2 Batata", "5 Coxinhas Cremosas"], addOns: [], comboChoices: [{ id: "cc-bat-c3", label: "Batata com:", options: [{ id: "cat", name: "Catupiry" }, { id: "ched", name: "Cheddar" }] }, { id: "cc-kib-c3", label: "Kibe:", options: [{ id: "trad", name: "Tradicional" }, { id: "cat", name: "Catupiry" }, { id: "coal", name: "Coalhada" }] }] },
     { id: "c4", name: "Mini Rodizio", description: "5 sabores variados de hamburgueres + Batata Frita", price: 84.90, image: "/images/mini-rodizio.jpg", ingredients: ["Capitao Salada", "Capitao Bacon", "Capitao Classico", "Capitao Harry", "Capitao Empoderado", "Batata Frita"], addOns: [] },
   ],
   espetos: [
@@ -211,6 +224,7 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   const [selectedVariation, setSelectedVariation] = useState<Variation | null>(null)
   const [selectedMaionese, setSelectedMaionese] = useState<Maionese | null>(null)
   const [extraMaioneses, setExtraMaioneses] = useState<Maionese[]>([])
+  const [selectedComboChoices, setSelectedComboChoices] = useState<Record<string, ComboChoiceOption>>({})
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
@@ -271,6 +285,12 @@ const handleAddToCart = () => {
   if (isLanche(selectedItem) && !selectedMaionese) {
   return
   }
+
+  // Se o item tem comboChoices e nem todas foram selecionadas, nao adiciona
+  if (selectedItem.comboChoices && selectedItem.comboChoices.length > 0) {
+    const allChosen = selectedItem.comboChoices.every(choice => selectedComboChoices[choice.id])
+    if (!allChosen) return
+  }
   
   const addOnsWithQuantity = Object.entries(selectedAddOns)
   .filter(([_, qty]) => qty > 0)
@@ -286,6 +306,7 @@ const handleAddToCart = () => {
   selectedVariation: selectedVariation || undefined,
   selectedMaionese: selectedMaionese || undefined,
   extraMaioneses: extraMaioneses.length > 0 ? [...extraMaioneses] : undefined,
+  selectedComboChoices: Object.keys(selectedComboChoices).length > 0 ? { ...selectedComboChoices } : undefined,
   totalPrice: calculateItemTotal(),
   }
   
@@ -296,6 +317,7 @@ const handleAddToCart = () => {
   setSelectedVariation(null)
   setSelectedMaionese(null)
   setExtraMaioneses([])
+  setSelectedComboChoices({})
   setShowCart(true)
   }
 
@@ -345,6 +367,13 @@ const handleAddToCart = () => {
       if (detalhes.length > 0) {
         message += `   _${detalhes.join(", ")}_\n`
       }
+      if (cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0) {
+        const choicesText = Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
+          const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
+          return `${choiceLabel} ${option.name}`
+        }).join(", ")
+        message += `   _${choicesText}_\n`
+      }
       if (cartItem.selectedAddOns.length > 0) {
         const addonsText = cartItem.selectedAddOns.map(a => `${a.quantity}x ${a.addOn.name}`).join(", ")
         message += `   +${addonsText}\n`
@@ -380,7 +409,7 @@ const handleAddToCart = () => {
     <div 
       className="min-h-screen relative"
       style={{
-        backgroundImage: `url('/images/bg-pirate-deck.jpg')`,
+        backgroundImage: `url('/images/pirate-wood-bg.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundAttachment: 'fixed',
@@ -570,7 +599,7 @@ const handleAddToCart = () => {
             <div className="relative h-64 w-full">
               <Image src={selectedItem.image || "/placeholder.svg"} alt={selectedItem.name} fill className="object-cover" />
               <button
-                onClick={() => setSelectedItem(null)}
+                onClick={() => { setSelectedItem(null); setSelectedComboChoices({}); }}
                 className="absolute top-4 right-4 w-10 h-10 bg-black/50 rounded-full flex items-center justify-center text-white hover:bg-black/70 transition-colors"
               >
                 <X className="w-6 h-6" />
@@ -645,6 +674,46 @@ const handleAddToCart = () => {
                     ))}
                   </div>
 </div>
+  )}
+
+  {/* Combo Choices - para barcas */}
+  {selectedItem.comboChoices && selectedItem.comboChoices.length > 0 && (
+    <div className="border-b border-amber-900/30 pb-4 mb-4">
+      {selectedItem.comboChoices.map((choice) => (
+        <div key={choice.id} className="mb-4 last:mb-0">
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="text-amber-100 font-bold">{choice.label.toUpperCase()}</h3>
+            <span className="text-red-500 text-xs font-bold">* Obrigatorio</span>
+          </div>
+          <div className="space-y-2">
+            {choice.options.map((option) => (
+              <button
+                key={`${choice.id}-${option.id}`}
+                onClick={() => setSelectedComboChoices(prev => ({ ...prev, [choice.id]: option }))}
+                className={`w-full flex items-center gap-3 p-4 rounded-xl border-2 transition-all duration-200 ${
+                  selectedComboChoices[choice.id]?.id === option.id
+                    ? "bg-green-900/30 border-green-500"
+                    : "bg-[#2a1a10] border-amber-900/30 hover:border-amber-700"
+                }`}
+              >
+                <div
+                  className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                    selectedComboChoices[choice.id]?.id === option.id
+                      ? "border-green-500 bg-green-500"
+                      : "border-amber-600"
+                  }`}
+                >
+                  {selectedComboChoices[choice.id]?.id === option.id && (
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  )}
+                </div>
+                <span className="text-amber-100 font-medium">{option.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
   )}
 
   {/* Maioneses - apenas para lanches */}
@@ -868,6 +937,18 @@ const handleAddToCart = () => {
   <p className="text-amber-500 text-xs">
   + {cartItem.extraMaioneses.map(m => m.name).join(", ")} (+R${(cartItem.extraMaioneses.length * 2).toFixed(2)})
   </p>
+  )}
+  {cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0 && (
+  <div className="mt-1">
+  {Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
+    const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
+    return (
+      <p key={choiceId} className="text-amber-400 text-xs">
+        {choiceLabel} {option.name}
+      </p>
+    )
+  })}
+  </div>
   )}
   {cartItem.selectedAddOns.length > 0 && (
   <div className="mt-1">
