@@ -534,7 +534,11 @@ const handleAddToCart = () => {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                         <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
                           style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                          R$ {item.price.toFixed(2)}
+                          {item.variations && item.variations.length > 0 ? (
+                            <><span className="text-[10px] font-normal">{'a partir '}</span>R$ {Math.min(...item.variations.map(v => v.price)).toFixed(2)}</>
+                          ) : (
+                            <>{'R$ '}{item.price.toFixed(2)}</>
+                          )}
                         </div>
                         <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
                           Img. ilustrativa
@@ -573,7 +577,11 @@ const handleAddToCart = () => {
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                   <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
                     style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                    R$ {item.price.toFixed(2)}
+                    {item.variations && item.variations.length > 0 ? (
+                      <><span className="text-[10px] font-normal">{'a partir '}</span>R$ {Math.min(...item.variations.map(v => v.price)).toFixed(2)}</>
+                    ) : (
+                      <>{'R$ '}{item.price.toFixed(2)}</>
+                    )}
                   </div>
                   <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
                     Img. ilustrativa
