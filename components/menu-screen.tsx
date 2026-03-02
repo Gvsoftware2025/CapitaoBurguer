@@ -9,7 +9,7 @@ interface MenuScreenProps {
   onBack: () => void
 }
 
-type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros"
+type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros" | "pastel"
 
 interface AddOn {
   id: string
@@ -201,6 +201,27 @@ jantinha: [
   churros: [
   { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
+  pastel: [
+  // Salgados
+  { id: "pas1", name: "Pastel de Carne", description: "Carne moida, tomate e oregano", price: 19, image: "/images/pastel-carne.jpg", ingredients: ["Carne moida", "Tomate", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas2", name: "Pastel de Queijo", description: "Queijo derretido", price: 18, image: "/images/pastel-queijo.jpg", ingredients: ["Queijo derretido"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas3", name: "Pastel de Pizza", description: "Queijo, tomate, oregano e mais", price: 20, image: "/images/pastel-pizza.jpg", ingredients: ["Queijo", "Tomate", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas4", name: "Pastel Frango Catupiry", description: "Frango desfiado e catupiry", price: 20, image: "/images/pastel-frango.jpg", ingredients: ["Frango desfiado", "Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas5", name: "Pastel de Carne Seca", description: "Queijo, cebola, tomate e oregano", price: 26, image: "/images/pastel-carne-seca.jpg", ingredients: ["Carne seca", "Queijo", "Cebola", "Tomate", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas6", name: "Pastel A Moda da Casa", description: "Calabresa, tomate, mucarela, oregano e catupiry", price: 21, image: "/images/pastel-moda-casa.jpg", ingredients: ["Calabresa", "Tomate", "Mucarela", "Oregano", "Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas7", name: "Pastel de Calabresa", description: "Calabresa, tomate, cebola e queijo", price: 21, image: "/images/pastel-calabresa.jpg", ingredients: ["Calabresa", "Tomate", "Cebola", "Queijo"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas8", name: "Pastel Brocolis com Bacon", description: "Brocolis, bacon e queijo", price: 21, image: "/images/pastel-brocolis.jpg", ingredients: ["Brocolis", "Bacon", "Queijo"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas9", name: "Pastel Carne com Queijo", description: "Carne, tomate, mucarela e oregano", price: 21, image: "/images/pastel-carne-queijo.jpg", ingredients: ["Carne", "Tomate", "Mucarela", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
+  // Doces
+  { id: "pas10", name: "Pastel Ovo Matine", description: "Creme de Ovomaltine", price: 16, image: "/images/pastel-ovomaltine.jpg", ingredients: ["Creme de Ovomaltine"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas11", name: "Pastel Sensacao", description: "Geleia de morango e brigadeiro", price: 18, image: "/images/pastel-sensacao.jpg", ingredients: ["Geleia de morango", "Brigadeiro"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas12", name: "Pastel de Brigadeiro", description: "Brigadeiro e granulado", price: 16, image: "/images/pastel-brigadeiro.jpg", ingredients: ["Brigadeiro", "Granulado"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas13", name: "Pastel Leite Ninho", description: "Creme de Leite Ninho", price: 16, image: "/images/pastel-leite-ninho.jpg", ingredients: ["Creme de Leite Ninho"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas14", name: "Pastel Ninho com Nutella", description: "Creme de Leite Ninho e Nutella original", price: 18, image: "/images/pastel-ninho-nutella.jpg", ingredients: ["Creme de Leite Ninho", "Nutella original"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas15", name: "Pastel Ninho com Morango", description: "Creme de Leite Ninho com morango", price: 18, image: "/images/pastel-ninho-morango.jpg", ingredients: ["Creme de Leite Ninho", "Morango"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas16", name: "Pastel de Nutella", description: "Nutella original", price: 16, image: "/images/pastel-nutella.jpg", ingredients: ["Nutella original"], addOns: [], subcategory: "Pastel Doce" },
+  { id: "pas17", name: "Pastel de Churros", description: "Doce de leite", price: 16, image: "/images/pastel-churros.jpg", ingredients: ["Doce de leite"], addOns: [], subcategory: "Pastel Doce" },
+  ],
   }
   
   const categories: { key: Category; label: string }[] = [
@@ -212,7 +233,8 @@ jantinha: [
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
   { key: "churros", label: "CHURROS" },
-]
+  { key: "pastel", label: "PASTEL" },
+  ]
 
 export function MenuScreen({ onBack }: MenuScreenProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>("burgueres")
@@ -229,15 +251,16 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   const [showCart, setShowCart] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
 
-// Pegar subcategorias disponiveis para bebidas
-  const availableSubcategories = selectedCategory === "bebidas" 
-    ? ["Todos", ...Array.from(new Set(menuData.bebidas.map(item => item.subcategory).filter(Boolean)))]
+// Pegar subcategorias disponiveis para bebidas e pastel
+  const hasSubcategories = selectedCategory === "bebidas" || selectedCategory === "pastel"
+  const availableSubcategories = hasSubcategories
+    ? ["Todos", ...Array.from(new Set(menuData[selectedCategory].map(item => item.subcategory).filter(Boolean)))]
     : []
 
   const filteredItems = menuData[selectedCategory].filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description.toLowerCase().includes(searchTerm.toLowerCase())
-    const matchesSubcategory = selectedCategory !== "bebidas" || 
+    const matchesSubcategory = !hasSubcategories || 
       selectedSubcategory === "Todos" || 
       item.subcategory === selectedSubcategory
     return matchesSearch && matchesSubcategory
@@ -484,8 +507,8 @@ const handleAddToCart = () => {
   </div>
   </div>
 
-  {/* Subcategories bar for bebidas */}
-  {selectedCategory === "bebidas" && (
+  {/* Subcategories bar for bebidas and pastel */}
+  {(selectedCategory === "bebidas" || selectedCategory === "pastel") && (
     <div className="px-4 pb-3 overflow-x-auto scrollbar-hide relative z-10">
       <div className="flex gap-2">
         {availableSubcategories.map((subcat) => (
@@ -507,8 +530,8 @@ const handleAddToCart = () => {
   
   {/* Menu items - responsive grid: 2 cols mobile, 3 cols tablet, 4 cols desktop */}
   <div className="px-3 py-4 relative z-10 max-w-6xl mx-auto">
-  {selectedCategory === "bebidas" && selectedSubcategory === "Todos" ? (
-  // Bebidas mostrando todas agrupadas por subcategoria
+  {(selectedCategory === "bebidas" || selectedCategory === "pastel") && selectedSubcategory === "Todos" ? (
+  // Bebidas/pastel mostrando todos agrupados por subcategoria
           <>
             {Array.from(new Set(filteredItems.map(item => item.subcategory))).map((subcategory) => (
               <div key={subcategory} className="mb-6">
@@ -532,14 +555,17 @@ const handleAddToCart = () => {
                       <div className="relative aspect-square overflow-hidden">
                         <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
-                          style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                          {item.variations && item.variations.length > 0 ? (
-                            <><span className="text-[10px] font-normal">{'a partir '}</span>R$ {Math.min(...item.variations.map(v => v.price)).toFixed(2)}</>
-                          ) : (
-                            <>{'R$ '}{item.price.toFixed(2)}</>
-                          )}
-                        </div>
+                        {item.variations && item.variations.length > 0 ? (
+                          <div className="absolute bottom-2 right-2 bg-gradient-to-r from-amber-700 to-amber-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-lg border border-amber-500/30"
+                            style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                            {'Ver opcoes'}
+                          </div>
+                        ) : (
+                          <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
+                            style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                            {'R$ '}{item.price.toFixed(2)}
+                          </div>
+                        )}
                         <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
                           Img. ilustrativa
                         </div>
@@ -575,14 +601,17 @@ const handleAddToCart = () => {
                 <div className="relative aspect-square overflow-hidden">
                   <Image src={item.image || "/placeholder.svg"} alt={item.name} fill className="object-cover group-hover:scale-110 transition-transform duration-500" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
-                    style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
-                    {item.variations && item.variations.length > 0 ? (
-                      <><span className="text-[10px] font-normal">{'a partir '}</span>R$ {Math.min(...item.variations.map(v => v.price)).toFixed(2)}</>
-                    ) : (
-                      <>{'R$ '}{item.price.toFixed(2)}</>
-                    )}
-                  </div>
+                  {item.variations && item.variations.length > 0 ? (
+                    <div className="absolute bottom-2 right-2 bg-gradient-to-r from-amber-700 to-amber-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold shadow-lg border border-amber-500/30"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                      {'Ver opcoes'}
+                    </div>
+                  ) : (
+                    <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-700 to-red-600 text-white px-3 py-1.5 rounded-xl text-sm font-bold shadow-lg border border-red-500/30"
+                      style={{ textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>
+                      {'R$ '}{item.price.toFixed(2)}
+                    </div>
+                  )}
                   <div className="absolute top-1 left-1 bg-black/60 px-1.5 py-0.5 rounded text-[8px] text-amber-200/70">
                     Img. ilustrativa
                   </div>
