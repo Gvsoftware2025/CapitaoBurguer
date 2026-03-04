@@ -129,7 +129,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
     { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
-  : [
+   [
     // Cervejas
     { id: "b1", name: "Antarctica 600ml", description: "Cerveja Garrafa", price: 10, image: "/images/antartica600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
     { id: "b2", name: "Skol 600ml", description: "Cerveja Garrafa", price: 12, image: "/images/skol600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
