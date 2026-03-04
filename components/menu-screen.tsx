@@ -127,6 +127,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.5, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
     { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 50, image: "/images/porcao-bolinho-costela.png", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
+    { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
   bebidas: [
     // Cervejas
@@ -198,9 +199,6 @@ const menuData: Record<Category, MenuItem[]> = {
 jantinha: [
   { id: "j1", name: "Jantinha Completa", description: "Acompanha arroz, vinagrete, mandioca e farofa", price: 15, image: "/images/jantinha.jpg", ingredients: ["Arroz", "Vinagrete", "Mandioca", "Farofa"], addOns: [] },
   ],
-  churros: [
-  { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
-  ],
   pastel: [
   // Salgados
   { id: "pas1", name: "Pastel de Carne", description: "Carne moida, tomate e oregano", price: 19, image: "/images/pastel-carne.jpg", ingredients: ["Carne moida", "Tomate", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
@@ -230,14 +228,14 @@ jantinha: [
   
   const categories: { key: Category; label: string }[] = [
   { key: "burgueres", label: "BURGUERES" },
-  { key: "super_burgueres", label: "SUPER" },
+  { key: "super_burgueres", label: "SUPER BURGUERES" },
+  { key: "pastel", label: "PASTEL" },
   { key: "porcoes", label: "PORCOES" },
   { key: "bebidas", label: "BEBIDAS" },
   { key: "combos", label: "COMBOS E BARCAS" },
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
-  { key: "churros", label: "CHURROS" },
-  { key: "pastel", label: "PASTEL" },
+  { key: "bebidas", label: "BEBIDAS" },
   ]
 
 export function MenuScreen({ onBack }: MenuScreenProps) {
