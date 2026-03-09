@@ -156,7 +156,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3, image: "/images/aguasemgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4, image: "/images/aguacomgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 6, image: "/images/agua-tonica.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b24", name: "H2O", description: "Agua Saborizada", price: 6, image: "/images/h2o.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b24", name: "H2O", description: "Agua Saborizada", price: 7.50, image: "/images/h2o.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     // Sucos
     { id: "b21", name: "Suco Del Valle", description: "Lata", price: 7, image: "/images/suco-delvalle-lata.png", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
     // Energeticos
