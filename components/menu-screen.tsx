@@ -112,7 +112,7 @@ const menuData: Record<Category, MenuItem[]> = {
   ],
   porcoes: [
     { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: [], variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
-    { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 45, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 40 }, { id: "kib-cat", name: "Catupiry", price: 40 }, { id: "kib-queij", name: "Coalhada", price: 40 }] },
+    { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 45, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 45 }, { id: "kib-cat", name: "Catupiry", price: 45 }, { id: "kib-queij", name: "Coalhada", price: 45 }] },
     { id: "p3", name: "Anel de Cebola", description: "Aneis de cebola empanados e crocantes", price: 30, image: "/images/porcao-onion.jpg", ingredients: ["Cebola Empanada"], addOns: [] },
     { id: "p4", name: "Tilapia", description: "Porcao de tilapia empanada", price: 55, image: "/images/porcao-tilapia.jpg", ingredients: ["Tilapia Empanada"], addOns: [] },
     { id: "p5", name: "Pastelzinho", description: "Pastelzinhos fritos variados", price: 45, image: "/images/porcao-pastelzinho.jpg", ingredients: ["Pastelzinho Frito"], addOns: [] },
