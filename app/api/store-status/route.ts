@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import { query, queryOne, SCHEMA } from '@/lib/db'
 
+// Desabilitar cache para sempre buscar dados frescos
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 // GET - Buscar status da loja
 export async function GET() {
   try {
@@ -10,11 +14,17 @@ export async function GET() {
     
     const isOpen = result?.value === 'true'
     
-    return NextResponse.json({ isOpen })
+    return NextResponse.json(
+      { isOpen },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    )
   } catch (error) {
     console.error('Erro ao buscar status da loja:', error)
     // Fallback: retorna fechado em caso de erro
-    return NextResponse.json({ isOpen: false })
+    return NextResponse.json(
+      { isOpen: false },
+      { headers: { 'Cache-Control': 'no-store, no-cache, must-revalidate' } }
+    )
   }
 }
 

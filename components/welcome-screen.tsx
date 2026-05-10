@@ -14,7 +14,10 @@ function useIsOpen() {
   useEffect(() => {
     const checkIfOpen = async () => {
       try {
-        const res = await fetch('/api/store-status')
+        const res = await fetch('/api/store-status', { 
+          cache: 'no-store',
+          headers: { 'Cache-Control': 'no-cache' }
+        })
         const data = await res.json()
         setIsOpen(data.isOpen)
       } catch (error) {
@@ -24,8 +27,8 @@ function useIsOpen() {
     }
     
     checkIfOpen()
-    // Verificar a cada 30 segundos
-    const interval = setInterval(checkIfOpen, 30000)
+    // Verificar a cada 5 segundos para atualizacao rapida
+    const interval = setInterval(checkIfOpen, 5000)
     return () => clearInterval(interval)
   }, [])
   
