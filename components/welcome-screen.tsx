@@ -14,9 +14,13 @@ function useIsOpen() {
   useEffect(() => {
     const checkIfOpen = async () => {
       try {
-        const res = await fetch('/api/store-status', { 
+        // Adiciona timestamp para evitar qualquer cache
+        const res = await fetch(`/api/store-status?t=${Date.now()}`, { 
           cache: 'no-store',
-          headers: { 'Cache-Control': 'no-cache' }
+          headers: { 
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache'
+          }
         })
         const data = await res.json()
         setIsOpen(data.isOpen)

@@ -1,17 +1,27 @@
 import { Pool } from 'pg'
 
-// Pool de conexao com o PostgreSQL
-const pool = new Pool({
+// Singleton global para evitar multiplos pools em serverless
+declare global {
+  var pgPool: Pool | undefined
+}
+
+// Pool de conexao com o PostgreSQL (singleton)
+const pool = global.pgPool || new Pool({
   host: process.env.DB_HOST || '168.231.93.220',
   port: parseInt(process.env.DB_PORT || '5432'),
   database: process.env.DB_NAME || 'gvsoftware',
   user: process.env.DB_USER || 'gvuser',
   password: process.env.DB_PASSWORD || '153045',
   ssl: false,
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
+  max: 10,
+  idleTimeoutMillis: 10000,
+  connectionTimeoutMillis: 5000,
 })
+
+// Manter referencia global em dev
+if (process.env.NODE_ENV !== 'production') {
+  global.pgPool = pool
+}
 
 // Schema do Capitao Burguer
 export const SCHEMA = 'capitao_burguer'
