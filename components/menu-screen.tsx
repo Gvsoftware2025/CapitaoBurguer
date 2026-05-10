@@ -357,10 +357,50 @@ const handleAddToCart = () => {
     setShowCheckout(true)
   }
 
-  const handleConfirmOrder = (orderData: OrderData) => {
+  const handleConfirmOrder = async (orderData: OrderData) => {
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
     
+    // Salvar pedido no banco de dados
+    try {
+      const orderPayload = {
+        customerName: orderData.name || undefined,
+        customerAddress: orderData.address || undefined,
+        deliveryType: orderData.deliveryType,
+        paymentMethod: orderData.paymentMethod,
+        cashAmount: orderData.cashAmount,
+        subtotal: cartTotal,
+        deliveryFee: deliveryFee,
+        total: finalTotal,
+        items: cart.map((cartItem) => ({
+          productId: cartItem.item.id,
+          productName: cartItem.item.name,
+          productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
+          quantity: cartItem.quantity,
+          variationName: cartItem.selectedVariation?.name,
+          variationPrice: cartItem.selectedVariation?.price,
+          maionese: cartItem.selectedMaionese?.name,
+          extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
+          addons: cartItem.selectedAddOns.map(a => ({
+            name: a.addOn.name,
+            quantity: a.quantity,
+            price: a.addOn.price
+          })),
+          itemTotal: cartItem.totalPrice
+        }))
+      }
+
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(orderPayload)
+      })
+    } catch (error) {
+      console.error('Erro ao salvar pedido no banco:', error)
+      // Continua mesmo se der erro no banco - o WhatsApp e mais importante
+    }
+    
+    // Montar mensagem WhatsApp
     let message = `*CAPITAO BURGUER*\n`
     message += `Novo pedido recebido!\n\n`
     

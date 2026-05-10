@@ -15,14 +15,22 @@ function useIsOpen() {
     const checkIfOpen = () => {
       const now = new Date()
       const hours = now.getHours()
-      const dayOfWeek = now.getDay() // 0 = Domingo, 1 = Segunda
-      // Fechado na segunda-feira (dia 1). Aberto de terca a domingo das 18h ate 00:00
-      const isMonday = dayOfWeek === 1
-      const open = !isMonday && hours >= 18
+      const minutes = now.getMinutes()
+      const currentTime = hours + minutes / 60 // Ex: 18:30 = 18.5
+      const dayOfWeek = now.getDay() // 0 = Domingo, 1 = Segunda, ..., 6 = Sabado
+      
+      // Segunda a Quinta (1-4): 18:00 as 22:30
+      // Sexta a Domingo (5, 6, 0): 18:00 as 23:00
+      const isWeekend = dayOfWeek === 0 || dayOfWeek === 5 || dayOfWeek === 6 // Dom, Sex, Sab
+      const openTime = 18 // 18:00
+      const closeTime = isWeekend ? 23 : 22.5 // 23:00 ou 22:30
+      
+      const open = currentTime >= openTime && currentTime < closeTime
       setIsOpen(open)
     }
     
     checkIfOpen()
+    // Verificar a cada minuto
     const interval = setInterval(checkIfOpen, 60000)
     return () => clearInterval(interval)
   }, [])
@@ -201,8 +209,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
         {/* Bottom section: Social icons */}
         <div className="flex flex-row items-center justify-center gap-6 sm:gap-8 mb-2">
           {/* WhatsApp */}
-          <button
-            onClick={() => window.open("https://wa.me/5517997173099", "_blank")}
+          <a
+            href="https://wa.me/5517997173099"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="WhatsApp"
           >
@@ -218,7 +228,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>WhatsApp</span>
-          </button>
+          </a>
 
           {/* Instagram */}
           <a
@@ -252,8 +262,10 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
           </a>
 
           {/* Localizacao */}
-          <button
-            onClick={() => window.open("https://www.google.com/maps/search/R.+Antenor+Brand%C3%A3o+365+para%C3%ADso+sp", "_blank")}
+          <a
+            href="https://www.google.com/maps/search/R.+Antenor+Brand%C3%A3o+365+para%C3%ADso+sp"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group flex flex-col items-center gap-2 transition-all duration-300 hover:scale-110"
             aria-label="Localizacao"
           >
@@ -269,7 +281,7 @@ export function WelcomeScreen({ onViewMenu }: WelcomeScreenProps) {
               </svg>
             </div>
             <span className="text-amber-100 text-xs sm:text-sm font-semibold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.9)' }}>Localizacao</span>
-          </button>
+          </a>
         </div>
       </div>
 
