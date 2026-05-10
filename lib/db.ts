@@ -13,6 +13,9 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000,
 })
 
+// Schema do Capitao Burguer
+export const SCHEMA = 'capitao_burguer'
+
 // Testar conexao
 pool.on('error', (err) => {
   console.error('Erro inesperado no pool do PostgreSQL', err)

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { query, queryOne } from '@/lib/db'
+import { query, queryOne, SCHEMA } from '@/lib/db'
 
 interface OrderItemInput {
   productId?: string
@@ -32,14 +32,16 @@ export async function POST(request: NextRequest) {
     const body: OrderInput = await request.json()
 
     // Gerar numero do pedido
-    const orderNumberResult = await queryOne<{ generate_order_number: string }>(
-      'SELECT generate_order_number()'
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+    const countResult = await queryOne<{ count: string }>(
+      `SELECT COUNT(*) as count FROM ${SCHEMA}.orders WHERE DATE(created_at) = CURRENT_DATE`
     )
-    const orderNumber = orderNumberResult?.generate_order_number || `${Date.now()}`
+    const orderCount = parseInt(countResult?.count || '0') + 1
+    const orderNumber = `CB-${today}-${orderCount.toString().padStart(4, '0')}`
 
     // Inserir pedido
     const orderResult = await queryOne<{ id: number }>(
-      `INSERT INTO orders (
+      `INSERT INTO ${SCHEMA}.orders (
         order_number, customer_name, customer_address, delivery_type,
         payment_method, cash_amount, subtotal, delivery_fee, total, status
       ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pendente')
@@ -66,7 +68,7 @@ export async function POST(request: NextRequest) {
     // Inserir itens do pedido
     for (const item of body.items) {
       await query(
-        `INSERT INTO order_items (
+        `INSERT INTO ${SCHEMA}.order_items (
           order_id, product_id, product_name, product_price, quantity,
           variation_name, variation_price, maionese, extra_maioneses, addons, item_total
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
@@ -127,8 +129,8 @@ export async function GET(request: NextRequest) {
             'itemTotal', oi.item_total
           )
         ) as items
-      FROM orders o
-      LEFT JOIN order_items oi ON o.id = oi.order_id
+      FROM ${SCHEMA}.orders o
+      LEFT JOIN ${SCHEMA}.order_items oi ON o.id = oi.order_id
     `
     
     const params: unknown[] = []
@@ -180,7 +182,7 @@ export async function PATCH(request: NextRequest) {
     }
 
     await query(
-      'UPDATE orders SET status = $1, updated_at = NOW() WHERE id = $2',
+      `UPDATE ${SCHEMA}.orders SET status = $1, updated_at = NOW() WHERE id = $2`,
       [status, orderId]
     )
 
