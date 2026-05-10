@@ -27,8 +27,8 @@ function useIsOpen() {
     }
     
     checkIfOpen()
-    // Verificar a cada 5 segundos para atualizacao rapida
-    const interval = setInterval(checkIfOpen, 5000)
+    // Verificar a cada 2 segundos para atualizacao quase instantanea
+    const interval = setInterval(checkIfOpen, 2000)
     return () => clearInterval(interval)
   }, [])
   
