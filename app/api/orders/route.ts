@@ -1,0 +1,199 @@
+import { NextRequest, NextResponse } from 'next/server'
+import { query, queryOne } from '@/lib/db'
+
+interface OrderItemInput {
+  productId?: string
+  productName: string
+  productPrice: number
+  quantity: number
+  variationName?: string
+  variationPrice?: number
+  maionese?: string
+  extraMaioneses?: string[]
+  addons?: { name: string; quantity: number; price: number }[]
+  itemTotal: number
+}
+
+interface OrderInput {
+  customerName?: string
+  customerAddress?: string
+  deliveryType: 'retirar' | 'entregar'
+  paymentMethod: 'cartao' | 'pix' | 'dinheiro'
+  cashAmount?: number
+  subtotal: number
+  deliveryFee: number
+  total: number
+  items: OrderItemInput[]
+}
+
+// POST - Criar novo pedido
+export async function POST(request: NextRequest) {
+  try {
+    const body: OrderInput = await request.json()
+
+    // Gerar numero do pedido
+    const orderNumberResult = await queryOne<{ generate_order_number: string }>(
+      'SELECT generate_order_number()'
+    )
+    const orderNumber = orderNumberResult?.generate_order_number || `${Date.now()}`
+
+    // Inserir pedido
+    const orderResult = await queryOne<{ id: number }>(
+      `INSERT INTO orders (
+        order_number, customer_name, customer_address, delivery_type,
+        payment_method, cash_amount, subtotal, delivery_fee, total, status
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pendente')
+      RETURNING id`,
+      [
+        orderNumber,
+        body.customerName || null,
+        body.customerAddress || null,
+        body.deliveryType,
+        body.paymentMethod,
+        body.cashAmount || null,
+        body.subtotal,
+        body.deliveryFee,
+        body.total
+      ]
+    )
+
+    if (!orderResult) {
+      throw new Error('Erro ao criar pedido')
+    }
+
+    const orderId = orderResult.id
+
+    // Inserir itens do pedido
+    for (const item of body.items) {
+      await query(
+        `INSERT INTO order_items (
+          order_id, product_id, product_name, product_price, quantity,
+          variation_name, variation_price, maionese, extra_maioneses, addons, item_total
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+        [
+          orderId,
+          item.productId ? parseInt(item.productId) : null,
+          item.productName,
+          item.productPrice,
+          item.quantity,
+          item.variationName || null,
+          item.variationPrice || null,
+          item.maionese || null,
+          item.extraMaioneses || null,
+          item.addons ? JSON.stringify(item.addons) : null,
+          item.itemTotal
+        ]
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      orderId,
+      orderNumber,
+      message: 'Pedido criado com sucesso'
+    })
+
+  } catch (error) {
+    console.error('Erro ao criar pedido:', error)
+    return NextResponse.json(
+      { success: false, error: 'Erro ao processar pedido' },
+      { status: 500 }
+    )
+  }
+}
+
+// GET - Listar pedidos (para o dashboard)
+export async function GET(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const status = searchParams.get('status')
+    const limit = parseInt(searchParams.get('limit') || '50')
+    const offset = parseInt(searchParams.get('offset') || '0')
+
+    let queryText = `
+      SELECT 
+        o.*,
+        json_agg(
+          json_build_object(
+            'id', oi.id,
+            'productName', oi.product_name,
+            'productPrice', oi.product_price,
+            'quantity', oi.quantity,
+            'variationName', oi.variation_name,
+            'variationPrice', oi.variation_price,
+            'maionese', oi.maionese,
+            'extraMaioneses', oi.extra_maioneses,
+            'addons', oi.addons,
+            'itemTotal', oi.item_total
+          )
+        ) as items
+      FROM orders o
+      LEFT JOIN order_items oi ON o.id = oi.order_id
+    `
+    
+    const params: unknown[] = []
+    
+    if (status) {
+      queryText += ' WHERE o.status = $1'
+      params.push(status)
+    }
+    
+    queryText += ` GROUP BY o.id ORDER BY o.created_at DESC LIMIT $${params.length + 1} OFFSET $${params.length + 2}`
+    params.push(limit, offset)
+
+    const orders = await query(queryText, params)
+
+    return NextResponse.json({
+      success: true,
+      orders,
+      pagination: { limit, offset }
+    })
+
+  } catch (error) {
+    console.error('Erro ao listar pedidos:', error)
+    return NextResponse.json(
+      { success: false, error: 'Erro ao buscar pedidos' },
+      { status: 500 }
+    )
+  }
+}
+
+// PATCH - Atualizar status do pedido
+export async function PATCH(request: NextRequest) {
+  try {
+    const body = await request.json()
+    const { orderId, status } = body
+
+    if (!orderId || !status) {
+      return NextResponse.json(
+        { success: false, error: 'orderId e status sao obrigatorios' },
+        { status: 400 }
+      )
+    }
+
+    const validStatuses = ['pendente', 'confirmado', 'em_preparo', 'pronto', 'saiu_entrega', 'entregue', 'cancelado']
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json(
+        { success: false, error: 'Status invalido' },
+        { status: 400 }
+      )
+    }
+
+    await query(
+      'UPDATE orders SET status = $1, updated_at = NOW() WHERE id = $2',
+      [status, orderId]
+    )
+
+    return NextResponse.json({
+      success: true,
+      message: 'Status atualizado com sucesso'
+    })
+
+  } catch (error) {
+    console.error('Erro ao atualizar pedido:', error)
+    return NextResponse.json(
+      { success: false, error: 'Erro ao atualizar pedido' },
+      { status: 500 }
+    )
+  }
+}
