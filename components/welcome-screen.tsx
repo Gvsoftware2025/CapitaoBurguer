@@ -12,18 +12,20 @@ function useIsOpen() {
   const [isOpen, setIsOpen] = useState(false)
   
   useEffect(() => {
-    const checkIfOpen = () => {
-      const now = new Date()
-      const hours = now.getHours()
-      const dayOfWeek = now.getDay() // 0 = Domingo, 1 = Segunda
-      // Fechado na segunda-feira (dia 1). Aberto de terca a domingo das 18h ate 00:00
-      const isMonday = dayOfWeek === 1
-      const open = !isMonday && hours >= 18
-      setIsOpen(open)
+    const checkIfOpen = async () => {
+      try {
+        const res = await fetch('/api/store-status')
+        const data = await res.json()
+        setIsOpen(data.isOpen)
+      } catch (error) {
+        console.error('Erro ao verificar status:', error)
+        setIsOpen(false)
+      }
     }
     
     checkIfOpen()
-    const interval = setInterval(checkIfOpen, 60000)
+    // Verificar a cada 30 segundos
+    const interval = setInterval(checkIfOpen, 30000)
     return () => clearInterval(interval)
   }, [])
   
