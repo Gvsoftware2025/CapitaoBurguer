@@ -67,25 +67,29 @@ export async function POST(request: NextRequest) {
 
     // Inserir itens do pedido
     for (const item of body.items) {
-      await query(
-        `INSERT INTO ${SCHEMA}.order_items (
-          order_id, product_id, product_name, product_price, quantity,
-          variation_name, variation_price, maionese, extra_maioneses, addons, item_total
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-        [
-          orderId,
-          item.productId ? parseInt(item.productId) : null,
-          item.productName,
-          item.productPrice,
-          item.quantity,
-          item.variationName || null,
-          item.variationPrice || null,
-          item.maionese || null,
-          item.extraMaioneses || null,
-          item.addons ? JSON.stringify(item.addons) : null,
-          item.itemTotal
-        ]
-      )
+      try {
+        await query(
+          `INSERT INTO ${SCHEMA}.order_items (
+            order_id, product_name, product_price, quantity,
+            variation_name, variation_price, maionese, extra_maioneses, addons, item_total
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+          [
+            orderId,
+            item.productName,
+            item.productPrice,
+            item.quantity,
+            item.variationName || null,
+            item.variationPrice || null,
+            item.maionese || null,
+            item.extraMaioneses || null,
+            item.addons ? JSON.stringify(item.addons) : null,
+            item.itemTotal
+          ]
+        )
+      } catch (itemError) {
+        console.error(`Erro ao inserir item ${item.productName}:`, itemError)
+        // Continua para o proximo item mesmo se um falhar
+      }
     }
 
     return NextResponse.json({
