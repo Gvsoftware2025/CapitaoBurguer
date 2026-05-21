@@ -11,6 +11,7 @@ interface OrderItemInput {
   maionese?: string
   extraMaioneses?: string[]
   addons?: { name: string; quantity: number; price: number }[]
+  acompanhamentos?: string
   itemTotal: number
 }
 
@@ -71,8 +72,8 @@ export async function POST(request: NextRequest) {
         await query(
           `INSERT INTO ${SCHEMA}.order_items (
             order_id, product_name, product_price, quantity,
-            variation_name, variation_price, maionese, extra_maioneses, addons, item_total
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+            variation_name, variation_price, maionese, extra_maioneses, addons, acompanhamentos, item_total
+          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
           [
             orderId,
             item.productName,
@@ -83,6 +84,7 @@ export async function POST(request: NextRequest) {
             item.maionese || null,
             item.extraMaioneses || null,
             item.addons ? JSON.stringify(item.addons) : null,
+            item.acompanhamentos || null,
             item.itemTotal
           ]
         )
@@ -130,6 +132,7 @@ export async function GET(request: NextRequest) {
             'maionese', oi.maionese,
             'extraMaioneses', oi.extra_maioneses,
             'addons', oi.addons,
+            'acompanhamentos', oi.acompanhamentos,
             'itemTotal', oi.item_total
           )
         ) as items
