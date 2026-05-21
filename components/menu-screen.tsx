@@ -402,13 +402,24 @@ const handleAddToCart = () => {
         })
       }
 
-      await fetch('/api/orders', {
+      console.log("[v0] Enviando pedido para API:", JSON.stringify(orderPayload, null, 2))
+      
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload)
       })
+      
+      const result = await response.json()
+      console.log("[v0] Resposta da API:", result)
+      
+      if (!response.ok || !result.success) {
+        console.error("[v0] Erro ao salvar pedido:", result.error || response.statusText)
+      } else {
+        console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
+      }
     } catch (error) {
-      console.error('Erro ao salvar pedido no banco:', error)
+      console.error('[v0] Erro ao salvar pedido no banco:', error)
       // Continua mesmo se der erro no banco - o WhatsApp e mais importante
     }
     
