@@ -34,15 +34,20 @@ export async function POST(request: NextRequest) {
     const body: OrderInput = await request.json()
     console.log("[v0] Body recebido:", JSON.stringify(body, null, 2))
 
-    // Gerar numero do pedido
+    // Gerar numero do pedido baseado no maior numero existente do dia
     const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-    console.log("[v0] Buscando contagem de pedidos do dia...")
-    const countResult = await queryOne<{ count: string }>(
-      `SELECT COUNT(*) as count FROM ${SCHEMA}.orders WHERE DATE(created_at) = CURRENT_DATE`
+    const prefix = `CB-${today}-`
+    console.log("[v0] Buscando maior numero de pedido do dia com prefixo:", prefix)
+    
+    const maxResult = await queryOne<{ max_num: string | null }>(
+      `SELECT MAX(SUBSTRING(order_number FROM '[0-9]+$')::INT) as max_num 
+       FROM ${SCHEMA}.orders 
+       WHERE order_number LIKE $1`,
+      [`${prefix}%`]
     )
-    console.log("[v0] Contagem resultado:", countResult)
-    const orderCount = parseInt(countResult?.count || '0') + 1
-    const orderNumber = `CB-${today}-${orderCount.toString().padStart(4, '0')}`
+    console.log("[v0] Maior numero encontrado:", maxResult)
+    const nextNumber = (parseInt(maxResult?.max_num || '0') || 0) + 1
+    const orderNumber = `${prefix}${nextNumber.toString().padStart(4, '0')}`
     console.log("[v0] Numero do pedido gerado:", orderNumber)
 
     // Inserir pedido
