@@ -372,22 +372,34 @@ const handleAddToCart = () => {
         subtotal: cartTotal,
         deliveryFee: deliveryFee,
         total: finalTotal,
-        items: cart.map((cartItem) => ({
-          productId: cartItem.item.id,
-          productName: cartItem.item.name,
-          productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
-          quantity: cartItem.quantity,
-          variationName: cartItem.selectedVariation?.name,
-          variationPrice: cartItem.selectedVariation?.price,
-          maionese: cartItem.selectedMaionese?.name,
-          extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
-          addons: cartItem.selectedAddOns.map(a => ({
-            name: a.addOn.name,
-            quantity: a.quantity,
-            price: a.addOn.price
-          })),
-          itemTotal: cartItem.totalPrice
-        }))
+        items: cart.map((cartItem) => {
+          // Formatar acompanhamentos das barcas (Batata com: X, Kibe: Y)
+          let acompanhamentos: string | undefined = undefined
+          if (cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0) {
+            acompanhamentos = Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
+              const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
+              return `${choiceLabel} ${option.name}`
+            }).join(", ")
+          }
+          
+          return {
+            productId: cartItem.item.id,
+            productName: cartItem.item.name,
+            productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
+            quantity: cartItem.quantity,
+            variationName: cartItem.selectedVariation?.name,
+            variationPrice: cartItem.selectedVariation?.price,
+            maionese: cartItem.selectedMaionese?.name,
+            extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
+            addons: cartItem.selectedAddOns.map(a => ({
+              name: a.addOn.name,
+              quantity: a.quantity,
+              price: a.addOn.price
+            })),
+            acompanhamentos,
+            itemTotal: cartItem.totalPrice
+          }
+        })
       }
 
       await fetch('/api/orders', {

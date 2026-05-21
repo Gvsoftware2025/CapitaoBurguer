@@ -113,6 +113,7 @@ CREATE TABLE order_items (
   maionese VARCHAR(100),
   extra_maioneses TEXT[],
   addons JSONB,
+  acompanhamentos VARCHAR(500),
   item_total DECIMAL(10,2) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );
