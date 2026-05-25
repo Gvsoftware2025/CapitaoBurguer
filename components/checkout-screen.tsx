@@ -63,7 +63,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   const [address, setAddress] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<"cartao" | "pix" | "dinheiro" | null>(null)
   const [cashAmount, setCashAmount] = useState("")
-  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean }>({})
+  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean; name?: boolean }>({})
 
   const deliveryFee = deliveryType === "entregar" ? 2 : 0
   const finalTotal = cartTotal + deliveryFee
@@ -81,13 +81,16 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   const cashStatus = getCashStatus()
 
   const handleConfirm = () => {
-    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean } = {}
+    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean; name?: boolean } = {}
     
     if (!deliveryType) {
       newErrors.deliveryType = true
     }
     if (!paymentMethod) {
       newErrors.paymentMethod = true
+    }
+    if (!name.trim()) {
+      newErrors.name = true
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -243,23 +246,29 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   </div>
   
   {/* Dados do Cliente */}
-        <div className="bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 border-amber-700/40 p-4 shadow-lg">
+        <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.name && !name.trim() ? 'border-red-500' : 'border-amber-700/40'}`}>
           <h2 className="text-amber-100 font-bold text-lg mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-            Dados do Cliente <span className="text-amber-500 text-sm font-normal">(Opcional)</span>
+            Dados do Cliente
           </h2>
           
           <div className="space-y-4">
             <div>
               <label className="text-amber-400 text-sm mb-2 flex items-center gap-2">
                 <User className="w-4 h-4" />
-                Nome
+                Nome <span className="text-red-500">*</span>
               </label>
+              {errors.name && !name.trim() && (
+                <p className="text-red-500 text-xs mb-2">Nome e obrigatorio</p>
+              )}
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  setErrors(prev => ({ ...prev, name: false }))
+                }}
                 placeholder="Seu nome"
-                className="w-full bg-[#1a0f08]/50 border-2 border-amber-800/50 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all"
+                className={`w-full bg-[#1a0f08]/50 border-2 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all ${errors.name && !name.trim() ? 'border-red-500' : 'border-amber-800/50'}`}
               />
             </div>
             
