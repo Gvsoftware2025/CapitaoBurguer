@@ -440,8 +440,16 @@ const handleAddToCart = () => {
     // Itens do pedido - formato compacto
     message += `*Pedido:*\n`
     cart.forEach((cartItem) => {
-      const itemTotal = cartItem.item.price * cartItem.quantity
-      message += `> ${cartItem.quantity}x ${cartItem.item.name} - R$${itemTotal.toFixed(2)}\n`
+      // Usar preco da variacao se existir, senao usa preco do item
+      const itemPrice = cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price
+      const itemTotal = itemPrice * cartItem.quantity
+      
+      // Incluir nome da variacao no nome do item (ex: "Batata Frita (Meia)")
+      let itemName = cartItem.item.name
+      if (cartItem.selectedVariation) {
+        itemName += ` (${cartItem.selectedVariation.name})`
+      }
+      message += `> ${cartItem.quantity}x ${itemName} - R$${itemTotal.toFixed(2)}\n`
       
       // Detalhes em linha unica
       const detalhes: string[] = []
