@@ -320,6 +320,8 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
               />
             </div>
             
+            {/* Endereco - mostra apenas quando for Entregar */}
+            {deliveryType === "entregar" && (
             <div>
               <label className="text-amber-400 text-sm mb-2 flex items-center gap-2">
                 <Home className="w-4 h-4" />
@@ -333,6 +335,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
                 className="w-full bg-[#1a0f08]/50 border-2 border-amber-800/50 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all"
               />
             </div>
+            )}
           </div>
         </div>
         )}
