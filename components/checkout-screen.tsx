@@ -91,7 +91,8 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
     if (!paymentMethod) {
       newErrors.paymentMethod = true
     }
-    if (!name.trim()) {
+    // Nome obrigatorio apenas para retirar e entregar, nao para mesa
+    if (deliveryType !== "mesa" && !name.trim()) {
       newErrors.name = true
     }
     if (deliveryType === "mesa" && !tableNumber.trim()) {
@@ -291,7 +292,8 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   )}
   </div>
   
-  {/* Dados do Cliente */}
+  {/* Dados do Cliente - esconde quando for Mesa */}
+        {deliveryType !== "mesa" && (
         <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.name && !name.trim() ? 'border-red-500' : 'border-amber-700/40'}`}>
           <h2 className="text-amber-100 font-bold text-lg mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
             Dados do Cliente
@@ -333,6 +335,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
             </div>
           </div>
         </div>
+        )}
 
         {/* Forma de Pagamento */}
         <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.paymentMethod && !paymentMethod ? 'border-red-500' : 'border-amber-700/40'}`}>
