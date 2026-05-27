@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowLeft, MapPin, Store, CreditCard, QrCode, Banknote, User, Home } from "lucide-react"
+import { ArrowLeft, MapPin, Store, CreditCard, QrCode, Banknote, User, Home, UtensilsCrossed } from "lucide-react"
 import Image from "next/image"
 
 interface AddOn {
@@ -50,20 +50,22 @@ interface CheckoutScreenProps {
 }
 
 export interface OrderData {
-  deliveryType: "retirar" | "entregar"
+  deliveryType: "retirar" | "entregar" | "mesa"
   name: string
   address: string
+  tableNumber?: number
   paymentMethod: "cartao" | "pix" | "dinheiro"
   cashAmount?: number
 }
 
 export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutScreenProps) {
-  const [deliveryType, setDeliveryType] = useState<"retirar" | "entregar" | null>(null)
+  const [deliveryType, setDeliveryType] = useState<"retirar" | "entregar" | "mesa" | null>(null)
   const [name, setName] = useState("")
   const [address, setAddress] = useState("")
+  const [tableNumber, setTableNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<"cartao" | "pix" | "dinheiro" | null>(null)
   const [cashAmount, setCashAmount] = useState("")
-  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean; name?: boolean }>({})
+  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean; name?: boolean; tableNumber?: boolean }>({})
 
   const deliveryFee = deliveryType === "entregar" ? 2 : 0
   const finalTotal = cartTotal + deliveryFee
@@ -81,7 +83,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   const cashStatus = getCashStatus()
 
   const handleConfirm = () => {
-    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean; name?: boolean } = {}
+    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean; name?: boolean; tableNumber?: boolean } = {}
     
     if (!deliveryType) {
       newErrors.deliveryType = true
@@ -91,6 +93,9 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
     }
     if (!name.trim()) {
       newErrors.name = true
+    }
+    if (deliveryType === "mesa" && !tableNumber.trim()) {
+      newErrors.tableNumber = true
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -106,6 +111,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
       deliveryType: deliveryType!,
       name,
       address,
+      tableNumber: deliveryType === "mesa" ? parseInt(tableNumber) : undefined,
       paymentMethod: paymentMethod!,
       cashAmount: paymentMethod === "dinheiro" ? cashValue : undefined,
     })
@@ -209,7 +215,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
             <p className="text-red-500 text-xs mb-3">Selecione uma opcao</p>
           )}
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <button
               onClick={() => {
                 setDeliveryType("retirar")
@@ -222,7 +228,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
               }`}
             >
               <Store className="w-8 h-8" />
-              <span className="font-semibold">Retirar</span>
+              <span className="font-semibold text-sm">Retirar</span>
             </button>
             
             <button
@@ -236,10 +242,50 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
                   : "bg-[#1a0f08]/50 border-amber-800/50 text-amber-400 hover:border-amber-600"
               }`}
             >
-<MapPin className="w-8 h-8" />
-  <span className="font-semibold">Entregar</span>
-  </button>
-  </div>
+              <MapPin className="w-8 h-8" />
+              <span className="font-semibold text-sm">Entregar</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setDeliveryType("mesa")
+                setErrors(prev => ({ ...prev, deliveryType: false }))
+              }}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                deliveryType === "mesa"
+                  ? "bg-gradient-to-b from-green-500 to-green-700 border-green-400 text-white"
+                  : "bg-[#1a0f08]/50 border-amber-800/50 text-amber-400 hover:border-amber-600"
+              }`}
+            >
+              <UtensilsCrossed className="w-8 h-8" />
+              <span className="font-semibold text-sm">Mesa</span>
+            </button>
+          </div>
+
+          {/* Campo numero da mesa */}
+          {deliveryType === "mesa" && (
+            <div className="mt-4 p-4 bg-green-900/30 rounded-xl border-2 border-green-600/50">
+              <label className="text-green-400 text-sm mb-2 flex items-center gap-2 font-semibold">
+                <UtensilsCrossed className="w-4 h-4" />
+                Comer no Estabelecimento
+              </label>
+              <p className="text-green-300/70 text-xs mb-3">Digite o numero da sua mesa</p>
+              {errors.tableNumber && !tableNumber.trim() && (
+                <p className="text-red-500 text-xs mb-2">Numero da mesa e obrigatorio</p>
+              )}
+              <input
+                type="number"
+                value={tableNumber}
+                onChange={(e) => {
+                  setTableNumber(e.target.value)
+                  setErrors(prev => ({ ...prev, tableNumber: false }))
+                }}
+                placeholder="Ex: 5"
+                min="1"
+                className={`w-full bg-[#1a0f08]/70 border-2 rounded-xl py-3 px-4 text-green-100 text-2xl font-bold text-center placeholder-green-700/50 focus:outline-none focus:border-green-400 transition-all ${errors.tableNumber && !tableNumber.trim() ? 'border-red-500' : 'border-green-600/50'}`}
+              />
+            </div>
+          )}
   {deliveryType === "entregar" && (
     <p className="text-amber-400 text-sm text-center mt-2">Taxa de entrega: R$ 2,00</p>
   )}

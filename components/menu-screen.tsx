@@ -366,6 +366,7 @@ const handleAddToCart = () => {
       const orderPayload = {
         customerName: orderData.name || undefined,
         customerAddress: orderData.address || undefined,
+        tableNumber: orderData.tableNumber || undefined,
         deliveryType: orderData.deliveryType,
         paymentMethod: orderData.paymentMethod,
         cashAmount: orderData.cashAmount,
@@ -433,6 +434,8 @@ const handleAddToCart = () => {
     }
     if (orderData.deliveryType === "retirar") {
       message += `*Retirada no local*\n\n`
+    } else if (orderData.deliveryType === "mesa") {
+      message += `*MESA ${orderData.tableNumber}* - Comer no local\n\n`
     } else {
       message += `*Entregar em:* ${orderData.address || "A combinar"}\n\n`
     }
