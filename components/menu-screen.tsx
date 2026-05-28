@@ -67,7 +67,6 @@ interface CartItem {
 const defaultMaioneses: Maionese[] = [
   { id: "maio1", name: "Maionese de Bacon" },
   { id: "maio2", name: "Maionese de Rucula" },
-  { id: "maio3", name: "Maionese de Picles" },
 ]
 
 // Fallback para adicionais caso a API falhe
