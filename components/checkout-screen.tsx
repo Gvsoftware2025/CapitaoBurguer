@@ -88,7 +88,8 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
     if (!deliveryType) {
       newErrors.deliveryType = true
     }
-    if (!paymentMethod) {
+    // Pagamento obrigatorio apenas para retirar e entregar, nao para mesa
+    if (deliveryType !== "mesa" && !paymentMethod) {
       newErrors.paymentMethod = true
     }
     // Nome obrigatorio apenas para retirar e entregar, nao para mesa
@@ -113,7 +114,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
       name,
       address,
       tableNumber: deliveryType === "mesa" ? parseInt(tableNumber) : undefined,
-      paymentMethod: paymentMethod!,
+      paymentMethod: deliveryType === "mesa" ? (paymentMethod || undefined) : paymentMethod!,
       cashAmount: paymentMethod === "dinheiro" ? cashValue : undefined,
     })
   }
@@ -340,7 +341,8 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
         </div>
         )}
 
-        {/* Forma de Pagamento */}
+        {/* Forma de Pagamento - esconde quando for Mesa */}
+        {deliveryType !== "mesa" && (
         <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.paymentMethod && !paymentMethod ? 'border-red-500' : 'border-amber-700/40'}`}>
           <h2 className="text-amber-100 font-bold text-lg mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
             Forma de Pagamento <span className="text-red-500">*</span>
@@ -452,6 +454,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
             </div>
           )}
         </div>
+        )}
 
         {/* Botao Confirmar */}
         <button
