@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowLeft, Search, X, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { CheckoutScreen, type OrderData } from "./checkout-screen"
@@ -63,13 +63,15 @@ interface CartItem {
   totalPrice: number
 }
 
-const maionesesOptions: Maionese[] = [
+// Fallback para maioneses caso a API falhe
+const defaultMaioneses: Maionese[] = [
   { id: "maio1", name: "Maionese de Bacon" },
   { id: "maio2", name: "Maionese de Rucula" },
   { id: "maio3", name: "Maionese de Picles" },
 ]
 
-const addOnsOptions: AddOn[] = [
+// Fallback para adicionais caso a API falhe
+const defaultAddOns: AddOn[] = [
   { id: "add1", name: "Queijo Empanado", price: 12 },
   { id: "add2", name: "Hamburguer Extra", price: 9 },
   { id: "add3", name: "Bacon", price: 6 },
@@ -251,6 +253,41 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
+  
+  // Dados dinamicos do banco de dados
+  const [maionesesOptions, setMaionesesOptions] = useState<Maionese[]>(defaultMaioneses)
+  const [addOnsOptions, setAddOnsOptions] = useState<AddOn[]>(defaultAddOns)
+  
+  // Buscar maioneses e adicionais do banco de dados
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const response = await fetch('/api/menu')
+        const data = await response.json()
+        if (data.success) {
+          // Atualizar maioneses
+          if (data.data.maioneses && data.data.maioneses.length > 0) {
+            setMaionesesOptions(data.data.maioneses.map((m: { id: number; name: string }) => ({
+              id: `maio${m.id}`,
+              name: m.name
+            })))
+          }
+          // Atualizar adicionais
+          if (data.data.addons && data.data.addons.length > 0) {
+            setAddOnsOptions(data.data.addons.map((a: { id: number; name: string; price: number }) => ({
+              id: `add${a.id}`,
+              name: a.name,
+              price: Number(a.price)
+            })))
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados do cardapio:', error)
+        // Mantem os valores default em caso de erro
+      }
+    }
+    fetchMenuData()
+  }, [])
 
 // Pegar subcategorias disponiveis para bebidas e pastel
   const hasSubcategories = selectedCategory === "bebidas" || selectedCategory === "pastel"
@@ -273,7 +310,7 @@ const calculateItemTotal = () => {
   const basePrice = selectedVariation ? selectedVariation.price : selectedItem.price
   let total = basePrice * itemQuantity
   Object.entries(selectedAddOns).forEach(([addOnId, qty]) => {
-  const addOn = selectedItem.addOns.find((a) => a.id === addOnId)
+  const addOn = addOnsOptions.find((a) => a.id === addOnId)
   if (addOn && qty > 0) {
   total += addOn.price * qty
   }
@@ -319,7 +356,7 @@ const handleAddToCart = () => {
   const addOnsWithQuantity = Object.entries(selectedAddOns)
   .filter(([_, qty]) => qty > 0)
   .map(([addOnId, qty]) => ({
-  addOn: selectedItem.addOns.find((a) => a.id === addOnId)!,
+  addOn: addOnsOptions.find((a) => a.id === addOnId)!,
   quantity: qty,
   }))
   
@@ -920,7 +957,7 @@ const handleAddToCart = () => {
   )}
   
   {/* Add-ons */}
-  {selectedItem.addOns.length > 0 && (
+  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres") && (
   <div className="border-b border-amber-900/30 pb-4 mb-4">
   <div className="flex items-center justify-between mb-3">
   <h3 className="text-amber-100 font-bold">ACRESCIMOS</h3>
@@ -928,7 +965,7 @@ const handleAddToCart = () => {
   </div>
   
   <div className="space-y-3">
-  {selectedItem.addOns.map((addOn) => (
+  {addOnsOptions.map((addOn) => (
                       <div
                         key={addOn.id}
                         className="flex items-center justify-between bg-[#2a1a10] rounded-xl p-3 border border-amber-900/30"
