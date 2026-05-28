@@ -35,72 +35,8 @@ export async function POST(request: NextRequest) {
     const body: OrderInput = await request.json()
     console.log("[v0] Body recebido:", JSON.stringify(body, null, 2))
 
-    // Se for pedido de mesa, verificar se ja existe pedido aberto para essa mesa
-    if (body.deliveryType === 'mesa' && body.tableNumber) {
-      console.log("[v0] Verificando pedido aberto para mesa:", body.tableNumber)
-      
-      try {
-        const existingOrder = await queryOne<{ id: number; subtotal: string; total: string; order_number: string }>(
-          `SELECT id, subtotal, total, order_number FROM ${SCHEMA}.orders 
-           WHERE table_number = $1 AND status NOT IN ('finalizado', 'cancelado', 'entregue')
-           ORDER BY created_at DESC LIMIT 1`,
-          [body.tableNumber]
-        )
-        
-        if (existingOrder) {
-          console.log("[v0] Pedido aberto encontrado para mesa:", existingOrder)
-          
-          // Adicionar itens ao pedido existente
-          for (const item of body.items) {
-            try {
-              console.log("[v0] Adicionando item ao pedido existente:", item.productName)
-              await query(
-                `INSERT INTO ${SCHEMA}.order_items (
-                  order_id, product_name, product_price, quantity,
-                  variation_name, variation_price, maionese, extra_maioneses, addons, acompanhamentos, item_total
-                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-                [
-                  existingOrder.id,
-                  item.productName,
-                  item.productPrice,
-                  item.quantity,
-                  item.variationName || null,
-                  item.variationPrice || null,
-                  item.maionese || null,
-                  item.extraMaioneses || null,
-                  item.addons ? JSON.stringify(item.addons) : null,
-                  item.acompanhamentos || null,
-                  item.itemTotal
-                ]
-              )
-            } catch (itemError) {
-              console.error(`[v0] Erro ao inserir item ${item.productName}:`, itemError)
-            }
-          }
-          
-          // Atualizar totais do pedido
-          const newSubtotal = parseFloat(existingOrder.subtotal) + body.subtotal
-          const newTotal = parseFloat(existingOrder.total) + body.subtotal
-          
-          await query(
-            `UPDATE ${SCHEMA}.orders SET subtotal = $1, total = $2, updated_at = NOW() WHERE id = $3`,
-            [newSubtotal, newTotal, existingOrder.id]
-          )
-          
-          console.log("[v0] Itens adicionados ao pedido existente! orderNumber:", existingOrder.order_number)
-          return NextResponse.json({
-            success: true,
-            orderId: existingOrder.id,
-            orderNumber: existingOrder.order_number,
-            message: 'Itens adicionados ao pedido da mesa',
-            addedToExisting: true
-          })
-        }
-      } catch (checkError) {
-        console.error("[v0] Erro ao verificar pedido existente da mesa, criando novo:", checkError)
-        // Continua para criar novo pedido
-      }
-    }
+    // TODO: Verificacao de pedido existente para mesa desabilitada temporariamente
+    // devido a instabilidade de conexao com o banco. Reabilitar depois.
 
     // Gerar numero do pedido baseado no maior numero existente do dia
     const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
