@@ -496,7 +496,10 @@ const handleAddToCart = () => {
       }
     }
     
-    window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
+    // Envia para WhatsApp apenas se NAO for pedido de mesa
+    if (orderData.deliveryType !== "mesa") {
+      window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
+    }
     
     // Limpar carrinho apos finalizar
     setCart([])
