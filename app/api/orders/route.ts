@@ -120,9 +120,11 @@ export async function POST(request: NextRequest) {
     const customerName = body.deliveryType === 'mesa' && body.tableNumber 
       ? `Mesa ${body.tableNumber}` 
       : (body.customerName || null)
+    console.log("[v0] customerName calculado:", customerName)
     
     // Para pedidos de mesa sem forma de pagamento, usar 'pendente' como default
     const paymentMethod = body.paymentMethod || (body.deliveryType === 'mesa' ? 'pendente' : 'pix')
+    console.log("[v0] paymentMethod calculado:", paymentMethod)
     
     const orderResult = await queryOne<{ id: number }>(
       `INSERT INTO ${SCHEMA}.orders (
