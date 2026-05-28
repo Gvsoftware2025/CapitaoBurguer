@@ -879,7 +879,7 @@ const handleAddToCart = () => {
   </div>
   
   <div className="space-y-2">
-  {maionesesOptions.map((maio) => (
+  {maionesesOptions.filter(m => !m.name.toLowerCase().includes('picles')).map((maio) => (
   <button
   key={maio.id}
   onClick={() => setSelectedMaionese(maio)}
@@ -915,7 +915,7 @@ const handleAddToCart = () => {
   <span className="text-amber-500 text-xs">+R$ 2,00 cada</span>
   </div>
   <div className="space-y-2">
-  {maionesesOptions.map((maio) => {
+  {maionesesOptions.filter(m => !m.name.toLowerCase().includes('picles')).map((maio) => {
   const isSelected = extraMaioneses.some(m => m.id === maio.id)
   return (
   <button
