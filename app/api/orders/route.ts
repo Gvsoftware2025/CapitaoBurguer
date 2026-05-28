@@ -115,6 +115,12 @@ export async function POST(request: NextRequest) {
 
     // Inserir pedido
     console.log("[v0] Inserindo pedido na tabela orders...")
+    
+    // Para pedidos de mesa, definir customer_name como "Mesa X"
+    const customerName = body.deliveryType === 'mesa' && body.tableNumber 
+      ? `Mesa ${body.tableNumber}` 
+      : (body.customerName || null)
+    
     const orderResult = await queryOne<{ id: number }>(
       `INSERT INTO ${SCHEMA}.orders (
         order_number, customer_name, customer_address, table_number, delivery_type,
@@ -123,11 +129,11 @@ export async function POST(request: NextRequest) {
       RETURNING id`,
       [
         orderNumber,
-        body.customerName || null,
+        customerName,
         body.customerAddress || null,
         body.tableNumber || null,
         body.deliveryType,
-        body.paymentMethod,
+        body.paymentMethod || null,
         body.cashAmount || null,
         body.subtotal,
         body.deliveryFee,
