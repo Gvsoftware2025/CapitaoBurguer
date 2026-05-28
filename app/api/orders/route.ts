@@ -121,6 +121,9 @@ export async function POST(request: NextRequest) {
       ? `Mesa ${body.tableNumber}` 
       : (body.customerName || null)
     
+    // Para pedidos de mesa sem forma de pagamento, usar 'pendente' como default
+    const paymentMethod = body.paymentMethod || (body.deliveryType === 'mesa' ? 'pendente' : 'pix')
+    
     const orderResult = await queryOne<{ id: number }>(
       `INSERT INTO ${SCHEMA}.orders (
         order_number, customer_name, customer_address, table_number, delivery_type,
@@ -133,7 +136,7 @@ export async function POST(request: NextRequest) {
         body.customerAddress || null,
         body.tableNumber || null,
         body.deliveryType,
-        body.paymentMethod || null,
+        paymentMethod,
         body.cashAmount || null,
         body.subtotal,
         body.deliveryFee,
