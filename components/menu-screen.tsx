@@ -394,6 +394,9 @@ const handleAddToCart = () => {
   }
 
   const handleConfirmOrder = async (orderData: OrderData) => {
+    console.log("[v0] handleConfirmOrder chamado com:", orderData)
+    console.log("[v0] orderData.tableNumber:", orderData.tableNumber, "tipo:", typeof orderData.tableNumber)
+    
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
     

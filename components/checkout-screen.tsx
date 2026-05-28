@@ -83,6 +83,11 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   const cashStatus = getCashStatus()
 
   const handleConfirm = () => {
+    console.log("[v0] handleConfirm chamado")
+    console.log("[v0] deliveryType:", deliveryType)
+    console.log("[v0] tableNumber (string):", tableNumber)
+    console.log("[v0] tableNumber parsed:", parseInt(tableNumber))
+    
     const newErrors: { deliveryType?: boolean; paymentMethod?: boolean; name?: boolean; tableNumber?: boolean } = {}
     
     if (!deliveryType) {
@@ -100,23 +105,30 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
       newErrors.tableNumber = true
     }
 
+    console.log("[v0] Errors:", newErrors)
+
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
+      console.log("[v0] Validacao falhou, retornando")
       return
     }
 
     if (paymentMethod === "dinheiro" && cashStatus === "insufficient") {
+      console.log("[v0] Dinheiro insuficiente, retornando")
       return
     }
 
-    onConfirm({
+    const orderData = {
       deliveryType: deliveryType!,
       name,
       address,
       tableNumber: deliveryType === "mesa" ? parseInt(tableNumber) : undefined,
       paymentMethod: deliveryType === "mesa" ? (paymentMethod || undefined) : paymentMethod!,
       cashAmount: paymentMethod === "dinheiro" ? cashValue : undefined,
-    })
+    }
+    
+    console.log("[v0] Chamando onConfirm com:", orderData)
+    onConfirm(orderData)
   }
 
   return (
