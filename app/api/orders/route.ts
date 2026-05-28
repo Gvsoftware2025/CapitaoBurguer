@@ -18,7 +18,8 @@ interface OrderItemInput {
 interface OrderInput {
   customerName?: string
   customerAddress?: string
-  deliveryType: 'retirar' | 'entregar'
+  tableNumber?: number
+  deliveryType: 'retirar' | 'entregar' | 'mesa'
   paymentMethod: 'cartao' | 'pix' | 'dinheiro'
   cashAmount?: number
   subtotal: number
@@ -54,14 +55,15 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Inserindo pedido na tabela orders...")
     const orderResult = await queryOne<{ id: number }>(
       `INSERT INTO ${SCHEMA}.orders (
-        order_number, customer_name, customer_address, delivery_type,
+        order_number, customer_name, customer_address, table_number, delivery_type,
         payment_method, cash_amount, subtotal, delivery_fee, total, status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, 'pendente')
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'pendente')
       RETURNING id`,
       [
         orderNumber,
         body.customerName || null,
         body.customerAddress || null,
+        body.tableNumber || null,
         body.deliveryType,
         body.paymentMethod,
         body.cashAmount || null,
