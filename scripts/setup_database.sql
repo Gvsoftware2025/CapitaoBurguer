@@ -88,7 +88,8 @@ CREATE TABLE orders (
   order_number VARCHAR(20) NOT NULL UNIQUE,
   customer_name VARCHAR(200),
   customer_address TEXT,
-  delivery_type VARCHAR(20) NOT NULL CHECK (delivery_type IN ('retirar', 'entregar')),
+  table_number INT,
+  delivery_type VARCHAR(20) NOT NULL CHECK (delivery_type IN ('retirar', 'entregar', 'mesa')),
   payment_method VARCHAR(20) NOT NULL CHECK (payment_method IN ('cartao', 'pix', 'dinheiro')),
   cash_amount DECIMAL(10,2),
   subtotal DECIMAL(10,2) NOT NULL,
@@ -113,6 +114,7 @@ CREATE TABLE order_items (
   maionese VARCHAR(100),
   extra_maioneses TEXT[],
   addons JSONB,
+  acompanhamentos VARCHAR(500),
   item_total DECIMAL(10,2) NOT NULL,
   created_at TIMESTAMP DEFAULT NOW()
 );

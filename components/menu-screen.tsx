@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ArrowLeft, Search, X, Minus, Plus, ShoppingCart, Trash2 } from "lucide-react"
 import Image from "next/image"
 import { CheckoutScreen, type OrderData } from "./checkout-screen"
@@ -63,13 +63,14 @@ interface CartItem {
   totalPrice: number
 }
 
-const maionesesOptions: Maionese[] = [
+// Fallback para maioneses caso a API falhe
+const defaultMaioneses: Maionese[] = [
   { id: "maio1", name: "Maionese de Bacon" },
   { id: "maio2", name: "Maionese de Rucula" },
-  { id: "maio3", name: "Maionese de Picles" },
 ]
 
-const addOnsOptions: AddOn[] = [
+// Fallback para adicionais caso a API falhe
+const defaultAddOns: AddOn[] = [
   { id: "add1", name: "Queijo Empanado", price: 12 },
   { id: "add2", name: "Hamburguer Extra", price: 9 },
   { id: "add3", name: "Bacon", price: 6 },
@@ -83,32 +84,32 @@ const addOnsOptions: AddOn[] = [
 
 const menuData: Record<Category, MenuItem[]> = {
   burgueres: [
-    { id: "1", name: "Capitao Classico", description: "O tradicional que conquistou os mares", price: 25, image: "/images/capitao-classico.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Tomate"], addOns: addOnsOptions },
-    { id: "2", name: "Capitao Bacon", description: "Para os amantes de bacon", price: 28, image: "/images/capitao-bacon.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon", "Cebola Caramelizada"], addOns: addOnsOptions },
-    { id: "3", name: "Capitao Cheddar", description: "Explosao de cheddar cremoso", price: 28, image: "/images/capitao-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cheddar Cremoso", "Bacon Crocante"], addOns: addOnsOptions },
-    { id: "4", name: "Capitao Salada", description: "Fresquinho e saboroso", price: 28, image: "/images/capitao-salada.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Picles", "Tomate", "Cebola Roxa"], addOns: addOnsOptions },
-    { id: "5", name: "Capitao Onion", description: "Com onions crocantes", price: 30, image: "/images/capitao-onion.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Molho Barbecue", "Onions"], addOns: addOnsOptions },
-    { id: "6", name: "Capitao Gorgonzola", description: "Sabor sofisticado", price: 30, image: "/images/capitao-gorgonzola.jpg", ingredients: ["Hamburguer 150g", "Queijo Gorgonzola", "Mel", "Rucula"], addOns: addOnsOptions },
-    { id: "7", name: "Capitao Harry", description: "Magico e delicioso", price: 30, image: "/images/capitao-harry.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Bacon Crocante"], addOns: addOnsOptions },
-    { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 30, image: "/images/capitao-cheese.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: addOnsOptions },
-    { id: "9", name: "Capitao Pig", description: "Suino especial", price: 30, image: "/images/capitao-pig.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: addOnsOptions },
-    { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 30, image: "/images/capitao-vegetariano.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 28, image: "/images/capitao-kids.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: addOnsOptions },
-    { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/capitao-rucula.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/capitao_nacho.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: addOnsOptions },
+    { id: "1", name: "Capitao Classico", description: "O tradicional que conquistou os mares", price: 25, image: "/images/capitao-classico.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Tomate"], addOns: defaultAddOns },
+    { id: "2", name: "Capitao Bacon", description: "Para os amantes de bacon", price: 28, image: "/images/capitao-bacon.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon", "Cebola Caramelizada"], addOns: defaultAddOns },
+    { id: "3", name: "Capitao Cheddar", description: "Explosao de cheddar cremoso", price: 28, image: "/images/capitao-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cheddar Cremoso", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "4", name: "Capitao Salada", description: "Fresquinho e saboroso", price: 28, image: "/images/capitao-salada.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Picles", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "5", name: "Capitao Onion", description: "Com onions crocantes", price: 30, image: "/images/capitao-onion.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Molho Barbecue", "Onions"], addOns: defaultAddOns },
+    { id: "6", name: "Capitao Gorgonzola", description: "Sabor sofisticado", price: 30, image: "/images/capitao-gorgonzola.jpg", ingredients: ["Hamburguer 150g", "Queijo Gorgonzola", "Mel", "Rucula"], addOns: defaultAddOns },
+    { id: "7", name: "Capitao Harry", description: "Magico e delicioso", price: 30, image: "/images/capitao-harry.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 30, image: "/images/capitao-cheese.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: defaultAddOns },
+    { id: "9", name: "Capitao Pig", description: "Suino especial", price: 30, image: "/images/capitao-pig.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: defaultAddOns },
+    { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 30, image: "/images/capitao-vegetariano.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 28, image: "/images/capitao-kids.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: defaultAddOns },
+    { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/capitao-rucula.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/capitao_nacho.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: defaultAddOns },
   ],
   super_burgueres: [
-    { id: "11", name: "Capitao Chicken", description: "Frango empanado especial", price: 38, image: "/images/capitao_chicken.jpg", ingredients: ["Hamburguer de Frango", "Queijo Prato", "Catupiry", "Bacon Crocante"], addOns: addOnsOptions },
-    { id: "12", name: "Capitao Hulk", description: "Para os famintos de verdade", price: 38, image: "/images/capitao_hulk.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Hamburguer de Pernil", "Bacon Crocante", "Requeijao Cremoso", "Alface Fresca", "Tomate", "Cebola"], addOns: addOnsOptions },
-    { id: "13", name: "Capitao Nordestino", description: "Sabor do sertao", price: 38, image: "/images/capitao-nordestino.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Carne Seca"], addOns: addOnsOptions },
-    { id: "14", name: "Capitao Empoderado", description: "Costela suculenta", price: 38, image: "/images/capitao-empoderado.jpg", ingredients: ["Hamburguer de Costela 180g", "Barbecue na Base", "Muito Queijo", "Muito Bacon", "Onions"], addOns: addOnsOptions },
-    { id: "15", name: "Capitao Duca", description: "Completo e irresistivel", price: 38, image: "/images/capitao-duca.jpg", ingredients: ["Hamburguer 150g", "Queijo Empanado", "Ovo", "Alface", "Tomate", "Cebola Roxa"], addOns: addOnsOptions },
-    { id: "16", name: "Capitao da Casa", description: "O monstro da casa", price: 38, image: "/images/capitao-casa.jpg", ingredients: ["Hamburguer 300g", "Queijo Mussarela", "Bacon", "Ovo", "Catupiry", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "17", name: "Capitao Eclipse", description: "Triplo poder", price: 38, image: "/images/capitao-eclipse.jpg", ingredients: ["3x Hamburguer 100g", "Maionese da Casa", "Muito Queijo", "Bacon Crocante", "Cebola Caramelizada", "Alface Fresca"], addOns: addOnsOptions },
-    { id: "18", name: "Capitao America", description: "O lendario recheado", price: 38, image: "/images/capitao-america.jpg", ingredients: ["Hamburguer 200g Recheado com Mussarela", "Queijo Mussarela", "Maionese da Casa", "Bacon Crocante", "Alface Fresca", "Tomate", "Cebola Roxa"], addOns: addOnsOptions },
-    { id: "22", name: "Capitao Costela", description: "Com costela desfiada", price: 38, image: "/images/capitao-costela.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Costela Desfiada", "Rucula"], addOns: addOnsOptions },
-    { id: "23", name: "Capitao Bauru", description: "Contra-file especial", price: 38, image: "/images/capitao-bauru.jpg", ingredients: ["Hamburguer 200g de Contra-File", "Queijo Mussarela", "Catupiry", "Tomate", "Rucula Fresca"], addOns: addOnsOptions },
-    { id: "24", name: "Capitao Supremo", description: "O premium de fraldinha", price: 40, image: "/images/capitao-supremo.jpg", ingredients: ["Hamburguer 180g de Fraldinha", "Queijo Mussarela", "Catupiry", "Mostarda", "Tomate", "Alface"], addOns: addOnsOptions },
+    { id: "11", name: "Capitao Chicken", description: "Frango empanado especial", price: 38, image: "/images/capitao_chicken.jpg", ingredients: ["Hamburguer de Frango", "Queijo Prato", "Catupiry", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "12", name: "Capitao Hulk", description: "Para os famintos de verdade", price: 38, image: "/images/capitao_hulk.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Hamburguer de Pernil", "Bacon Crocante", "Requeijao Cremoso", "Alface Fresca", "Tomate", "Cebola"], addOns: defaultAddOns },
+    { id: "13", name: "Capitao Nordestino", description: "Sabor do sertao", price: 38, image: "/images/capitao-nordestino.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Carne Seca"], addOns: defaultAddOns },
+    { id: "14", name: "Capitao Empoderado", description: "Costela suculenta", price: 38, image: "/images/capitao-empoderado.jpg", ingredients: ["Hamburguer de Costela 180g", "Barbecue na Base", "Muito Queijo", "Muito Bacon", "Onions"], addOns: defaultAddOns },
+    { id: "15", name: "Capitao Duca", description: "Completo e irresistivel", price: 38, image: "/images/capitao-duca.jpg", ingredients: ["Hamburguer 150g", "Queijo Empanado", "Ovo", "Alface", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "16", name: "Capitao da Casa", description: "O monstro da casa", price: 38, image: "/images/capitao-casa.jpg", ingredients: ["Hamburguer 300g", "Queijo Mussarela", "Bacon", "Ovo", "Catupiry", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "17", name: "Capitao Eclipse", description: "Triplo poder", price: 38, image: "/images/capitao-eclipse.jpg", ingredients: ["3x Hamburguer 100g", "Maionese da Casa", "Muito Queijo", "Bacon Crocante", "Cebola Caramelizada", "Alface Fresca"], addOns: defaultAddOns },
+    { id: "18", name: "Capitao America", description: "O lendario recheado", price: 38, image: "/images/capitao-america.jpg", ingredients: ["Hamburguer 200g Recheado com Mussarela", "Queijo Mussarela", "Maionese da Casa", "Bacon Crocante", "Alface Fresca", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "22", name: "Capitao Costela", description: "Com costela desfiada", price: 38, image: "/images/capitao-costela.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Costela Desfiada", "Rucula"], addOns: defaultAddOns },
+    { id: "23", name: "Capitao Bauru", description: "Contra-file especial", price: 38, image: "/images/capitao-bauru.jpg", ingredients: ["Hamburguer 200g de Contra-File", "Queijo Mussarela", "Catupiry", "Tomate", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "24", name: "Capitao Supremo", description: "O premium de fraldinha", price: 40, image: "/images/capitao-supremo.jpg", ingredients: ["Hamburguer 180g de Fraldinha", "Queijo Mussarela", "Catupiry", "Mostarda", "Tomate", "Alface"], addOns: defaultAddOns },
   ],
   porcoes: [
     { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: [], variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
@@ -251,6 +252,41 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
   const [showCheckout, setShowCheckout] = useState(false)
+  
+  // Dados dinamicos do banco de dados
+  const [maionesesOptions, setMaionesesOptions] = useState<Maionese[]>(defaultMaioneses)
+  const [addOnsOptions, setAddOnsOptions] = useState<AddOn[]>(defaultAddOns)
+  
+  // Buscar maioneses e adicionais do banco de dados
+  useEffect(() => {
+    const fetchMenuData = async () => {
+      try {
+        const response = await fetch('/api/menu')
+        const data = await response.json()
+        if (data.success) {
+          // Atualizar maioneses
+          if (data.data.maioneses && data.data.maioneses.length > 0) {
+            setMaionesesOptions(data.data.maioneses.map((m: { id: number; name: string }) => ({
+              id: `maio${m.id}`,
+              name: m.name
+            })))
+          }
+          // Atualizar adicionais
+          if (data.data.addons && data.data.addons.length > 0) {
+            setAddOnsOptions(data.data.addons.map((a: { id: number; name: string; price: number }) => ({
+              id: `add${a.id}`,
+              name: a.name,
+              price: Number(a.price)
+            })))
+          }
+        }
+      } catch (error) {
+        console.error('Erro ao buscar dados do cardapio:', error)
+        // Mantem os valores default em caso de erro
+      }
+    }
+    fetchMenuData()
+  }, [])
 
 // Pegar subcategorias disponiveis para bebidas e pastel
   const hasSubcategories = selectedCategory === "bebidas" || selectedCategory === "pastel"
@@ -273,7 +309,7 @@ const calculateItemTotal = () => {
   const basePrice = selectedVariation ? selectedVariation.price : selectedItem.price
   let total = basePrice * itemQuantity
   Object.entries(selectedAddOns).forEach(([addOnId, qty]) => {
-  const addOn = selectedItem.addOns.find((a) => a.id === addOnId)
+  const addOn = addOnsOptions.find((a) => a.id === addOnId)
   if (addOn && qty > 0) {
   total += addOn.price * qty
   }
@@ -319,7 +355,7 @@ const handleAddToCart = () => {
   const addOnsWithQuantity = Object.entries(selectedAddOns)
   .filter(([_, qty]) => qty > 0)
   .map(([addOnId, qty]) => ({
-  addOn: selectedItem.addOns.find((a) => a.id === addOnId)!,
+  addOn: addOnsOptions.find((a) => a.id === addOnId)!,
   quantity: qty,
   }))
   
@@ -358,6 +394,9 @@ const handleAddToCart = () => {
   }
 
   const handleConfirmOrder = async (orderData: OrderData) => {
+    console.log("[v0] handleConfirmOrder chamado com:", orderData)
+    console.log("[v0] orderData.tableNumber:", orderData.tableNumber, "tipo:", typeof orderData.tableNumber)
+    
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
     
@@ -366,37 +405,61 @@ const handleAddToCart = () => {
       const orderPayload = {
         customerName: orderData.name || undefined,
         customerAddress: orderData.address || undefined,
+        tableNumber: orderData.tableNumber || undefined,
         deliveryType: orderData.deliveryType,
         paymentMethod: orderData.paymentMethod,
         cashAmount: orderData.cashAmount,
         subtotal: cartTotal,
         deliveryFee: deliveryFee,
         total: finalTotal,
-        items: cart.map((cartItem) => ({
-          productId: cartItem.item.id,
-          productName: cartItem.item.name,
-          productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
-          quantity: cartItem.quantity,
-          variationName: cartItem.selectedVariation?.name,
-          variationPrice: cartItem.selectedVariation?.price,
-          maionese: cartItem.selectedMaionese?.name,
-          extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
-          addons: cartItem.selectedAddOns.map(a => ({
-            name: a.addOn.name,
-            quantity: a.quantity,
-            price: a.addOn.price
-          })),
-          itemTotal: cartItem.totalPrice
-        }))
+        items: cart.map((cartItem) => {
+          // Formatar acompanhamentos das barcas (Batata com: X, Kibe: Y)
+          let acompanhamentos: string | undefined = undefined
+          if (cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0) {
+            acompanhamentos = Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
+              const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
+              return `${choiceLabel} ${option.name}`
+            }).join(", ")
+          }
+          
+          return {
+            productId: cartItem.item.id,
+            productName: cartItem.item.name,
+            productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
+            quantity: cartItem.quantity,
+            variationName: cartItem.selectedVariation?.name,
+            variationPrice: cartItem.selectedVariation?.price,
+            maionese: cartItem.selectedMaionese?.name,
+            extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
+            addons: cartItem.selectedAddOns.map(a => ({
+              name: a.addOn.name,
+              quantity: a.quantity,
+              price: a.addOn.price
+            })),
+            acompanhamentos,
+            itemTotal: cartItem.totalPrice
+          }
+        })
       }
 
-      await fetch('/api/orders', {
+      console.log("[v0] Enviando pedido para API:", JSON.stringify(orderPayload, null, 2))
+      
+      const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(orderPayload)
       })
+      
+      const result = await response.json()
+      console.log("[v0] Resposta da API:", result)
+      
+      if (!response.ok || !result.success) {
+        console.error("[v0] Erro ao salvar pedido:", result.error || response.statusText)
+      } else {
+        console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
+      }
     } catch (error) {
-      console.error('Erro ao salvar pedido no banco:', error)
+      console.error('[v0] Erro ao salvar pedido no banco:', error)
       // Continua mesmo se der erro no banco - o WhatsApp e mais importante
     }
     
@@ -410,6 +473,8 @@ const handleAddToCart = () => {
     }
     if (orderData.deliveryType === "retirar") {
       message += `*Retirada no local*\n\n`
+    } else if (orderData.deliveryType === "mesa") {
+      message += `*MESA ${orderData.tableNumber}* - Comer no local\n\n`
     } else {
       message += `*Entregar em:* ${orderData.address || "A combinar"}\n\n`
     }
@@ -417,8 +482,16 @@ const handleAddToCart = () => {
     // Itens do pedido - formato compacto
     message += `*Pedido:*\n`
     cart.forEach((cartItem) => {
-      const itemTotal = cartItem.item.price * cartItem.quantity
-      message += `> ${cartItem.quantity}x ${cartItem.item.name} - R$${itemTotal.toFixed(2)}\n`
+      // Usar preco da variacao se existir, senao usa preco do item
+      const itemPrice = cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price
+      const itemTotal = itemPrice * cartItem.quantity
+      
+      // Incluir nome da variacao no nome do item (ex: "Batata Frita (Meia)")
+      let itemName = cartItem.item.name
+      if (cartItem.selectedVariation) {
+        itemName += ` (${cartItem.selectedVariation.name})`
+      }
+      message += `> ${cartItem.quantity}x ${itemName} - R$${itemTotal.toFixed(2)}\n`
       
       // Detalhes em linha unica
       const detalhes: string[] = []
@@ -462,7 +535,10 @@ const handleAddToCart = () => {
       }
     }
     
-    window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
+    // Envia para WhatsApp apenas se NAO for pedido de mesa
+    if (orderData.deliveryType !== "mesa") {
+      window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
+    }
     
     // Limpar carrinho apos finalizar
     setCart([])
@@ -803,7 +879,7 @@ const handleAddToCart = () => {
   </div>
   
   <div className="space-y-2">
-  {maionesesOptions.map((maio) => (
+  {maionesesOptions.filter(m => !m.name.toLowerCase().includes('picles')).map((maio) => (
   <button
   key={maio.id}
   onClick={() => setSelectedMaionese(maio)}
@@ -839,7 +915,7 @@ const handleAddToCart = () => {
   <span className="text-amber-500 text-xs">+R$ 2,00 cada</span>
   </div>
   <div className="space-y-2">
-  {maionesesOptions.map((maio) => {
+  {maionesesOptions.filter(m => !m.name.toLowerCase().includes('picles')).map((maio) => {
   const isSelected = extraMaioneses.some(m => m.id === maio.id)
   return (
   <button
@@ -883,7 +959,7 @@ const handleAddToCart = () => {
   )}
   
   {/* Add-ons */}
-  {selectedItem.addOns.length > 0 && (
+  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres") && (
   <div className="border-b border-amber-900/30 pb-4 mb-4">
   <div className="flex items-center justify-between mb-3">
   <h3 className="text-amber-100 font-bold">ACRESCIMOS</h3>
@@ -891,7 +967,7 @@ const handleAddToCart = () => {
   </div>
   
   <div className="space-y-3">
-  {selectedItem.addOns.map((addOn) => (
+  {addOnsOptions.map((addOn) => (
                       <div
                         key={addOn.id}
                         className="flex items-center justify-between bg-[#2a1a10] rounded-xl p-3 border border-amber-900/30"

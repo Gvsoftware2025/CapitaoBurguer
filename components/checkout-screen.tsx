@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowLeft, MapPin, Store, CreditCard, QrCode, Banknote, User, Home } from "lucide-react"
+import { ArrowLeft, MapPin, Store, CreditCard, QrCode, Banknote, User, Home, UtensilsCrossed } from "lucide-react"
 import Image from "next/image"
 
 interface AddOn {
@@ -50,20 +50,22 @@ interface CheckoutScreenProps {
 }
 
 export interface OrderData {
-  deliveryType: "retirar" | "entregar"
+  deliveryType: "retirar" | "entregar" | "mesa"
   name: string
   address: string
+  tableNumber?: number
   paymentMethod: "cartao" | "pix" | "dinheiro"
   cashAmount?: number
 }
 
 export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutScreenProps) {
-  const [deliveryType, setDeliveryType] = useState<"retirar" | "entregar" | null>(null)
+  const [deliveryType, setDeliveryType] = useState<"retirar" | "entregar" | "mesa" | null>(null)
   const [name, setName] = useState("")
   const [address, setAddress] = useState("")
+  const [tableNumber, setTableNumber] = useState("")
   const [paymentMethod, setPaymentMethod] = useState<"cartao" | "pix" | "dinheiro" | null>(null)
   const [cashAmount, setCashAmount] = useState("")
-  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean }>({})
+  const [errors, setErrors] = useState<{ deliveryType?: boolean; paymentMethod?: boolean; name?: boolean; tableNumber?: boolean }>({})
 
   const deliveryFee = deliveryType === "entregar" ? 2 : 0
   const finalTotal = cartTotal + deliveryFee
@@ -81,31 +83,52 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
   const cashStatus = getCashStatus()
 
   const handleConfirm = () => {
-    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean } = {}
+    console.log("[v0] handleConfirm chamado")
+    console.log("[v0] deliveryType:", deliveryType)
+    console.log("[v0] tableNumber (string):", tableNumber)
+    console.log("[v0] tableNumber parsed:", parseInt(tableNumber))
+    
+    const newErrors: { deliveryType?: boolean; paymentMethod?: boolean; name?: boolean; tableNumber?: boolean } = {}
     
     if (!deliveryType) {
       newErrors.deliveryType = true
     }
-    if (!paymentMethod) {
+    // Pagamento obrigatorio apenas para retirar e entregar, nao para mesa
+    if (deliveryType !== "mesa" && !paymentMethod) {
       newErrors.paymentMethod = true
     }
+    // Nome obrigatorio apenas para retirar e entregar, nao para mesa
+    if (deliveryType !== "mesa" && !name.trim()) {
+      newErrors.name = true
+    }
+    if (deliveryType === "mesa" && !tableNumber.trim()) {
+      newErrors.tableNumber = true
+    }
+
+    console.log("[v0] Errors:", newErrors)
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors)
+      console.log("[v0] Validacao falhou, retornando")
       return
     }
 
     if (paymentMethod === "dinheiro" && cashStatus === "insufficient") {
+      console.log("[v0] Dinheiro insuficiente, retornando")
       return
     }
 
-    onConfirm({
+    const orderData = {
       deliveryType: deliveryType!,
       name,
       address,
-      paymentMethod: paymentMethod!,
+      tableNumber: deliveryType === "mesa" ? parseInt(tableNumber) : undefined,
+      paymentMethod: deliveryType === "mesa" ? (paymentMethod || undefined) : paymentMethod!,
       cashAmount: paymentMethod === "dinheiro" ? cashValue : undefined,
-    })
+    }
+    
+    console.log("[v0] Chamando onConfirm com:", orderData)
+    onConfirm(orderData)
   }
 
   return (
@@ -206,7 +229,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
             <p className="text-red-500 text-xs mb-3">Selecione uma opcao</p>
           )}
           
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             <button
               onClick={() => {
                 setDeliveryType("retirar")
@@ -219,7 +242,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
               }`}
             >
               <Store className="w-8 h-8" />
-              <span className="font-semibold">Retirar</span>
+              <span className="font-semibold text-sm">Retirar</span>
             </button>
             
             <button
@@ -233,36 +256,85 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
                   : "bg-[#1a0f08]/50 border-amber-800/50 text-amber-400 hover:border-amber-600"
               }`}
             >
-<MapPin className="w-8 h-8" />
-  <span className="font-semibold">Entregar</span>
-  </button>
-  </div>
+              <MapPin className="w-8 h-8" />
+              <span className="font-semibold text-sm">Entregar</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setDeliveryType("mesa")
+                setErrors(prev => ({ ...prev, deliveryType: false }))
+              }}
+              className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 transition-all ${
+                deliveryType === "mesa"
+                  ? "bg-gradient-to-b from-green-500 to-green-700 border-green-400 text-white"
+                  : "bg-[#1a0f08]/50 border-amber-800/50 text-amber-400 hover:border-amber-600"
+              }`}
+            >
+              <UtensilsCrossed className="w-8 h-8" />
+              <span className="font-semibold text-sm">Mesa</span>
+            </button>
+          </div>
+
+          {/* Campo numero da mesa */}
+          {deliveryType === "mesa" && (
+            <div className="mt-4 p-4 bg-green-900/30 rounded-xl border-2 border-green-600/50">
+              <label className="text-green-400 text-sm mb-2 flex items-center gap-2 font-semibold">
+                <UtensilsCrossed className="w-4 h-4" />
+                Comer no Estabelecimento
+              </label>
+              <p className="text-green-300/70 text-xs mb-3">Digite o numero da sua mesa</p>
+              {errors.tableNumber && !tableNumber.trim() && (
+                <p className="text-red-500 text-xs mb-2">Numero da mesa e obrigatorio</p>
+              )}
+              <input
+                type="number"
+                value={tableNumber}
+                onChange={(e) => {
+                  setTableNumber(e.target.value)
+                  setErrors(prev => ({ ...prev, tableNumber: false }))
+                }}
+                placeholder="Ex: 5"
+                min="1"
+                className={`w-full bg-[#1a0f08]/70 border-2 rounded-xl py-3 px-4 text-green-100 text-2xl font-bold text-center placeholder-green-700/50 focus:outline-none focus:border-green-400 transition-all ${errors.tableNumber && !tableNumber.trim() ? 'border-red-500' : 'border-green-600/50'}`}
+              />
+            </div>
+          )}
   {deliveryType === "entregar" && (
     <p className="text-amber-400 text-sm text-center mt-2">Taxa de entrega: R$ 2,00</p>
   )}
   </div>
   
-  {/* Dados do Cliente */}
-        <div className="bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 border-amber-700/40 p-4 shadow-lg">
+  {/* Dados do Cliente - esconde quando for Mesa */}
+        {deliveryType !== "mesa" && (
+        <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.name && !name.trim() ? 'border-red-500' : 'border-amber-700/40'}`}>
           <h2 className="text-amber-100 font-bold text-lg mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
-            Dados do Cliente <span className="text-amber-500 text-sm font-normal">(Opcional)</span>
+            Dados do Cliente
           </h2>
           
           <div className="space-y-4">
             <div>
               <label className="text-amber-400 text-sm mb-2 flex items-center gap-2">
                 <User className="w-4 h-4" />
-                Nome
+                Nome <span className="text-red-500">*</span>
               </label>
+              {errors.name && !name.trim() && (
+                <p className="text-red-500 text-xs mb-2">Nome e obrigatorio</p>
+              )}
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value)
+                  setErrors(prev => ({ ...prev, name: false }))
+                }}
                 placeholder="Seu nome"
-                className="w-full bg-[#1a0f08]/50 border-2 border-amber-800/50 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all"
+                className={`w-full bg-[#1a0f08]/50 border-2 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all ${errors.name && !name.trim() ? 'border-red-500' : 'border-amber-800/50'}`}
               />
             </div>
             
+            {/* Endereco - mostra apenas quando for Entregar */}
+            {deliveryType === "entregar" && (
             <div>
               <label className="text-amber-400 text-sm mb-2 flex items-center gap-2">
                 <Home className="w-4 h-4" />
@@ -276,10 +348,13 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
                 className="w-full bg-[#1a0f08]/50 border-2 border-amber-800/50 rounded-xl py-3 px-4 text-amber-100 placeholder-amber-700 focus:outline-none focus:border-amber-500 transition-all"
               />
             </div>
+            )}
           </div>
         </div>
+        )}
 
-        {/* Forma de Pagamento */}
+        {/* Forma de Pagamento - esconde quando for Mesa */}
+        {deliveryType !== "mesa" && (
         <div className={`bg-gradient-to-b from-[#2a1a10]/95 to-[#1a0f08]/98 rounded-2xl border-2 p-4 shadow-lg transition-colors ${errors.paymentMethod && !paymentMethod ? 'border-red-500' : 'border-amber-700/40'}`}>
           <h2 className="text-amber-100 font-bold text-lg mb-4" style={{ textShadow: '0 1px 3px rgba(0,0,0,0.5)' }}>
             Forma de Pagamento <span className="text-red-500">*</span>
@@ -391,6 +466,7 @@ export function CheckoutScreen({ cart, cartTotal, onBack, onConfirm }: CheckoutS
             </div>
           )}
         </div>
+        )}
 
         {/* Botao Confirmar */}
         <button
