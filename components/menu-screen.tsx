@@ -82,6 +82,14 @@ const defaultAddOns: AddOn[] = [
   { id: "add9", name: "Onions", price: 2 },
 ]
 
+// Acrescimos especificos para Batata Frita
+const batataAddOns: AddOn[] = [
+  { id: "bat-bacon", name: "Bacon", price: 6 },
+  { id: "bat-catupiry", name: "Catupiry", price: 6 },
+  { id: "bat-cheddar", name: "Cheddar", price: 6 },
+  { id: "bat-mussarela", name: "Queijo Mussarela", price: 8 },
+]
+
 const menuData: Record<Category, MenuItem[]> = {
   burgueres: [
     { id: "1", name: "Capitao Classico", description: "O tradicional que conquistou os mares", price: 25, image: "/images/capitao-classico.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Tomate"], addOns: defaultAddOns },
@@ -112,7 +120,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "24", name: "Capitao Supremo", description: "O premium de fraldinha", price: 40, image: "/images/capitao-supremo.jpg", ingredients: ["Hamburguer 180g de Fraldinha", "Queijo Mussarela", "Catupiry", "Mostarda", "Tomate", "Alface"], addOns: defaultAddOns },
   ],
   porcoes: [
-    { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: [], variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
+    { id: "p1", name: "Batata Frita", description: "Batatas fritas crocantes com tempero especial", price: 10, image: "/images/porcao-batata.jpg", ingredients: ["Batata Frita", "Tempero Especial"], addOns: batataAddOns, variations: [{ id: "bat-ind", name: "Individual", price: 10 }, { id: "bat-meia", name: "Meia", price: 22 }, { id: "bat-int", name: "Inteira", price: 32 }] },
     { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 45, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 45 }, { id: "kib-cat", name: "Catupiry", price: 45 }, { id: "kib-queij", name: "Coalhada", price: 45 }] },
     { id: "p3", name: "Anel de Cebola", description: "Aneis de cebola empanados e crocantes", price: 30, image: "/images/porcao-onion.jpg", ingredients: ["Cebola Empanada"], addOns: [] },
     { id: "p4", name: "Tilapia", description: "Porcao de tilapia empanada", price: 55, image: "/images/porcao-tilapia.jpg", ingredients: ["Tilapia Empanada"], addOns: [] },
