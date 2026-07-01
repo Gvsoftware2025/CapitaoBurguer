@@ -154,8 +154,8 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b16", name: "Ice Cabare", description: "Long Neck", price: 9, image: "/images/ice-cabare-long.png", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
     { id: "b17", name: "Ice 51", description: "Long Neck", price: 9, image: "/images/ice-51-long.png", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
     // Aguas
-    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3,50, image: "/images/aguasemgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4,50, image: "/images/aguacomgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3.50, image: "/images/aguasemgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4.50, image: "/images/aguacomgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 7, image: "/images/agua-tonica.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b24", name: "H2O", description: "Agua Saborizada", price: 7.50, image: "/images/h2o.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     // Sucos
