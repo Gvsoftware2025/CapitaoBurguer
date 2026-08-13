@@ -177,7 +177,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b35", name: "Sprite 600ml", description: "Garrafa", price: 8, image: "/images/sprite600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b36", name: "Coca-Cola 1L", description: "Garrafa", price: 10, image: "/images/coca1l.png", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b37", name: "Guarana 1L", description: "Garrafa", price: 10, image: "/images/guarana1l.png", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 15, image: "/images/coca2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 16, image: "/images/coca2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b39", name: "Sprite 2L", description: "Garrafa", price: 12, image: "/images/sprite2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b40", name: "Fanta Laranja 2L", description: "Garrafa", price: 12, image: "/images/fanta-laranja2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b41", name: "Guarana 2L", description: "Garrafa", price: 12, image: "/images/guarana2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
