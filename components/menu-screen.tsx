@@ -9,7 +9,7 @@ interface MenuScreenProps {
   onBack: () => void
 }
 
-type Category = "burgueres" | "super_burgueres" | "lanches_tradicionais" | "pastel" | "porcoes" | "combos" | "espetos" | "jantinha" | "diversos" | "bebidas" | "churros"
+type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros" | "pastel"
 
 interface AddOn {
   id: string
@@ -93,40 +93,30 @@ const batataAddOns: AddOn[] = [
 const menuData: Record<Category, MenuItem[]> = {
   burgueres: [
     { id: "1", name: "Capitao Classico", description: "O tradicional que conquistou os mares", price: 25, image: "/images/capitao-classico.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Tomate"], addOns: defaultAddOns },
-    { id: "2", name: "Capitao Bacon", description: "Para os amantes de bacon", price: 30, image: "/images/capitao-bacon.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon", "Cebola Caramelizada"], addOns: defaultAddOns },
-    { id: "3", name: "Capitao Cheddar", description: "Explosao de cheddar cremoso", price: 30, image: "/images/capitao-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cheddar Cremoso", "Bacon Crocante"], addOns: defaultAddOns },
-    { id: "4", name: "Capitao Salada", description: "Fresquinho e saboroso", price: 30, image: "/images/capitao-salada.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Picles", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
-    { id: "5", name: "Capitao Onion", description: "Com onions crocantes", price: 32, image: "/images/capitao-onion.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Molho Barbecue", "Onions"], addOns: defaultAddOns },
-    { id: "6", name: "Capitao Gorgonzola", description: "Sabor sofisticado", price: 32, image: "/images/capitao-gorgonzola.jpg", ingredients: ["Hamburguer 150g", "Queijo Gorgonzola", "Mel", "Rucula"], addOns: defaultAddOns },
-    { id: "7", name: "Capitao Harry", description: "Magico e delicioso", price: 32, image: "/images/capitao-harry.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Bacon Crocante"], addOns: defaultAddOns },
-    { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 32, image: "/images/capitao-cheese.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: defaultAddOns },
-    { id: "9", name: "Capitao Pig", description: "Suino especial", price: 32, image: "/images/capitao-pig.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: defaultAddOns },
-    { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 32, image: "/images/capitao-vegetariano.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: defaultAddOns },
-    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 32, image: "/images/capitao-kids.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: defaultAddOns },
-    { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 30, image: "/images/capitao-rucula.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: defaultAddOns },
-    { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 30, image: "/images/capitao_nacho.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: defaultAddOns },
-  ],
-  lanches_tradicionais: [
-    { id: "lt1", name: "X-Salada", description: "Pao de hamburger, hamburger bovino, queijo mussarela, alface e tomate.", price: 30, image: "/images/x-salada.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt2", name: "X-Salada Egg", description: "Pao de hamburger, hamburger bovino, queijo mussarela, ovo, alface e tomate.", price: 33, image: "/images/x-salada-egg.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt3", name: "X-Bacon", description: "Pao de hamburger, hamburger bovino, queijo mussarela e bacon.", price: 30, image: "/images/x-bacon.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Bacon"], addOns: defaultAddOns },
-    { id: "lt4", name: "X-Egg", description: "Pao de hamburger, hamburger bovino, queijo mussarela, dois ovos, bacon, alface e tomate.", price: 35, image: "/images/x-egg.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "2 ovos", "Bacon", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt5", name: "X-Milho", description: "Pao de hamburger, hamburger bovino, queijo mussarela, catupiry, milho, alface e tomate.", price: 30, image: "/images/x-milho.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Catupiry", "Milho", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt6", name: "X-Tudo", description: "Pao de hamburger, hamburger bovino, queijo mussarela, bacon, milho, presunto, ovo, alface e tomate.", price: 40, image: "/images/x-tudo.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Bacon", "Milho", "Presunto", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt7", name: "X-Frango Catupiry", description: "Pao de hamburger, file de frango em cubos, queijo, catupiry, alface e tomate.", price: 35, image: "/images/x-frango-catupiry.jpg", ingredients: ["Pao de hamburger", "File de frango", "Queijo", "Catupiry", "Alface", "Tomate"], addOns: defaultAddOns },
-    { id: "lt8", name: "X-Frango Tudo", description: "Pao de hamburger, file de frango em cubos, queijo mussarela, bacon, presunto, milho, ovo, alface e tomate.", price: 40, image: "/images/x-frango-tudo.jpg", ingredients: ["Pao de hamburger", "File de frango", "Queijo mussarela", "Bacon", "Presunto", "Milho", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "2", name: "Capitao Bacon", description: "Para os amantes de bacon", price: 28, image: "/images/capitao-bacon.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon", "Cebola Caramelizada"], addOns: defaultAddOns },
+    { id: "3", name: "Capitao Cheddar", description: "Explosao de cheddar cremoso", price: 28, image: "/images/capitao-cheddar.jpg", ingredients: ["Hamburguer 150g", "Cheddar Cremoso", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "4", name: "Capitao Salada", description: "Fresquinho e saboroso", price: 28, image: "/images/capitao-salada.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Picles", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "5", name: "Capitao Onion", description: "Com onions crocantes", price: 30, image: "/images/capitao-onion.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Molho Barbecue", "Onions"], addOns: defaultAddOns },
+    { id: "6", name: "Capitao Gorgonzola", description: "Sabor sofisticado", price: 30, image: "/images/capitao-gorgonzola.jpg", ingredients: ["Hamburguer 150g", "Queijo Gorgonzola", "Mel", "Rucula"], addOns: defaultAddOns },
+    { id: "7", name: "Capitao Harry", description: "Magico e delicioso", price: 30, image: "/images/capitao-harry.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "8", name: "Capitao Cheese", description: "Queijo por todos os lados", price: 30, image: "/images/capitao-cheese.jpg", ingredients: ["Hamburguer 150g", "Cream Cheese", "Cebola Crispy"], addOns: defaultAddOns },
+    { id: "9", name: "Capitao Pig", description: "Suino especial", price: 30, image: "/images/capitao-pig.jpg", ingredients: ["Hamburguer de Pernil Suino", "Queijo Mussarela", "Bacon Crocante", "Molho Barbecue", "Alface Fresca"], addOns: defaultAddOns },
+    { id: "10", name: "Capitao Vegetariano", description: "Sem carne, muito sabor", price: 30, image: "/images/capitao-vegetariano.jpg", ingredients: ["Queijo Empanado", "Cream Cheese", "Tomates Secos", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "19", name: "Capitao Kids", description: "Para os pequenos piratas", price: 28, image: "/images/capitao-kids.jpg", ingredients: ["Hamburguer 100g", "Queijo Prato", "Cheddar", "Bacon Crocante", "Batata Frita"], addOns: defaultAddOns },
+    { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/capitao-rucula.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/capitao_nacho.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: defaultAddOns },
   ],
   super_burgueres: [
-    { id: "11", name: "Capitao Chicken", description: "Frango empanado especial", price: 40, image: "/images/capitao_chicken.jpg", ingredients: ["Hamburguer de Frango", "Queijo Prato", "Catupiry", "Bacon Crocante"], addOns: defaultAddOns },
-    { id: "12", name: "Capitao Hulk", description: "Para os famintos de verdade", price: 40, image: "/images/capitao_hulk.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Hamburguer de Pernil", "Bacon Crocante", "Requeijao Cremoso", "Alface Fresca", "Tomate", "Cebola"], addOns: defaultAddOns },
-    { id: "13", name: "Capitao Nordestino", description: "Sabor do sertao", price: 40, image: "/images/capitao-nordestino.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Carne Seca"], addOns: defaultAddOns },
-    { id: "14", name: "Capitao Empoderado", description: "Costela suculenta", price: 40, image: "/images/capitao-empoderado.jpg", ingredients: ["Hamburguer de Costela 180g", "Barbecue na Base", "Muito Queijo", "Muito Bacon", "Onions"], addOns: defaultAddOns },
-    { id: "15", name: "Capitao Duca", description: "Completo e irresistivel", price: 40, image: "/images/capitao-duca.jpg", ingredients: ["Hamburguer 150g", "Queijo Empanado", "Ovo", "Alface", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
-    { id: "16", name: "Capitao da Casa", description: "O monstro da casa", price: 40, image: "/images/capitao-casa.jpg", ingredients: ["Hamburguer 300g", "Queijo Mussarela", "Bacon", "Ovo", "Catupiry", "Rucula Fresca"], addOns: defaultAddOns },
-    { id: "17", name: "Capitao Eclipse", description: "Triplo poder", price: 40, image: "/images/capitao-eclipse.jpg", ingredients: ["3x Hamburguer 100g", "Maionese da Casa", "Muito Queijo", "Bacon Crocante", "Cebola Caramelizada", "Alface Fresca"], addOns: defaultAddOns },
-    { id: "18", name: "Capitao America", description: "O lendario recheado", price: 40, image: "/images/capitao-america.jpg", ingredients: ["Hamburguer 200g Recheado com Mussarela", "Queijo Mussarela", "Maionese da Casa", "Bacon Crocante", "Alface Fresca", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
-    { id: "22", name: "Capitao Costela", description: "Com costela desfiada", price: 40, image: "/images/capitao-costela.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Costela Desfiada", "Rucula"], addOns: defaultAddOns },
-    { id: "23", name: "Capitao Bauru", description: "Contra-file especial", price: 40, image: "/images/capitao-bauru.jpg", ingredients: ["Hamburguer 200g de Contra-File", "Queijo Mussarela", "Catupiry", "Tomate", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "11", name: "Capitao Chicken", description: "Frango empanado especial", price: 38, image: "/images/capitao_chicken.jpg", ingredients: ["Hamburguer de Frango", "Queijo Prato", "Catupiry", "Bacon Crocante"], addOns: defaultAddOns },
+    { id: "12", name: "Capitao Hulk", description: "Para os famintos de verdade", price: 38, image: "/images/capitao_hulk.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Hamburguer de Pernil", "Bacon Crocante", "Requeijao Cremoso", "Alface Fresca", "Tomate", "Cebola"], addOns: defaultAddOns },
+    { id: "13", name: "Capitao Nordestino", description: "Sabor do sertao", price: 38, image: "/images/capitao-nordestino.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Carne Seca"], addOns: defaultAddOns },
+    { id: "14", name: "Capitao Empoderado", description: "Costela suculenta", price: 38, image: "/images/capitao-empoderado.jpg", ingredients: ["Hamburguer de Costela 180g", "Barbecue na Base", "Muito Queijo", "Muito Bacon", "Onions"], addOns: defaultAddOns },
+    { id: "15", name: "Capitao Duca", description: "Completo e irresistivel", price: 38, image: "/images/capitao-duca.jpg", ingredients: ["Hamburguer 150g", "Queijo Empanado", "Ovo", "Alface", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "16", name: "Capitao da Casa", description: "O monstro da casa", price: 38, image: "/images/capitao-casa.jpg", ingredients: ["Hamburguer 300g", "Queijo Mussarela", "Bacon", "Ovo", "Catupiry", "Rucula Fresca"], addOns: defaultAddOns },
+    { id: "17", name: "Capitao Eclipse", description: "Triplo poder", price: 38, image: "/images/capitao-eclipse.jpg", ingredients: ["3x Hamburguer 100g", "Maionese da Casa", "Muito Queijo", "Bacon Crocante", "Cebola Caramelizada", "Alface Fresca"], addOns: defaultAddOns },
+    { id: "18", name: "Capitao America", description: "O lendario recheado", price: 38, image: "/images/capitao-america.jpg", ingredients: ["Hamburguer 200g Recheado com Mussarela", "Queijo Mussarela", "Maionese da Casa", "Bacon Crocante", "Alface Fresca", "Tomate", "Cebola Roxa"], addOns: defaultAddOns },
+    { id: "22", name: "Capitao Costela", description: "Com costela desfiada", price: 38, image: "/images/capitao-costela.jpg", ingredients: ["Hamburguer 150g", "Queijo Mussarela", "Catupiry", "Alho Frito", "Costela Desfiada", "Rucula"], addOns: defaultAddOns },
+    { id: "23", name: "Capitao Bauru", description: "Contra-file especial", price: 38, image: "/images/capitao-bauru.jpg", ingredients: ["Hamburguer 200g de Contra-File", "Queijo Mussarela", "Catupiry", "Tomate", "Rucula Fresca"], addOns: defaultAddOns },
     { id: "24", name: "Capitao Supremo", description: "O premium de fraldinha", price: 40, image: "/images/capitao-supremo.jpg", ingredients: ["Hamburguer 180g de Fraldinha", "Queijo Mussarela", "Catupiry", "Mostarda", "Tomate", "Alface"], addOns: defaultAddOns },
   ],
   porcoes: [
@@ -134,30 +124,24 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p2", name: "Kibe", description: "Kibes bem temperados", price: 45, image: "/images/porcao-kibe.jpg", ingredients: ["Kibe", "Tempero Especial"], addOns: [], variations: [{ id: "kib-trad", name: "Tradicional", price: 45 }, { id: "kib-cat", name: "Catupiry", price: 45 }, { id: "kib-queij", name: "Coalhada", price: 45 }] },
     { id: "p3", name: "Anel de Cebola", description: "Aneis de cebola empanados e crocantes", price: 30, image: "/images/porcao-onion.jpg", ingredients: ["Cebola Empanada"], addOns: [] },
     { id: "p4", name: "Tilapia", description: "Porcao de tilapia empanada", price: 55, image: "/images/porcao-tilapia.jpg", ingredients: ["Tilapia Empanada"], addOns: [] },
-    { id: "p5", name: "Pastelzinho", description: "Pastelzinhos fritos variados", price: 48, image: "/images/porcao-pastelzinho.jpg", ingredients: ["Pastelzinho Frito"], addOns: [] },
+    { id: "p5", name: "Pastelzinho", description: "Pastelzinhos fritos variados", price: 45, image: "/images/porcao-pastelzinho.jpg", ingredients: ["Pastelzinho Frito"], addOns: [] },
     { id: "p6", name: "Dadinho de Tapioca", description: "Dadinhos de tapioca com queijo coalho", price: 45, image: "/images/porcao-dadinho.jpg", ingredients: ["Tapioca", "Queijo Coalho"], addOns: [] },
-    { id: "p7", name: "Coxinha Cremosa", description: "Coxinhas cremosas de frango", price: 50, image: "/images/porcao-coxinha.jpg", ingredients: ["Coxinha de Frango"], addOns: [] },
+    { id: "p7", name: "Coxinha Cremosa", description: "Coxinhas cremosas de frango", price: 48, image: "/images/porcao-coxinha.jpg", ingredients: ["Coxinha de Frango"], addOns: [] },
     { id: "p8", name: "Calabresa Acebolada", description: "Calabresa fatiada com cebola", price: 40, image: "/images/porcao-calabresa.jpg", ingredients: ["Calabresa", "Cebola"], addOns: [] },
     { id: "p9", name: "Contra File", description: "Porcao de contra file grelhado", price: 70, image: "/images/porcao-contra.jpg", ingredients: ["Contra File Grelhado"], addOns: [] },
     { id: "p10", name: "Fraldinha na Mostarda", description: "Fraldinha ao molho de mostarda", price: 60, image: "/images/porcao-fraldinha.jpg", ingredients: ["Fraldinha", "Molho Mostarda"], addOns: [] },
     { id: "p12", name: "Salame", description: "Porcao de salame fatiado", price: 30, image: "/images/porcao-salame.jpg", ingredients: ["Salame Fatiado"], addOns: [] },
     { id: "p13", name: "Palmito", description: "Porcao de palmito", price: 32, image: "/images/porcao-palmito.jpg", ingredients: ["Palmito"], addOns: [] },
-    { id: "p14", name: "Azeitona", description: "Porcao de azeitonas", price: 12, image: "/images/porcao-azeitona.jpg", ingredients: ["Azeitonas"], addOns: [] },
-    { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.7, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
+    { id: "p14", name: "Azeitona", description: "Porcao de azeitonas", price: 10, image: "/images/porcao-azeitona.jpg", ingredients: ["Azeitonas"], addOns: [] },
+    { id: "p15", name: "Ovo de Codorna", description: "Unidade de ovo de codorna", price: 0.5, image: "/images/porcao-ovodecodorna.jpg", ingredients: ["Ovo de Codorna"], addOns: [] },
     { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 55, image: "/images/porcao-bolinho-costela.png", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
     { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
   ],
-  diversos: [
-    { id: "dv1", name: "Cone", description: "Cone crocante e saboroso.", price: 12, image: "/images/cone.jpg", ingredients: ["Cone"], addOns: [] },
-    { id: "dv2", name: "Trufa", description: "Trufa de chocolate.", price: 8, image: "/images/trufa.jpg", ingredients: ["Chocolate"], addOns: [] },
-    { id: "dv3", name: "Fini", description: "Bala Fini.", price: 3, image: "/images/fini.jpg", ingredients: ["Fini"], addOns: [] },
-    { id: "dv4", name: "Trident", description: "Chiclete Trident.", price: 3, image: "/images/trident.jpg", ingredients: ["Trident"], addOns: [] },
-  ],
   bebidas: [
     // Cervejas
-    { id: "b1", name: "Antarctica 600ml", description: "Cerveja Garrafa", price: 12, image: "/images/antartica600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
-    { id: "b2", name: "Skol 600ml", description: "Cerveja Garrafa", price: 13, image: "/images/skol600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b1", name: "Antarctica 600ml", description: "Cerveja Garrafa", price: 10, image: "/images/antartica600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
+    { id: "b2", name: "Skol 600ml", description: "Cerveja Garrafa", price: 12, image: "/images/skol600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
     { id: "b3", name: "Original 600ml", description: "Cerveja Garrafa", price: 13, image: "/images/originalgarrafa.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
     { id: "b4", name: "Heineken 600ml", description: "Cerveja Garrafa", price: 16, image: "/images/heineken600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
     { id: "b42", name: "Eisenbahn 600", description: "Cerveja Garrafa", price: 14, image: "/images/eisenbahn600.png", ingredients: ["600ml"], addOns: [], subcategory: "Cervejas" },
@@ -178,9 +162,9 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b16", name: "Ice Cabare", description: "Long Neck", price: 9, image: "/images/ice-cabare-long.png", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
     { id: "b17", name: "Ice 51", description: "Long Neck", price: 9, image: "/images/ice-51-long.png", ingredients: ["Long Neck"], addOns: [], subcategory: "Long Necks" },
     // Aguas
-    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3.50, image: "/images/aguasemgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4.50, image: "/images/aguacomgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
-    { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 7, image: "/images/agua-tonica.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b18", name: "Agua Mineral sem Gas", description: "Garrafa", price: 3, image: "/images/aguasemgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b19", name: "Agua Mineral com Gas", description: "Garrafa", price: 4, image: "/images/aguacomgas.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
+    { id: "b20", name: "Agua Tonica", description: "Garrafa", price: 6, image: "/images/agua-tonica.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     { id: "b24", name: "H2O", description: "Agua Saborizada", price: 7.50, image: "/images/h2o.png", ingredients: ["Garrafa"], addOns: [], subcategory: "Aguas" },
     // Sucos
     { id: "b21", name: "Suco Del Valle", description: "Lata", price: 7, image: "/images/suco-delvalle-lata.png", ingredients: ["Caixa"], addOns: [], subcategory: "Sucos" },
@@ -201,7 +185,7 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "b35", name: "Sprite 600ml", description: "Garrafa", price: 8, image: "/images/sprite600.jpg", ingredients: ["600ml"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b36", name: "Coca-Cola 1L", description: "Garrafa", price: 10, image: "/images/coca1l.png", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b37", name: "Guarana 1L", description: "Garrafa", price: 10, image: "/images/guarana1l.png", ingredients: ["1 Litro"], addOns: [], subcategory: "Refrigerantes" },
-    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 16, image: "/images/coca2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
+    { id: "b38", name: "Coca-Cola 2L", description: "Garrafa", price: 15, image: "/images/coca2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b39", name: "Sprite 2L", description: "Garrafa", price: 12, image: "/images/sprite2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b40", name: "Fanta Laranja 2L", description: "Garrafa", price: 12, image: "/images/fanta-laranja2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
     { id: "b41", name: "Guarana 2L", description: "Garrafa", price: 12, image: "/images/guarana2l.jpg", ingredients: ["2 Litros"], addOns: [], subcategory: "Refrigerantes" },
@@ -235,10 +219,10 @@ jantinha: [
   { id: "pas7", name: "Pastel de Calabresa", description: "Calabresa, tomate, Mussarela, Oregano e Catupiry", price: 20, image: "/images/pastel-calabresa.png", ingredients: ["Calabresa", "Tomate", "Mussarela", "Oregano", "Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
   { id: "pas8", name: "Pastel Brocolis com Bacon", description: "Brocolis, bacon, Tomate, Mussarela, Oregano e Catupiry", price: 21, image: "/images/pastel-brocolis.png", ingredients: ["Brócolis", "Bacon", "Tomate", "Mussarela", "Oregano", "Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
   { id: "pas9", name: "Pastel Carne com Queijo", description: "Carne, Tomate, Queijo Mussarela e Oregano", price: 21, image: "/images/pastel-carne-queijo.png", ingredients: ["Carne", "Tomate", "Queijo Mussarela", "Oregano"], addOns: [], subcategory: "Pastel Salgado" },
-  { id: "pas18", name: "Pastel Palmito", description: "Palmito, tomate, mussarela, Oregano e catupiry", price: 22, image: "/images/pastel-palmito.png", ingredients: ["Palmito", "tomate", "mussarela", "Oregano", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
-  { id: "pas19", name: "Pastel Costela", description: "Queijo mussarela, costela desfiada, alho frito, tomate, Oregano e catupiry", price: 26, image: "/images/pastel-costela.png", ingredients: ["Queijo mussarela", "costela desfiada", "alho frito", "tomate", "Oregano", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
-  { id: "pas20", name: "Pastel Filé ao Alho", description: "Contra filé, alho frito, tomate seco, mussarela, Oregano e catupiry", price: 26, image: "/images/pastel-file.png", ingredients: ["Contra filé", "alho frito", "tomate seco", "mussarela", "Oregano e Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
-  { id: "pas21", name: "Pastel 4 Queijos", description: "Mussarela, gorgonzola, tomate, Oregano, provolone e catupiry", price: 23, image: "/images/pastel-4queijo.png", ingredients: ["Mussarela", "gorgonzola", "tomate", "Oregano", "provolone", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas18", name: "Palmito", description: "Palmito, tomate, mussarela, Oregano e catupiry", price: 22, image: "/images/pastel-palmito.png", ingredients: ["Palmito", "tomate", "mussarela", "Oregano", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas19", name: "Costela", description: "Queijo mussarela, costela desfiada, alho frito, tomate, Oregano e catupiry", price: 26, image: "/images/pastel-costela.png", ingredients: ["Queijo mussarela", "costela desfiada", "alho frito", "tomate", "Oregano", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas20", name: "Filé ao Alho", description: "Contra filé, alho frito, tomate seco, mussarela, Oregano e catupiry", price: 26, image: "/images/pastel-file.png", ingredients: ["Contra filé", "alho frito", "tomate seco", "mussarela", "Oregano e Catupiry"], addOns: [], subcategory: "Pastel Salgado" },
+  { id: "pas21", name: "4 Queijos", description: "Mussarela, gorgonzola, tomate, Oregano, provolone e catupiry", price: 23, image: "/images/pastel-4queijo.png", ingredients: ["Mussarela", "gorgonzola", "tomate", "Oregano", "provolone", "e catupiry"], addOns: [], subcategory: "Pastel Salgado" },
   // Doces
   { id: "pas10", name: "Pastel Ovo Matine", description: "Creme de Ovomaltine", price: 18, image: "/images/pastel-ovomaltine.png", ingredients: ["Creme de Ovomaltine"], addOns: [], subcategory: "Pastel Doce" },
   { id: "pas11", name: "Pastel Sensacao", description: "Geleia de morango e brigadeiro", price: 18, image: "/images/pastel-sensacao.png", ingredients: ["Geleia de morango", "Brigadeiro"], addOns: [], subcategory: "Pastel Doce" },
@@ -254,13 +238,11 @@ jantinha: [
   const categories: { key: Category; label: string }[] = [
   { key: "burgueres", label: "BURGUERES" },
   { key: "super_burgueres", label: "SUPER BURGUERES" },
-  { key: "lanches_tradicionais", label: "LANCHES TRADICIONAIS" },
   { key: "pastel", label: "PASTEL" },
   { key: "porcoes", label: "PORCOES" },
   { key: "combos", label: "COMBOS E BARCAS" },
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
-  { key: "diversos", label: "DIVERSOS" },
   { key: "bebidas", label: "BEBIDAS" },
   ]
 
@@ -348,8 +330,7 @@ const calculateItemTotal = () => {
   // Verifica se o item eh um lanche (burguer ou super_burguer)
   const isLanche = (item: MenuItem) => {
     return menuData.burgueres.some(b => b.id === item.id) || 
-           menuData.super_burgueres.some(b => b.id === item.id) ||
-           menuData.lanches_tradicionais.some(b => b.id === item.id)
+           menuData.super_burgueres.some(b => b.id === item.id)
   }
 
   const handleAddOnChange = (addOnId: string, change: number) => {
@@ -986,7 +967,7 @@ const handleAddToCart = () => {
   )}
   
   {/* Add-ons */}
-  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres" || selectedCategory === "lanches_tradicionais") && (
+  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres") && (
   <div className="border-b border-amber-900/30 pb-4 mb-4">
   <div className="flex items-center justify-between mb-3">
   <h3 className="text-amber-100 font-bold">ACRESCIMOS</h3>
