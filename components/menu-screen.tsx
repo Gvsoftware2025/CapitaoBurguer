@@ -9,7 +9,7 @@ interface MenuScreenProps {
   onBack: () => void
 }
 
-type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros" | "pastel"
+type Category = "burgueres" | "super_burgueres" | "lanches_tradicionais" | "pastel" | "porcoes" | "combos" | "espetos" | "jantinha" | "diversos" | "bebidas" | "churros"
 
 interface AddOn {
   id: string
@@ -106,6 +106,16 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "20", name: "Capitao Rucula", description: "Fresquinho com rucula", price: 28, image: "/images/capitao-rucula.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Bacon Crocante", "Cebola Caramelizada", "Rucula Fresca"], addOns: defaultAddOns },
     { id: "21", name: "Capitao Nacho", description: "Com doritos crocante", price: 28, image: "/images/capitao_nacho.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Cheddar Cremoso", "Doritos"], addOns: defaultAddOns },
   ],
+  lanches_tradicionais: [
+    { id: "lt1", name: "X-Salada", description: "Pao de hamburger, hamburger bovino, queijo mussarela, alface e tomate.", price: 30, image: "/images/x-salada.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt2", name: "X-Salada Egg", description: "Pao de hamburger, hamburger bovino, queijo mussarela, ovo, alface e tomate.", price: 33, image: "/images/x-salada-egg.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt3", name: "X-Bacon", description: "Pao de hamburger, hamburger bovino, queijo mussarela e bacon.", price: 30, image: "/images/x-bacon.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Bacon"], addOns: defaultAddOns },
+    { id: "lt4", name: "X-Egg", description: "Pao de hamburger, hamburger bovino, queijo mussarela, dois ovos, bacon, alface e tomate.", price: 35, image: "/images/x-egg.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "2 ovos", "Bacon", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt5", name: "X-Milho", description: "Pao de hamburger, hamburger bovino, queijo mussarela, catupiry, milho, alface e tomate.", price: 30, image: "/images/x-milho.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Catupiry", "Milho", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt6", name: "X-Tudo", description: "Pao de hamburger, hamburger bovino, queijo mussarela, bacon, milho, presunto, ovo, alface e tomate.", price: 40, image: "/images/x-tudo.jpg", ingredients: ["Pao de hamburger", "Hamburger bovino", "Queijo mussarela", "Bacon", "Milho", "Presunto", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt7", name: "X-Frango Catupiry", description: "Pao de hamburger, file de frango em cubos, queijo, catupiry, alface e tomate.", price: 35, image: "/images/x-frango-catupiry.jpg", ingredients: ["Pao de hamburger", "File de frango", "Queijo", "Catupiry", "Alface", "Tomate"], addOns: defaultAddOns },
+    { id: "lt8", name: "X-Frango Tudo", description: "Pao de hamburger, file de frango em cubos, queijo mussarela, bacon, presunto, milho, ovo, alface e tomate.", price: 40, image: "/images/x-frango-tudo.jpg", ingredients: ["Pao de hamburger", "File de frango", "Queijo mussarela", "Bacon", "Presunto", "Milho", "Ovo", "Alface", "Tomate"], addOns: defaultAddOns },
+  ],
   super_burgueres: [
     { id: "11", name: "Capitao Chicken", description: "Frango empanado especial", price: 38, image: "/images/capitao_chicken.jpg", ingredients: ["Hamburguer de Frango", "Queijo Prato", "Catupiry", "Bacon Crocante"], addOns: defaultAddOns },
     { id: "12", name: "Capitao Hulk", description: "Para os famintos de verdade", price: 38, image: "/images/capitao_hulk.jpg", ingredients: ["Hamburguer 150g", "Queijo Prato", "Hamburguer de Pernil", "Bacon Crocante", "Requeijao Cremoso", "Alface Fresca", "Tomate", "Cebola"], addOns: defaultAddOns },
@@ -137,6 +147,12 @@ const menuData: Record<Category, MenuItem[]> = {
     { id: "p17", name: "Bolinho de Costela com Catupiry", description: "Porcao inteira com 12 bolinhos de costela recheados com catupiry", price: 55, image: "/images/porcao-bolinho-costela.png", ingredients: ["12 Bolinhos de Costela", "Catupiry"], addOns: [] },
     { id: "p16", name: "Tabua de Frios", description: "Salame, Presunto, Mussarela, Ovo de Codorna, Azeitona, Palmito, Tomate", price: 80.00, image: "/images/tabuadefrios.jpg", ingredients: ["Salame", "Presunto", "Mussarela", "Ovo de Codorna", "Azeitona", "Palmito", "Tomate"], addOns: [] },
     { id: "ch1", name: "Mini Porcao de Churros", description: "30 mini churros deliciosos com acucar e canela", price: 42, image: "/images/churros.jpg", ingredients: ["30 Mini Churros", "Acucar", "Canela"], addOns: [] },
+  ],
+  diversos: [
+    { id: "dv1", name: "Cone", description: "Cone crocante e saboroso.", price: 12, image: "/images/cone.jpg", ingredients: ["Cone"], addOns: [] },
+    { id: "dv2", name: "Trufa", description: "Trufa de chocolate.", price: 8, image: "/images/trufa.jpg", ingredients: ["Chocolate"], addOns: [] },
+    { id: "dv3", name: "Fini", description: "Bala Fini.", price: 3, image: "/images/fini.jpg", ingredients: ["Fini"], addOns: [] },
+    { id: "dv4", name: "Trident", description: "Chiclete Trident.", price: 3, image: "/images/trident.jpg", ingredients: ["Trident"], addOns: [] },
   ],
   bebidas: [
     // Cervejas
@@ -238,11 +254,13 @@ jantinha: [
   const categories: { key: Category; label: string }[] = [
   { key: "burgueres", label: "BURGUERES" },
   { key: "super_burgueres", label: "SUPER BURGUERES" },
+  { key: "lanches_tradicionais", label: "LANCHES TRADICIONAIS" },
   { key: "pastel", label: "PASTEL" },
   { key: "porcoes", label: "PORCOES" },
   { key: "combos", label: "COMBOS E BARCAS" },
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
+  { key: "diversos", label: "DIVERSOS" },
   { key: "bebidas", label: "BEBIDAS" },
   ]
 
@@ -330,7 +348,8 @@ const calculateItemTotal = () => {
   // Verifica se o item eh um lanche (burguer ou super_burguer)
   const isLanche = (item: MenuItem) => {
     return menuData.burgueres.some(b => b.id === item.id) || 
-           menuData.super_burgueres.some(b => b.id === item.id)
+           menuData.super_burgueres.some(b => b.id === item.id) ||
+           menuData.lanches_tradicionais.some(b => b.id === item.id)
   }
 
   const handleAddOnChange = (addOnId: string, change: number) => {
@@ -967,7 +986,7 @@ const handleAddToCart = () => {
   )}
   
   {/* Add-ons */}
-  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres") && (
+  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres" || selectedCategory === "lanches_tradicionais") && (
   <div className="border-b border-amber-900/30 pb-4 mb-4">
   <div className="flex items-center justify-between mb-3">
   <h3 className="text-amber-100 font-bold">ACRESCIMOS</h3>
