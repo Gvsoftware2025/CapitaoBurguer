@@ -11,7 +11,8 @@ const pool = global.pgPool || new Pool({
   port: parseInt(process.env.DB_PORT || '5432'),
   database: process.env.DB_NAME,
   user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  // DB_PASS tem prioridade (contorna problema de truncamento no DB_PASSWORD antigo)
+  password: process.env.DB_PASS || process.env.DB_PASSWORD,
   ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   max: 5,
   idleTimeoutMillis: 30000,
