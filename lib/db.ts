@@ -7,12 +7,12 @@ declare global {
 
 // Pool de conexao com o PostgreSQL (singleton)
 const pool = global.pgPool || new Pool({
-  host: process.env.DB_HOST || '168.231.93.220',
+  host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || '5432'),
-  database: process.env.DB_NAME || 'gvsoftware',
-  user: process.env.DB_USER || 'gvuser',
-  password: process.env.DB_PASSWORD || '153045',
-  ssl: false,
+  database: process.env.DB_NAME,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false,
   max: 5,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 6000,
