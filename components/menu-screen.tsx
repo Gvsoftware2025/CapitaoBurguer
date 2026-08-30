@@ -408,6 +408,9 @@ const handleAddToCart = () => {
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
     
+    // Abre uma janela imediatamente para evitar bloqueio de pop-up após o await.
+    const printWindow = window.open('', '_blank')
+
     // Salvar pedido no banco de dados
     try {
       const orderPayload = {
@@ -466,7 +469,17 @@ const handleAddToCart = () => {
       }
 
       console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
+
+      // Abre a via de impressão assim que o banco confirmar o pedido.
+      if (result.orderId) {
+        if (printWindow) {
+          printWindow.location.href = `/pedido/${result.orderId}/imprimir`
+        } else {
+          window.open(`/pedido/${result.orderId}/imprimir`, '_blank')
+        }
+      }
     } catch (error) {
+      printWindow?.close()
       console.error('[v0] Erro ao salvar pedido no banco:', error)
       alert('Não foi possível finalizar o pedido agora. Verifique sua conexão e tente novamente.')
       return
