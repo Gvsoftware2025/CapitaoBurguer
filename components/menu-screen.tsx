@@ -404,79 +404,101 @@ const handleAddToCart = () => {
   const handleConfirmOrder = async (orderData: OrderData) => {
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
-    
-    // Abre uma janela imediatamente para evitar bloqueio de pop-up após o await.
-    const printWindow = window.open('', '_blank')
+    const isMesa = orderData.deliveryType === "mesa"
 
-    // Salvar pedido no banco de dados
+    // Abre UMA janela imediatamente, ainda dentro do gesto de clique.
+    // Isso evita o bloqueio/lentidao de pop-up no mobile: reutilizamos essa
+    // mesma aba tanto para o WhatsApp (pedidos normais) quanto para a via de
+    // impressao (pedidos de mesa).
+    const newWindow = window.open('', '_blank')
+
+    // Monta a mensagem do WhatsApp de forma sincrona (os dados ja estao disponiveis).
+    const message = buildWhatsappMessage(orderData, deliveryFee, finalTotal)
+
+    // Para pedidos que NAO sao de mesa, abre o WhatsApp IMEDIATAMENTE, sem
+    // esperar o banco. Assim o cliente nunca fica travado esperando.
+    if (!isMesa && newWindow) {
+      newWindow.location.href = `https://wa.me/5517997173099?text=${encodeURIComponent(message)}`
+    }
+
+    // Monta o payload e salva no banco. Para pedidos de mesa, o resultado é
+    // usado para abrir a via de impressão; para os demais, o salvamento roda
+    // em segundo plano (o WhatsApp já foi aberto).
+    const orderPayload = {
+      customerName: orderData.name || undefined,
+      customerAddress: orderData.address || undefined,
+      tableNumber: orderData.tableNumber || undefined,
+      deliveryType: orderData.deliveryType,
+      paymentMethod: orderData.paymentMethod,
+      cashAmount: orderData.cashAmount,
+      subtotal: cartTotal,
+      deliveryFee: deliveryFee,
+      total: finalTotal,
+      items: cart.map((cartItem) => {
+        // Formatar acompanhamentos das barcas (Batata com: X, Kibe: Y)
+        let acompanhamentos: string | undefined = undefined
+        if (cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0) {
+          acompanhamentos = Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
+            const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
+            return `${choiceLabel} ${option.name}`
+          }).join(", ")
+        }
+
+        return {
+          productId: cartItem.item.id,
+          productName: cartItem.item.name,
+          productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
+          quantity: cartItem.quantity,
+          variationName: cartItem.selectedVariation?.name,
+          variationPrice: cartItem.selectedVariation?.price,
+          maionese: cartItem.selectedMaionese?.name,
+          extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
+          addons: cartItem.selectedAddOns.map(a => ({
+            name: a.addOn.name,
+            quantity: a.quantity,
+            price: a.addOn.price
+          })),
+          acompanhamentos,
+          itemTotal: cartItem.totalPrice
+        }
+      })
+    }
+
     try {
-      const orderPayload = {
-        customerName: orderData.name || undefined,
-        customerAddress: orderData.address || undefined,
-        tableNumber: orderData.tableNumber || undefined,
-        deliveryType: orderData.deliveryType,
-        paymentMethod: orderData.paymentMethod,
-        cashAmount: orderData.cashAmount,
-        subtotal: cartTotal,
-        deliveryFee: deliveryFee,
-        total: finalTotal,
-        items: cart.map((cartItem) => {
-          // Formatar acompanhamentos das barcas (Batata com: X, Kibe: Y)
-          let acompanhamentos: string | undefined = undefined
-          if (cartItem.selectedComboChoices && Object.keys(cartItem.selectedComboChoices).length > 0) {
-            acompanhamentos = Object.entries(cartItem.selectedComboChoices).map(([choiceId, option]) => {
-              const choiceLabel = cartItem.item.comboChoices?.find(c => c.id === choiceId)?.label || ""
-              return `${choiceLabel} ${option.name}`
-            }).join(", ")
-          }
-          
-          return {
-            productId: cartItem.item.id,
-            productName: cartItem.item.name,
-            productPrice: cartItem.selectedVariation ? cartItem.selectedVariation.price : cartItem.item.price,
-            quantity: cartItem.quantity,
-            variationName: cartItem.selectedVariation?.name,
-            variationPrice: cartItem.selectedVariation?.price,
-            maionese: cartItem.selectedMaionese?.name,
-            extraMaioneses: cartItem.extraMaioneses?.map(m => m.name),
-            addons: cartItem.selectedAddOns.map(a => ({
-              name: a.addOn.name,
-              quantity: a.quantity,
-              price: a.addOn.price
-            })),
-            acompanhamentos,
-            itemTotal: cartItem.totalPrice
-          }
-        })
-      }
-
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(orderPayload)
+        body: JSON.stringify(orderPayload),
+        keepalive: true,
       })
-      
+
       const result = await response.json()
-      
+
       if (!response.ok || !result.success) {
         throw new Error(result.error || response.statusText || 'Não foi possível salvar o pedido')
       }
 
-      // Abre a via de impressão assim que o banco confirmar o pedido.
-      if (result.orderId) {
-        if (printWindow) {
-          printWindow.location.href = `/pedido/${result.orderId}/imprimir`
-        } else {
-          window.open(`/pedido/${result.orderId}/imprimir`, '_blank')
-        }
+      // Pedido de mesa: usa a janela aberta no gesto para abrir a via de impressão.
+      if (isMesa && result.orderId && newWindow) {
+        newWindow.location.href = `/pedido/${result.orderId}/imprimir`
       }
     } catch (error) {
-      printWindow?.close()
       console.error('Erro ao salvar pedido no banco:', error)
-      alert('Não foi possível finalizar o pedido agora. Verifique sua conexão e tente novamente.')
-      return
+      // Se for mesa, a janela estava reservada para a impressão: fecha e avisa.
+      // Para os demais, o WhatsApp já abriu, então não travamos o cliente.
+      if (isMesa && newWindow) {
+        newWindow.close()
+        alert('Não foi possível finalizar o pedido agora. Verifique sua conexão e tente novamente.')
+        return
+      }
     }
-    
+
+    // Limpar carrinho apos finalizar
+    setCart([])
+    setShowCheckout(false)
+  }
+
+  const buildWhatsappMessage = (orderData: OrderData, deliveryFee: number, finalTotal: number) => {
     // Montar mensagem WhatsApp
     let message = `*CAPITAO BURGUER*\n`
     message += `Novo pedido recebido!\n\n`
@@ -548,15 +570,8 @@ const handleAddToCart = () => {
         message += ` (Troco p/ R$${orderData.cashAmount.toFixed(2)})`
       }
     }
-    
-    // Envia para WhatsApp apenas se NAO for pedido de mesa
-    if (orderData.deliveryType !== "mesa") {
-      window.open(`https://wa.me/5517997173099?text=${encodeURIComponent(message)}`, "_blank")
-    }
-    
-    // Limpar carrinho apos finalizar
-    setCart([])
-    setShowCheckout(false)
+
+    return message
   }
 
   return (
