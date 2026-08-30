@@ -402,9 +402,6 @@ const handleAddToCart = () => {
   }
 
   const handleConfirmOrder = async (orderData: OrderData) => {
-    console.log("[v0] handleConfirmOrder chamado com:", orderData)
-    console.log("[v0] orderData.tableNumber:", orderData.tableNumber, "tipo:", typeof orderData.tableNumber)
-    
     const deliveryFee = orderData.deliveryType === "entregar" ? 2 : 0
     const finalTotal = cartTotal + deliveryFee
     
@@ -453,8 +450,6 @@ const handleAddToCart = () => {
         })
       }
 
-      console.log("[v0] Enviando pedido para API:", JSON.stringify(orderPayload, null, 2))
-      
       const response = await fetch('/api/orders', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -462,13 +457,10 @@ const handleAddToCart = () => {
       })
       
       const result = await response.json()
-      console.log("[v0] Resposta da API:", result)
       
       if (!response.ok || !result.success) {
         throw new Error(result.error || response.statusText || 'Não foi possível salvar o pedido')
       }
-
-      console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
 
       // Abre a via de impressão assim que o banco confirmar o pedido.
       if (result.orderId) {
@@ -480,7 +472,7 @@ const handleAddToCart = () => {
       }
     } catch (error) {
       printWindow?.close()
-      console.error('[v0] Erro ao salvar pedido no banco:', error)
+      console.error('Erro ao salvar pedido no banco:', error)
       alert('Não foi possível finalizar o pedido agora. Verifique sua conexão e tente novamente.')
       return
     }
