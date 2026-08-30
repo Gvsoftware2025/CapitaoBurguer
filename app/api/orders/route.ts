@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { query, queryOne, SCHEMA } from '@/lib/db'
+import { query, SCHEMA, withTransaction } from '@/lib/db'
 
 interface OrderItemInput {
   productId?: string
