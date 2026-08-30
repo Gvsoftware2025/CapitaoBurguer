@@ -95,11 +95,22 @@ export async function POST(request: NextRequest) {
     const orderId = orderResult.id
     console.log("[v0] Order ID criado:", orderId)
 
-    // Inserir itens do pedido
+    if (!Array.isArray(body.items) || body.items.length === 0) {
+      await query(`DELETE FROM ${SCHEMA}.orders WHERE id = $1`, [orderId])
+      return NextResponse.json(
+        { success: false, error: 'O pedido precisa ter pelo menos um item' },
+        { status: 400 }
+      )
+    }
+
+    // Inserir todos os itens; qualquer falha invalida o pedido inteiro.
     console.log("[v0] Inserindo", body.items.length, "itens...")
-    for (const item of body.items) {
-      try {
-        console.log("[v0] Inserindo item:", item.productName, "- acompanhamentos:", item.acompanhamentos)
+    try {
+      for (const item of body.items) {
+        if (!item.productName || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+          throw new Error(`Item inválido: ${item.productName || 'sem nome'}`)
+        }
+
         await query(
           `INSERT INTO ${SCHEMA}.order_items (
             order_id, product_name, product_price, quantity,
@@ -119,10 +130,11 @@ export async function POST(request: NextRequest) {
             item.itemTotal
           ]
         )
-      } catch (itemError) {
-        console.error(`[v0] Erro ao inserir item ${item.productName}:`, itemError)
-        // Continua para o proximo item mesmo se um falhar
       }
+    } catch (itemError) {
+      console.error('[v0] Falha ao inserir itens; removendo pedido incompleto:', itemError)
+      await query(`DELETE FROM ${SCHEMA}.orders WHERE id = $1`, [orderId])
+      throw new Error('Não foi possível salvar todos os itens do pedido')
     }
 
     console.log("[v0] Pedido salvo com sucesso! orderNumber:", orderNumber)
