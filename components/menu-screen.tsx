@@ -9,7 +9,7 @@ interface MenuScreenProps {
   onBack: () => void
 }
 
-type Category = "burgueres" | "super_burgueres" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "churros" | "pastel"
+type Category = "burgueres" | "super_burgueres" | "lanches_tradicionais" | "porcoes" | "bebidas" | "combos" | "espetos" | "jantinha" | "pastel" | "diversos"
 
 interface AddOn {
   id: string
@@ -233,16 +233,34 @@ jantinha: [
   { id: "pas16", name: "Pastel de Nutella", description: "Nutella original", price: 18, image: "/images/pastel-nutella.png", ingredients: ["Nutella original"], addOns: [], subcategory: "Pastel Doce" },
   { id: "pas17", name: "Pastel de Churros", description: "Doce de leite", price: 16, image: "/images/pastel-churros.png", ingredients: ["Doce de leite"], addOns: [], subcategory: "Pastel Doce" },
   ],
+  lanches_tradicionais: [
+  { id: "lt1", name: "X-salada", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela, alface e tomate.", price: 30, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt2", name: "X-salada egg", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela, ovo, alface e tomate.", price: 33, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt3", name: "X-bacon", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela e bacon.", price: 30, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt4", name: "X-egg", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela, dois ovos, bacon, alface e tomate.", price: 35, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt5", name: "X milho", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela, catupiry, milho, alface e tomate.", price: 30, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt6", name: "X-tudo", description: "Pao de hamburguer, hamburguer bovino, queijo mussarela, bacon, milho, presunto, ovo, alface e tomate.", price: 40, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt7", name: "X-frango catupiry", description: "Pao de hamburguer, file de frango em cubos, queijo, catupiry, alface e tomate.", price: 35, image: "", ingredients: [], addOns: defaultAddOns },
+  { id: "lt8", name: "X-frango tudo", description: "Pao de hamburguer, file de frango em cubos, queijo mussarela, bacon, presunto, milho, ovo, alface e tomate.", price: 40, image: "", ingredients: [], addOns: defaultAddOns },
+  ],
+  diversos: [
+  { id: "dv1", name: "Cone", description: "", price: 12, image: "/images/placeholder.jpg", ingredients: [], addOns: [] },
+  { id: "dv2", name: "Trufa", description: "", price: 8, image: "/images/placeholder.jpg", ingredients: [], addOns: [] },
+  { id: "dv3", name: "Fini", description: "", price: 3, image: "/images/placeholder.jpg", ingredients: [], addOns: [] },
+  { id: "dv4", name: "Trident", description: "", price: 3, image: "/images/placeholder.jpg", ingredients: [], addOns: [] },
+  ],
   }
   
   const categories: { key: Category; label: string }[] = [
   { key: "burgueres", label: "BURGUERES" },
   { key: "super_burgueres", label: "SUPER BURGUERES" },
+  { key: "lanches_tradicionais", label: "LANCHES TRADICIONAIS" },
   { key: "pastel", label: "PASTEL" },
   { key: "porcoes", label: "PORCOES" },
   { key: "combos", label: "COMBOS E BARCAS" },
   { key: "espetos", label: "ESPETOS" },
   { key: "jantinha", label: "JANTINHA" },
+  { key: "diversos", label: "DIVERSOS" },
   { key: "bebidas", label: "BEBIDAS" },
   ]
 
@@ -330,7 +348,8 @@ const calculateItemTotal = () => {
   // Verifica se o item eh um lanche (burguer ou super_burguer)
   const isLanche = (item: MenuItem) => {
     return menuData.burgueres.some(b => b.id === item.id) || 
-           menuData.super_burgueres.some(b => b.id === item.id)
+           menuData.super_burgueres.some(b => b.id === item.id) ||
+           menuData.lanches_tradicionais.some(b => b.id === item.id)
   }
 
   const handleAddOnChange = (addOnId: string, change: number) => {
@@ -988,7 +1007,7 @@ const handleAddToCart = () => {
   )}
   
   {/* Add-ons */}
-  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres") && (
+  {addOnsOptions.length > 0 && (selectedCategory === "burgueres" || selectedCategory === "super_burgueres" || selectedCategory === "lanches_tradicionais") && (
   <div className="border-b border-amber-900/30 pb-4 mb-4">
   <div className="flex items-center justify-between mb-3">
   <h3 className="text-amber-100 font-bold">ACRESCIMOS</h3>
