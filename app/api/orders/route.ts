@@ -77,7 +77,7 @@ export async function POST(request: NextRequest) {
         `INSERT INTO ${SCHEMA}.orders (
           order_number, customer_name, customer_address, table_number, delivery_type,
           payment_method, cash_amount, subtotal, delivery_fee, total, status
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'pendente')
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'preparando')
         RETURNING id`,
         [
           generatedNumber,
