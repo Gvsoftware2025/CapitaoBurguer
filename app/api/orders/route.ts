@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { query, queryOne, SCHEMA } from '@/lib/db'
+import { query, SCHEMA, withTransaction } from '@/lib/db'
 
 interface OrderItemInput {
   productId?: string
@@ -30,119 +30,111 @@ interface OrderInput {
 
 // POST - Criar novo pedido
 export async function POST(request: NextRequest) {
-  console.log("[v0] API orders POST - inicio")
   try {
     const body: OrderInput = await request.json()
-    console.log("[v0] Body recebido:", JSON.stringify(body, null, 2))
 
-    // TODO: Verificacao de pedido existente para mesa desabilitada temporariamente
-    // devido a instabilidade de conexao com o banco. Reabilitar depois.
-
-    // Gerar numero do pedido baseado no maior numero existente do dia
-    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
-    const prefix = `CB-${today}-`
-    console.log("[v0] Buscando maior numero de pedido do dia com prefixo:", prefix)
-    
-    const maxResult = await queryOne<{ max_num: string | null }>(
-      `SELECT MAX(SUBSTRING(order_number FROM '[0-9]+$')::INT) as max_num 
-       FROM ${SCHEMA}.orders 
-       WHERE order_number LIKE $1`,
-      [`${prefix}%`]
-    )
-    console.log("[v0] Maior numero encontrado:", maxResult)
-    const nextNumber = (parseInt(maxResult?.max_num || '0') || 0) + 1
-    const orderNumber = `${prefix}${nextNumber.toString().padStart(4, '0')}`
-    console.log("[v0] Numero do pedido gerado:", orderNumber)
-
-    // Inserir pedido
-    console.log("[v0] Inserindo pedido na tabela orders...")
-    
-    // Para pedidos de mesa, definir customer_name como "Mesa X"
-    const customerName = body.deliveryType === 'mesa' && body.tableNumber 
-      ? `Mesa ${body.tableNumber}` 
-      : (body.customerName || null)
-    console.log("[v0] customerName calculado:", customerName)
-    
-    // Para pedidos de mesa sem forma de pagamento, usar 'pendente' como default
-    const paymentMethod = body.paymentMethod || (body.deliveryType === 'mesa' ? 'pendente' : 'pix')
-    console.log("[v0] paymentMethod calculado:", paymentMethod)
-    
-    const orderResult = await queryOne<{ id: number }>(
-      `INSERT INTO ${SCHEMA}.orders (
-        order_number, customer_name, customer_address, table_number, delivery_type,
-        payment_method, cash_amount, subtotal, delivery_fee, total, status
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'pendente')
-      RETURNING id`,
-      [
-        orderNumber,
-        customerName,
-        body.customerAddress || null,
-        body.tableNumber || null,
-        body.deliveryType,
-        paymentMethod,
-        body.cashAmount || null,
-        body.subtotal,
-        body.deliveryFee,
-        body.total
-      ]
-    )
-    console.log("[v0] Resultado do INSERT orders:", orderResult)
-
-    if (!orderResult) {
-      throw new Error('Erro ao criar pedido')
-    }
-
-    const orderId = orderResult.id
-    console.log("[v0] Order ID criado:", orderId)
-
+    // Validacao basica antes de tocar no banco
     if (!Array.isArray(body.items) || body.items.length === 0) {
-      await query(`DELETE FROM ${SCHEMA}.orders WHERE id = $1`, [orderId])
       return NextResponse.json(
         { success: false, error: 'O pedido precisa ter pelo menos um item' },
         { status: 400 }
       )
     }
-
-    // Inserir todos os itens; qualquer falha invalida o pedido inteiro.
-    console.log("[v0] Inserindo", body.items.length, "itens...")
-    try {
-      for (const item of body.items) {
-        if (!item.productName || !Number.isInteger(item.quantity) || item.quantity <= 0) {
-          throw new Error(`Item inválido: ${item.productName || 'sem nome'}`)
-        }
-
-        await query(
-          `INSERT INTO ${SCHEMA}.order_items (
-            order_id, product_name, product_price, quantity,
-            variation_name, variation_price, maionese, extra_maioneses, addons, acompanhamentos, item_total
-          ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
-          [
-            orderId,
-            item.productName,
-            item.productPrice,
-            item.quantity,
-            item.variationName || null,
-            item.variationPrice || null,
-            item.maionese || null,
-            item.extraMaioneses || null,
-            item.addons ? JSON.stringify(item.addons) : null,
-            item.acompanhamentos || null,
-            item.itemTotal
-          ]
+    for (const item of body.items) {
+      if (!item.productName || !Number.isInteger(item.quantity) || item.quantity <= 0) {
+        return NextResponse.json(
+          { success: false, error: `Item invalido: ${item.productName || 'sem nome'}` },
+          { status: 400 }
         )
       }
-    } catch (itemError) {
-      console.error('[v0] Falha ao inserir itens; removendo pedido incompleto:', itemError)
-      await query(`DELETE FROM ${SCHEMA}.orders WHERE id = $1`, [orderId])
-      throw new Error('Não foi possível salvar todos os itens do pedido')
     }
 
-    console.log("[v0] Pedido salvo com sucesso! orderNumber:", orderNumber)
+    // Para pedidos de mesa, definir customer_name como "Mesa X"
+    const customerName = body.deliveryType === 'mesa' && body.tableNumber
+      ? `Mesa ${body.tableNumber}`
+      : (body.customerName || null)
+
+    // Para pedidos de mesa sem forma de pagamento, usar 'pendente' como default
+    const paymentMethod = body.paymentMethod || (body.deliveryType === 'mesa' ? 'pendente' : 'pix')
+
+    // Tudo em UMA unica conexao/transacao: gera numero, insere o pedido e
+    // insere todos os itens de uma vez. Muito mais rapido e confiavel do que
+    // abrir varias conexoes para o banco externo.
+    const { orderId, orderNumber } = await withTransaction(async (client) => {
+      const today = new Date().toISOString().slice(0, 10).replace(/-/g, '')
+      const prefix = `CB-${today}-`
+
+      const maxResult = await client.query<{ max_num: string | null }>(
+        `SELECT MAX(SUBSTRING(order_number FROM '[0-9]+$')::INT) as max_num
+         FROM ${SCHEMA}.orders
+         WHERE order_number LIKE $1`,
+        [`${prefix}%`]
+      )
+      const nextNumber = (parseInt(maxResult.rows[0]?.max_num || '0') || 0) + 1
+      const generatedNumber = `${prefix}${nextNumber.toString().padStart(4, '0')}`
+
+      const orderResult = await client.query<{ id: number }>(
+        `INSERT INTO ${SCHEMA}.orders (
+          order_number, customer_name, customer_address, table_number, delivery_type,
+          payment_method, cash_amount, subtotal, delivery_fee, total, status
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, 'preparando')
+        RETURNING id`,
+        [
+          generatedNumber,
+          customerName,
+          body.customerAddress || null,
+          body.tableNumber || null,
+          body.deliveryType,
+          paymentMethod,
+          body.cashAmount || null,
+          body.subtotal,
+          body.deliveryFee,
+          body.total,
+        ]
+      )
+
+      const newOrderId = orderResult.rows[0]?.id
+      if (!newOrderId) {
+        throw new Error('Erro ao criar pedido')
+      }
+
+      // Insere todos os itens numa unica query (multi-row insert)
+      const columns = 11
+      const values: unknown[] = []
+      const placeholders = body.items.map((item, i) => {
+        const base = i * columns
+        values.push(
+          newOrderId,
+          item.productName,
+          item.productPrice,
+          item.quantity,
+          item.variationName || null,
+          item.variationPrice || null,
+          item.maionese || null,
+          item.extraMaioneses || null,
+          item.addons ? JSON.stringify(item.addons) : null,
+          item.acompanhamentos || null,
+          item.itemTotal
+        )
+        return `($${base + 1}, $${base + 2}, $${base + 3}, $${base + 4}, $${base + 5}, $${base + 6}, $${base + 7}, $${base + 8}, $${base + 9}, $${base + 10}, $${base + 11})`
+      })
+
+      await client.query(
+        `INSERT INTO ${SCHEMA}.order_items (
+          order_id, product_name, product_price, quantity,
+          variation_name, variation_price, maionese, extra_maioneses, addons, acompanhamentos, item_total
+        ) VALUES ${placeholders.join(', ')}`,
+        values
+      )
+
+      return { orderId: newOrderId, orderNumber: generatedNumber }
+    })
+
     return NextResponse.json({
       success: true,
       orderId,
       orderNumber,
-      message: 'Pedido criado com sucesso'
+      message: 'Pedido criado com sucesso',
     })
 
   } catch (error) {
