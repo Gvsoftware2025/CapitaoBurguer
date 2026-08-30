@@ -462,13 +462,14 @@ const handleAddToCart = () => {
       console.log("[v0] Resposta da API:", result)
       
       if (!response.ok || !result.success) {
-        console.error("[v0] Erro ao salvar pedido:", result.error || response.statusText)
-      } else {
-        console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
+        throw new Error(result.error || response.statusText || 'Não foi possível salvar o pedido')
       }
+
+      console.log("[v0] Pedido salvo com sucesso! Numero:", result.orderNumber)
     } catch (error) {
       console.error('[v0] Erro ao salvar pedido no banco:', error)
-      // Continua mesmo se der erro no banco - o WhatsApp e mais importante
+      alert('Não foi possível finalizar o pedido agora. Verifique sua conexão e tente novamente.')
+      return
     }
     
     // Montar mensagem WhatsApp
