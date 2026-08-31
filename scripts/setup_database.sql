@@ -1,6 +1,6 @@
 -- =====================================================
 -- CAPITAO BURGUER - SETUP COMPLETO DO BANCO DE DADOS
--- VPS: 168.231.93.220 | Database: gvsoftware
+-- VPS: 76.13.164.193 | Database: gvsoftware
 -- =====================================================
 
 -- Dropar tabelas existentes para recriar (ordem correta por dependencias)
