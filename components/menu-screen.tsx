@@ -764,9 +764,9 @@ const handleAddToCart = () => {
                   {subcategory}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {filteredItems.filter(item => item.subcategory === subcategory).map((item) => (
+                  {filteredItems.filter(item => item.subcategory === subcategory).map((item, idx) => (
                     <button
-                      key={item.id}
+                      key={`${item.id}-${idx}`}
                       onClick={() => {
                         setSelectedItem(item)
                         setItemQuantity(1)
@@ -810,9 +810,9 @@ const handleAddToCart = () => {
         ) : (
           // Outras categorias - grid normal
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {filteredItems.map((item) => (
+            {filteredItems.map((item, idx) => (
               <button
-                key={item.id}
+                key={`${item.id}-${idx}`}
                 onClick={() => {
                   setSelectedItem(item)
                   setItemQuantity(1)
