@@ -267,6 +267,22 @@ jantinha: [
   { key: "bebidas", label: "BEBIDAS" },
   ]
 
+// Normaliza o nome do produto para casar dados estaticos com os do banco
+const normalizeName = (name: string) =>
+  name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "")
+
+// Ingredientes e subcategoria nao existem no banco: mantemos fixos casando por nome.
+const staticInfoByName = new Map<string, { ingredients: string[]; subcategory?: string }>()
+// Imagem estatica por nome, usada como fallback quando o banco nao tem image_url.
+const staticImageByName = new Map<string, string>()
+for (const key of Object.keys(menuData) as Category[]) {
+  for (const it of menuData[key]) {
+    const norm = normalizeName(it.name)
+    staticInfoByName.set(norm, { ingredients: it.ingredients, subcategory: it.subcategory })
+    if (it.image) staticImageByName.set(norm, it.image)
+  }
+}
+
 export function MenuScreen({ onBack }: MenuScreenProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category>("burgueres")
   const [selectedSubcategory, setSelectedSubcategory] = useState<string>("Todos")
@@ -285,6 +301,8 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   // Dados dinamicos do banco de dados
   const [maionesesOptions, setMaionesesOptions] = useState<Maionese[]>(defaultMaioneses)
   const [addOnsOptions, setAddOnsOptions] = useState<AddOn[]>(defaultAddOns)
+  // Cardapio: comeca com os dados estaticos e e substituido pelos do banco
+  const [menuItems, setMenuItems] = useState<Record<Category, MenuItem[]>>(menuData)
   
   // Buscar maioneses e adicionais do banco de dados
   useEffect(() => {
@@ -308,6 +326,45 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
               price: Number(a.price)
             })))
           }
+          // Atualizar produtos (cardapio) vindos do banco, mantendo
+          // ingredientes/subcategoria estaticos casados por nome.
+          if (data.data.products) {
+            setMenuItems((prev) => {
+              const next = { ...prev }
+              for (const key of Object.keys(prev) as Category[]) {
+                const dbList = data.data.products[key]
+                // Categorias que exibem filtros por subcategoria
+                const usesSubcategory = key === "bebidas" || key === "pastel"
+                if (dbList && dbList.length > 0) {
+                  next[key] = dbList.map((dbItem: {
+                    id: number | string
+                    name: string
+                    description?: string
+                    price: number
+                    image?: string
+                    variations?: Variation[]
+                    comboChoices?: ComboChoice[]
+                  }) => {
+                    const norm = normalizeName(dbItem.name)
+                    const info = staticInfoByName.get(norm)
+                    return {
+                      id: String(dbItem.id),
+                      name: dbItem.name,
+                      description: dbItem.description ?? "",
+                      price: Number(dbItem.price),
+                      image: dbItem.image || staticImageByName.get(norm) || "",
+                      ingredients: info?.ingredients ?? [],
+                      subcategory: info?.subcategory ?? (usesSubcategory ? "Outros" : undefined),
+                      addOns: [],
+                      variations: dbItem.variations,
+                      comboChoices: dbItem.comboChoices,
+                    } as MenuItem
+                  })
+                }
+              }
+              return next
+            })
+          }
         }
       } catch (error) {
         console.error('Erro ao buscar dados do cardapio:', error)
@@ -320,10 +377,10 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
 // Pegar subcategorias disponiveis para bebidas e pastel
   const hasSubcategories = selectedCategory === "bebidas" || selectedCategory === "pastel"
   const availableSubcategories = hasSubcategories
-    ? ["Todos", ...Array.from(new Set(menuData[selectedCategory].map(item => item.subcategory).filter(Boolean)))]
+    ? ["Todos", ...Array.from(new Set(menuItems[selectedCategory].map(item => item.subcategory).filter(Boolean)))]
     : []
 
-  const filteredItems = menuData[selectedCategory].filter((item) => {
+  const filteredItems = menuItems[selectedCategory].filter((item) => {
     const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       item.description.toLowerCase().includes(searchTerm.toLowerCase())
     const matchesSubcategory = !hasSubcategories || 
@@ -350,9 +407,9 @@ const calculateItemTotal = () => {
   
   // Verifica se o item eh um lanche (burguer ou super_burguer)
   const isLanche = (item: MenuItem) => {
-    return menuData.burgueres.some(b => b.id === item.id) || 
-           menuData.super_burgueres.some(b => b.id === item.id) ||
-           menuData.lanches_tradicionais.some(b => b.id === item.id)
+    return menuItems.burgueres.some(b => b.id === item.id) || 
+           menuItems.super_burgueres.some(b => b.id === item.id) ||
+           menuItems.lanches_tradicionais.some(b => b.id === item.id)
   }
 
   const handleAddOnChange = (addOnId: string, change: number) => {
@@ -707,9 +764,9 @@ const handleAddToCart = () => {
                   {subcategory}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                  {filteredItems.filter(item => item.subcategory === subcategory).map((item) => (
+                  {filteredItems.filter(item => item.subcategory === subcategory).map((item, idx) => (
                     <button
-                      key={item.id}
+                      key={`${item.id}-${idx}`}
                       onClick={() => {
                         setSelectedItem(item)
                         setItemQuantity(1)
@@ -753,9 +810,9 @@ const handleAddToCart = () => {
         ) : (
           // Outras categorias - grid normal
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-            {filteredItems.map((item) => (
+            {filteredItems.map((item, idx) => (
               <button
-                key={item.id}
+                key={`${item.id}-${idx}`}
                 onClick={() => {
                   setSelectedItem(item)
                   setItemQuantity(1)
