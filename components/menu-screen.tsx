@@ -296,6 +296,7 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
   const [selectedComboChoices, setSelectedComboChoices] = useState<Record<string, ComboChoiceOption>>({})
   const [cart, setCart] = useState<CartItem[]>([])
   const [showCart, setShowCart] = useState(false)
+  const [editingCartIndex, setEditingCartIndex] = useState<number | null>(null)
   const [showCheckout, setShowCheckout] = useState(false)
   
   // Dados dinamicos do banco de dados
@@ -357,7 +358,9 @@ export function MenuScreen({ onBack }: MenuScreenProps) {
                       subcategory: info?.subcategory ?? (usesSubcategory ? "Outros" : undefined),
                       addOns: [],
                       variations: dbItem.variations,
-                      comboChoices: dbItem.comboChoices,
+                      comboChoices: norm === normalizeName("Barca do Capitao")
+                        ? (dbItem.comboChoices || []).filter((choice: ComboChoice) => !choice.label.toLowerCase().includes("kibe"))
+                        : dbItem.comboChoices,
                     } as MenuItem
                   })
                 }
@@ -457,7 +460,11 @@ const handleAddToCart = () => {
   totalPrice: calculateItemTotal(),
   }
   
-  setCart((prev) => [...prev, cartItem])
+  setCart((prev) => editingCartIndex === null
+    ? [...prev, cartItem]
+    : prev.map((existingItem, index) => index === editingCartIndex ? cartItem : existingItem)
+  )
+  setEditingCartIndex(null)
   setSelectedItem(null)
   setItemQuantity(1)
   setSelectedAddOns({})
@@ -470,6 +477,18 @@ const handleAddToCart = () => {
 
   const removeFromCart = (index: number) => {
     setCart((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const editCartItem = (cartItem: CartItem, index: number) => {
+    setEditingCartIndex(index)
+    setSelectedItem(cartItem.item)
+    setItemQuantity(cartItem.quantity)
+    setSelectedVariation(cartItem.selectedVariation || null)
+    setSelectedMaionese(cartItem.selectedMaionese || null)
+    setExtraMaioneses(cartItem.extraMaioneses || [])
+    setSelectedComboChoices(cartItem.selectedComboChoices || {})
+    setSelectedAddOns(Object.fromEntries(cartItem.selectedAddOns.map(({ addOn, quantity }) => [addOn.id, quantity])))
+    setShowCart(false)
   }
 
   const cartTotal = cart.reduce((sum, item) => sum + item.totalPrice, 0)
@@ -768,6 +787,7 @@ const handleAddToCart = () => {
                     <button
                       key={`${item.id}-${idx}`}
                       onClick={() => {
+                        setEditingCartIndex(null)
                         setSelectedItem(item)
                         setItemQuantity(1)
                         setSelectedAddOns({})
@@ -1137,7 +1157,7 @@ const handleAddToCart = () => {
                 className="w-full mt-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-500 hover:to-green-600 text-white py-4 rounded-xl font-bold text-lg tracking-wider transition-all duration-300 flex items-center justify-center gap-3"
               >
                 <ShoppingCart className="w-6 h-6" />
-                ADICIONAR AO CARRINHO
+                {editingCartIndex === null ? "ADICIONAR AO CARRINHO" : "SALVAR ALTERAÇÕES"}
               </button>
             </div>
           </div>
@@ -1172,6 +1192,16 @@ const handleAddToCart = () => {
                         key={index}
                         className="bg-[#2a1a10] rounded-xl p-4 border border-amber-900/30"
                       >
+                        <div
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => editCartItem(cartItem, index)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") editCartItem(cartItem, index)
+                          }}
+                          className="w-full text-left cursor-pointer"
+                          aria-label={`Editar ${cartItem.item.name}`}
+                        >
                         <div className="flex gap-3">
                           <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
                             <Image
@@ -1223,7 +1253,10 @@ const handleAddToCart = () => {
   )}
                               </div>
                               <button
-                                onClick={() => removeFromCart(index)}
+                                onClick={(event) => {
+                                  event.stopPropagation()
+                                  removeFromCart(index)
+                                }}
                                 className="text-red-500 hover:text-red-400 transition-colors"
                               >
                                 <Trash2 className="w-5 h-5" />
@@ -1233,6 +1266,7 @@ const handleAddToCart = () => {
                               R$ {cartItem.totalPrice.toFixed(2)}
                             </p>
                           </div>
+                        </div>
                         </div>
                       </div>
                     ))}
